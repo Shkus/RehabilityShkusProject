@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RehabilityApp.GUI", "RehabilityApp.GUI\RehabilityApp.GUI.csproj", "{19F85084-8CE8-4D83-80A7-FF7ED82A658D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RehabilityApplication.CoreLib", "RehabilityApplication.CoreLib\RehabilityApplication.CoreLib.csproj", "{F9F92F51-E920-41C8-85A4-C5EC8F8985DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19F85084-8CE8-4D83-80A7-FF7ED82A658D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19F85084-8CE8-4D83-80A7-FF7ED82A658D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19F85084-8CE8-4D83-80A7-FF7ED82A658D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19F85084-8CE8-4D83-80A7-FF7ED82A658D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F92F51-E920-41C8-85A4-C5EC8F8985DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F92F51-E920-41C8-85A4-C5EC8F8985DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F92F51-E920-41C8-85A4-C5EC8F8985DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F92F51-E920-41C8-85A4-C5EC8F8985DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E174E57-FF03-479C-BA17-34E0F54F5ABD}
+	EndGlobalSection
+EndGlobal
