@@ -25,6 +25,8 @@
         /// </summary>
         ucDocumentViewer documentViewLayer = new ucDocumentViewer();
 
+        delegate void barButto1ItemClick();
+
         /// <summary>
         /// Конструктор формы.
         /// </summary>
@@ -50,6 +52,7 @@
 
                 CoreGlobalCommandManager.StartCommand(DatabaseCommandType.DatabaseWasInitializated);
             };
+
         }
 
         /// <summary>
