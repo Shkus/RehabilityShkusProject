@@ -1,9 +1,13 @@
-﻿using System;
+﻿using DevExpress.DataAccess.UI;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+
+using GCM = RehabilityApplication.CoreLib.CoreGlobalCommandManager;
 
 namespace RehabilityApplication.CoreLib
 {
@@ -17,6 +21,9 @@ namespace RehabilityApplication.CoreLib
             });
         }
 
+        /// <summary>
+        /// Инициалзация при первом запуске программы
+        /// </summary>
         public static void Init()
         {
             foreach (string botToken in EnumManager.GetDescriptionsList(typeof(TelegramBotUsingType)))
@@ -25,16 +32,124 @@ namespace RehabilityApplication.CoreLib
                 bot.StartReceiving(Update, Error);
                 bots.Add(bot);
             }
+
+            GCM.CommandDataReceivingInitialized += (s, e) =>
+            {
+                if (e.Command is PlanetEarthCommandType.SendMoney)
+                {
+                    SendMessage("Благодарим, земляне!", e.Data);
+                }
+
+                if (e.Command is PlanetEarthCommandType.SendPeople)
+                {
+                    SendMessage("Благодарим, земляне, но идите ка вы лесом!", e.Data);
+                }
+
+                if (e.Command is PlanetEarthCommandType.SendWeapon)
+                {
+                    SendMessage("Благодарим, земляне за поддержку режима!", e.Data);
+                }
+
+                if (e.Command is PlanetEarthCommandType.HelloVasyok)
+                {
+                    SendMessage("ой всё", e.Data);
+                }
+                if (e.Command is RehabilityMarsCommand.HiBraza)
+                {
+                    SendMessage("Всем доброго настроения", e.Data);
+                }
+
+                if (e.Command is FoodDelivery.Done)
+                {
+                    SendMessage("Выполненою Еда готова, забирайте", e.Data);
+                }
+
+                if (e.Command is ResponseCommandType.ClientAlreadyExist)
+                {
+                    SendMessage($"Клиент с указанным СНИЛС [{e.Data[0]}] уже есть в базе!", (long)e.Data[1]);
+                }
+
+                if (e.Command is ResponseCommandType.ClientIsNotExist)
+                {
+                    SendMessage($"Клиент с указанным СНИЛС [{e.Data[0]}] не существует в базе!", (long)(e.Data as List<object>).Last());
+                }
+            };
         }
 
         static async Task Update(ITelegramBotClient client, Update update, CancellationToken token)
         {
             var message = update.Message;
 
+            string str = message.Text.ToLower();
+
+            try
+            {
+                GCM.StartCommand(PlanetEarthCommandType.SendAnyMessage, str);
+            }
+            catch (Exception ex) { }
+
             if (message?.Text != null)
             {
+                var botId = client.BotId;
                 await client.SendTextMessageAsync(message.Chat.Id, "Я получил ваше сообщение! Ожидайте ответа...");
+
+                if (message.Text.ToLower().Contains("send money"))
+                {
+                    GCM.StartReceiveDataCommand(PlanetEarthCommandType.SendMoney, botId);
+                }
+
+                if (message.Text.ToLower().Contains("send people"))
+                {
+                    GCM.StartReceiveDataCommand(PlanetEarthCommandType.SendPeople, botId);
+                }
+
+                if (message.Text.ToLower().Contains("send weapon"))
+                {
+                    GCM.StartReceiveDataCommand(PlanetEarthCommandType.SendWeapon, botId);
+                }
+
+                if (message.Text.ToLower().Contains("please give me my money"))
+                {
+                    GCM.StartReceiveDataCommand(PlanetEarthCommandType.HelloVasyok, botId);
+                }
+                if (message.Text.ToLower().Contains("zdarova"))
+                {
+                    GCM.StartReceiveDataCommand(RehabilityMarsCommand.HiBraza, botId);
+                }
+
+                if (message.Text.ToLower().Contains("done"))
+                {
+                    CoreGlobalCommandManager.StartReceiveDataCommand(FoodDelivery.Done, botId);
+                }
+
+
+                if (message.Text.ToLower().StartsWith("add new client"))
+                {
+                    string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string snils = args.Last();
+                    GCM.StartReceiveDataCommand(DatabaseCommandType.AddNewClientInit, new List<object>{ snils, botId});
+                }
+
+                if (message.Text.ToLower().StartsWith("remove client")) 
+                {
+                    string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string snils = args.Last();
+                    GCM.StartReceiveDataCommand(DatabaseCommandType.RemoveClient, new List<object> { snils, botId });
+                }
+
+                if (message.Text.ToLower().StartsWith("editdataclient"))
+                {
+                    string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string newSnils = args.Last();
+                    string oldSnils = args[args.Length-2];
+                    GCM.StartReceiveDataCommand(DatabaseCommandType.editDataClient, new List<object> { oldSnils, newSnils, botId });
+
+                }
+
+
                 return;
+
+
             }
 
             //if (message?.Text != null)
@@ -45,102 +160,93 @@ namespace RehabilityApplication.CoreLib
             //        return;
             //    }
 
-                //    if (message.Text.ToUpper().Contains("КНИГА 1"))
-                //    {
-                //        string filepath = @"D:\!!! Базовые элементы\Рабочий стол\Стань свободным быстро.pdf";
-                //        await using Stream stream = System.IO.File.OpenRead(filepath);
-                //        await client.SendDocumentAsync(message.Chat.Id, new Telegram.Bot.Types.InputFileStream(stream, Path.GetFileName(filepath)));
-                //        return;
-                //    }
+            //    if (message.Text.ToUpper().Contains("КНИГА 1"))
+            //    {
+            //        string filepath = @"D:\!!! Базовые элементы\Рабочий стол\Стань свободным быстро.pdf";
+            //        await using Stream stream = System.IO.File.OpenRead(filepath);
+            //        await client.SendDocumentAsync(message.Chat.Id, new Telegram.Bot.Types.InputFileStream(stream, Path.GetFileName(filepath)));
+            //        return;
+            //    }
 
-                //    if (message.Text.ToLower().StartsWith("add"))
-                //    {
-                //        string[] args = message.Text.Split('|', StringSplitOptions.RemoveEmptyEntries);
+            //    if (message.Text.ToLower().StartsWith("add"))
+            //    {
+            //        string[] args = message.Text.Split('|', StringSplitOptions.RemoveEmptyEntries);
 
-                //        if (args.Count() != 4)
-                //        {
-                //            return;
-                //        }
+            //        if (args.Count() != 4)
+            //        {
+            //            return;
+            //        }
 
-                //        items.Add(new DatabaseItem()
-                //        {
-                //            Name = args[1],
-                //            Description = args[2],
-                //            Type = args[3]
-                //        });
+            //        items.Add(new DatabaseItem()
+            //        {
+            //            Name = args[1],
+            //            Description = args[2],
+            //            Type = args[3]
+            //        });
 
-                //        BeginInvoke(new MethodInvoker(delegate
-                //        {
-                //            this.TL.RefreshDataSource();
-                //        }));
+            //        BeginInvoke(new MethodInvoker(delegate
+            //        {
+            //            this.TL.RefreshDataSource();
+            //        }));
 
-                //        return;
-                //    }
+            //        return;
+            //    }
 
-                //    if (message.Text.ToUpper().Contains("КНИГА 2"))
-                //    {
-                //        string filepath = @"D:\!!! Базовые элементы\Рабочий стол\Стань свободным быстро.pdf";
-                //        await using Stream stream = System.IO.File.OpenRead(filepath);
-                //        await client.SendDocumentAsync(message.Chat.Id, new Telegram.Bot.Types.InputFileStream(stream, Path.GetFileName(filepath)));
-                //        return;
-                //    }
+            //    if (message.Text.ToUpper().Contains("КНИГА 2"))
+            //    {
+            //        string filepath = @"D:\!!! Базовые элементы\Рабочий стол\Стань свободным быстро.pdf";
+            //        await using Stream stream = System.IO.File.OpenRead(filepath);
+            //        await client.SendDocumentAsync(message.Chat.Id, new Telegram.Bot.Types.InputFileStream(stream, Path.GetFileName(filepath)));
+            //        return;
+            //    }
 
-                //    if (message.Text.ToUpper().Contains("ЗАКРЫТЬ ПРИЛОЖЕНИЕ"))
-                //    {
-                //        this.IsClosingApp = true;
-                //        return;
-                //    }
+            //    if (message.Text.ToUpper().Contains("ЗАКРЫТЬ ПРИЛОЖЕНИЕ"))
+            //    {
+            //        this.IsClosingApp = true;
+            //        return;
+            //    }
 
-                //    if (message.Text.ToUpper().StartsWith("DATA"))
-                //    {
-                //        string[] args = message.Text.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            //    if (message.Text.ToUpper().StartsWith("DATA"))
+            //    {
+            //        string[] args = message.Text.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                //        if (args.Count() == 1)
-                //        {
-                //            SendMessage($"Неверная команда от {message.Chat.Username} !!! Добавь пробел!!!");
-                //            return;
-                //        }
+            //        if (args.Count() == 1)
+            //        {
+            //            SendMessage($"Неверная команда от {message.Chat.Username} !!! Добавь пробел!!!");
+            //            return;
+            //        }
 
-                //        int index = -1;
-                //        int.TryParse(args[1], out index);
+            //        int index = -1;
+            //        int.TryParse(args[1], out index);
 
-                //        try
-                //        {
-                //            DatabaseItem di = items[index];
-                //            SendMessage($"Запись {index}: Название [{di.Name}], Описание [{di.Description}], Возрастное ограничение [{di.Type}]");
-                //        }
-                //        catch
-                //        {
-                //            SendMessage($"Запись {index}: отсутствует в базе данных.");
-                //        }
+            //        try
+            //        {
+            //            DatabaseItem di = items[index];
+            //            SendMessage($"Запись {index}: Название [{di.Name}], Описание [{di.Description}], Возрастное ограничение [{di.Type}]");
+            //        }
+            //        catch
+            //        {
+            //            SendMessage($"Запись {index}: отсутствует в базе данных.");
+            //        }
 
-                //        return;
-                //    }
-                //}
+            //        return;
+            //    }
+            //}
 
-                //if (message?.Photo != null)
-                //{
-                //    await client.SendTextMessageAsync(message.Chat.Id, "Отличная картинка");
-                //    return;
-                //}
+            //if (message?.Photo != null)
+            //{
+            //    await client.SendTextMessageAsync(message.Chat.Id, "Отличная картинка");
+            //    return;
+            //}
         }
 
-        static void SendMessage(string text)
+        static void SendMessage(string text, long botId)
         {
-            //Task.Run(() =>
-            //{
-            //    bot.SendTextMessageAsync(302237012, text);
-            //});
-
-            //Task.Run(() =>
-            //{
-            //    bot.SendTextMessageAsync(788177332, text);
-            //});
-
-            //Task.Run(() =>
-            //{
-            //    bot.SendTextMessageAsync(1462846866, text);
-            //});
+            foreach (var user in GlobalDatabaseManager.telegramBotUsers)
+            {
+                bots.Where(t => t.BotId == botId).First().SendTextMessageAsync(user.Id, text);
+                GCM.StartCommand(PlanetEarthCommandType.SendAnyMessage, $"Ушло сообщение ['{text}'] боту с id={botId} на пользователя: {user.Name}");
+            }
         }
     }
 }

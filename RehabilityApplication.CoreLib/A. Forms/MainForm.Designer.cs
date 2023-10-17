@@ -56,7 +56,7 @@
             RC.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2007;
             RC.ShowQatLocationSelector = false;
             RC.ShowToolbarCustomizeItem = false;
-            RC.Size = new System.Drawing.Size(701, 162);
+            RC.Size = new System.Drawing.Size(1090, 162);
             RC.StatusBar = RSB;
             RC.Toolbar.ShowCustomizeItem = false;
             RC.SelectedPageChanged += RC_SelectedPageChanged;
@@ -108,10 +108,10 @@
             // 
             // RSB
             // 
-            RSB.Location = new System.Drawing.Point(0, 465);
+            RSB.Location = new System.Drawing.Point(0, 464);
             RSB.Name = "RSB";
             RSB.Ribbon = RC;
-            RSB.Size = new System.Drawing.Size(701, 26);
+            RSB.Size = new System.Drawing.Size(1090, 26);
             // 
             // DLAF
             // 
@@ -122,7 +122,7 @@
             AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(701, 491);
+            ClientSize = new System.Drawing.Size(1090, 490);
             Controls.Add(RSB);
             Controls.Add(RC);
             Name = "MainForm";

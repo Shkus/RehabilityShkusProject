@@ -17,8 +17,7 @@ namespace RehabilityApp.GUI
         [STAThread]
         static void Main()
         {
-            GlobalDatabaseManager.Init();
-            TelegramBotManager.Init();
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

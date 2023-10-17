@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucBackstageMenu));
             BSV = new DevExpress.XtraBars.Ribbon.BackstageViewControl();
             backstageViewClientControl1 = new DevExpress.XtraBars.Ribbon.BackstageViewClientControl();
-            backstageViewClientControl2 = new DevExpress.XtraBars.Ribbon.BackstageViewClientControl();
+            tabNotifiesPanel = new DevExpress.XtraBars.Ribbon.BackstageViewClientControl();
             backstageViewClientControl3 = new DevExpress.XtraBars.Ribbon.BackstageViewClientControl();
             tabSettings = new DevExpress.XtraBars.Ribbon.BackstageViewTabItem();
             tabNotifies = new DevExpress.XtraBars.Ribbon.BackstageViewTabItem();
@@ -44,8 +44,8 @@
             // 
             // BSV
             // 
+            BSV.Controls.Add(tabNotifiesPanel);
             BSV.Controls.Add(backstageViewClientControl1);
-            BSV.Controls.Add(backstageViewClientControl2);
             BSV.Controls.Add(backstageViewClientControl3);
             BSV.Dock = System.Windows.Forms.DockStyle.Fill;
             BSV.Items.Add(tabSettings);
@@ -55,8 +55,8 @@
             BSV.Items.Add(btnExitApplication);
             BSV.Location = new System.Drawing.Point(0, 0);
             BSV.Name = "BSV";
-            BSV.SelectedTab = tabHelp;
-            BSV.SelectedTabIndex = 2;
+            BSV.SelectedTab = tabNotifies;
+            BSV.SelectedTabIndex = 1;
             BSV.Size = new System.Drawing.Size(607, 423);
             BSV.TabIndex = 0;
             BSV.Text = "backstageViewControl1";
@@ -69,12 +69,12 @@
             backstageViewClientControl1.Size = new System.Drawing.Size(178, 423);
             backstageViewClientControl1.TabIndex = 1;
             // 
-            // backstageViewClientControl2
+            // tabNotifiesPanel
             // 
-            backstageViewClientControl2.Location = new System.Drawing.Point(256, 0);
-            backstageViewClientControl2.Name = "backstageViewClientControl2";
-            backstageViewClientControl2.Size = new System.Drawing.Size(178, 423);
-            backstageViewClientControl2.TabIndex = 2;
+            tabNotifiesPanel.Location = new System.Drawing.Point(256, 0);
+            tabNotifiesPanel.Name = "tabNotifiesPanel";
+            tabNotifiesPanel.Size = new System.Drawing.Size(351, 423);
+            tabNotifiesPanel.TabIndex = 2;
             // 
             // backstageViewClientControl3
             // 
@@ -93,9 +93,10 @@
             // tabNotifies
             // 
             tabNotifies.Caption = "Журнал уведомлений";
-            tabNotifies.ContentControl = backstageViewClientControl2;
+            tabNotifies.ContentControl = tabNotifiesPanel;
             tabNotifies.ImageOptions.ItemNormal.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("tabNotifies.ImageOptions.ItemNormal.SvgImage");
             tabNotifies.Name = "tabNotifies";
+            tabNotifies.Selected = true;
             // 
             // tabHelp
             // 
@@ -103,7 +104,6 @@
             tabHelp.ContentControl = backstageViewClientControl3;
             tabHelp.ImageOptions.ItemNormal.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("tabHelp.ImageOptions.ItemNormal.SvgImage");
             tabHelp.Name = "tabHelp";
-            tabHelp.Selected = true;
             // 
             // backstageViewItemSeparator1
             // 
@@ -132,7 +132,7 @@
         private DevExpress.XtraBars.Ribbon.BackstageViewControl BSV;
         private DevExpress.XtraBars.Ribbon.BackstageViewClientControl backstageViewClientControl1;
         private DevExpress.XtraBars.Ribbon.BackstageViewTabItem tabSettings;
-        private DevExpress.XtraBars.Ribbon.BackstageViewClientControl backstageViewClientControl2;
+        private DevExpress.XtraBars.Ribbon.BackstageViewClientControl tabNotifiesPanel;
         private DevExpress.XtraBars.Ribbon.BackstageViewTabItem tabNotifies;
         private DevExpress.XtraBars.Ribbon.BackstageViewClientControl backstageViewClientControl3;
         private DevExpress.XtraBars.Ribbon.BackstageViewTabItem tabHelp;

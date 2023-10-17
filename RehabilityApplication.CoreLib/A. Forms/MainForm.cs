@@ -42,6 +42,14 @@
             this.Controls.Add(sourceDataViewLayer);
             // Добавляем слой отображения документов на форму.
             this.Controls.Add(documentViewLayer);
+
+            this.Shown += (s, e) =>
+            {
+                GlobalDatabaseManager.Init();
+                TelegramBotManager.Init();
+
+                CoreGlobalCommandManager.StartCommand(DatabaseCommandType.DatabaseWasInitializated);
+            };
         }
 
         /// <summary>

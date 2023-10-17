@@ -13,9 +13,12 @@ namespace RehabilityApplication.CoreLib
 {
     public partial class ucBackstageMenu : DevExpress.XtraEditors.XtraUserControl
     {
+        ucNotifyMessages ucNotifyMessages = new ucNotifyMessages();
         public ucBackstageMenu()
         {
             InitializeComponent();
+
+            tabNotifiesPanel.Controls.Add(ucNotifyMessages);
         }
     }
 }

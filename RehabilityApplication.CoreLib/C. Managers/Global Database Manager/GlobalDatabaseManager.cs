@@ -5,6 +5,7 @@ namespace RehabilityApplication.CoreLib
     public static class GlobalDatabaseManager
     {
         public static List<TelegramBotUser> telegramBotUsers = new List<TelegramBotUser>();
+        public static List<dbClient> clients = new List<dbClient>();
 
         public static void Init()
         {
@@ -21,6 +22,12 @@ namespace RehabilityApplication.CoreLib
             {
                 Name = "Василий", Surname = "Шкурихин", Id = 1462846866
             });
+
+            clients.Add(new dbClient { IsSelected = true, Snils = "012345678901"});
+            clients.Add(new dbClient { IsSelected = true, Snils = "123456789102"});
+            clients.Add(new dbClient { IsSelected = true, Snils = "234567890123"});
+            clients.Add(new dbClient { IsSelected = true, Snils = "345678901234"});
+            clients.Add(new dbClient { IsSelected = true, Snils = "456789012345"});
         }
     }
 }
