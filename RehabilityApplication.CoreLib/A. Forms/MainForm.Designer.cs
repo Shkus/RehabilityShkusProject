@@ -32,7 +32,6 @@
             RC = new DevExpress.XtraBars.Ribbon.RibbonControl();
             Skins = new DevExpress.XtraBars.SkinRibbonGalleryBarItem();
             SkinPalettes = new DevExpress.XtraBars.SkinPaletteRibbonGalleryBarItem();
-            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -47,7 +46,7 @@
             // RC
             // 
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, barButtonItem1 });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes });
             RC.Location = new System.Drawing.Point(0, 0);
             RC.MaxItemId = 4;
             RC.Name = "RC";
@@ -74,12 +73,6 @@
             SkinPalettes.Id = 2;
             SkinPalettes.Name = "SkinPalettes";
             // 
-            // barButtonItem1
-            // 
-            barButtonItem1.Caption = "barButtonItem1";
-            barButtonItem1.Id = 3;
-            barButtonItem1.Name = "barButtonItem1";
-            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -88,7 +81,6 @@
             // 
             // groupDatabase
             // 
-            groupDatabase.ItemLinks.Add(barButtonItem1);
             groupDatabase.Name = "groupDatabase";
             groupDatabase.Text = "База данных";
             // 
@@ -154,6 +146,5 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup groupDocumentHandles;
         private DevExpress.XtraBars.SkinRibbonGalleryBarItem Skins;
         private DevExpress.XtraBars.SkinPaletteRibbonGalleryBarItem SkinPalettes;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
     }
 }
