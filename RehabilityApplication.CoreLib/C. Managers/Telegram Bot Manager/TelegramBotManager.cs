@@ -1,9 +1,11 @@
 ﻿using DevExpress.DataAccess.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -80,6 +82,11 @@ namespace RehabilityApplication.CoreLib
         {
             var message = update.Message;
 
+            if (message.Text == null)
+            {
+                return;
+            }
+
             string str = message.Text.ToLower();
 
             try
@@ -127,10 +134,10 @@ namespace RehabilityApplication.CoreLib
                 {
                     string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     string snils = args.Last();
-                    GCM.StartReceiveDataCommand(DatabaseCommandType.AddNewClientInit, new List<object>{ snils, botId});
+                    GCM.StartReceiveDataCommand(DatabaseCommandType.AddNewClientInit, new List<object> { snils, botId });
                 }
 
-                if (message.Text.ToLower().StartsWith("remove client")) 
+                if (message.Text.ToLower().StartsWith("remove client"))
                 {
                     string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     string snils = args.Last();
@@ -141,17 +148,53 @@ namespace RehabilityApplication.CoreLib
                 {
                     string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     string newSnils = args.Last();
-                    string oldSnils = args[args.Length-2];
+                    string oldSnils = args[args.Length - 2];
                     GCM.StartReceiveDataCommand(DatabaseCommandType.editDataClient, new List<object> { oldSnils, newSnils, botId });
-
                 }
 
+                if (message.Text.ToLower().StartsWith("gendocclient") ||
+                    message.Text.ToLower().StartsWith("gdc"))
+                {
+                    string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string snils = args.Last();
+                    string adresspath = DocumentGenerationManager.GenerateDocuments(snils);
 
-                return;
+                    if (adresspath == string.Empty)
+                    {
+                        try
+                        {
+                            CoreGlobalCommandManager.StartReceiveDataCommand(ResponseCommandType.ClientIsNotExist, new List<object> { snils, client.BotId });
+                        }
+                        catch { }
+                        return;
+                    }
 
+                    await using Stream stream = System.IO.File.OpenRead(adresspath);
+                    await client.SendDocumentAsync(message.Chat.Id, new InputFileStream(stream, Path.GetFileName(adresspath)));
+                    return;
+                }
+                if (message.Text.ToLower().StartsWith("genpdfclient") ||
+                        message.Text.ToLower().StartsWith("gpc"))
+                {
+                    string[] args = message.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string snils = args.Last();
+                    string adresspath = DocumentGenerationManager.GenerateDocuments(snils, true);
 
+                    if (adresspath == string.Empty)
+                    {
+                        try
+                        {
+                            CoreGlobalCommandManager.StartReceiveDataCommand(ResponseCommandType.ClientIsNotExist, new List<object> { snils, client.BotId });
+                        }
+                        catch { }
+                        return;
+                    }
+                    await using Stream stream = System.IO.File.OpenRead(adresspath);
+                    await client.SendDocumentAsync(message.Chat.Id, new InputFileStream(stream, Path.GetFileName(adresspath)));
+                    return;
+
+                }
             }
-
             //if (message?.Text != null)
             //{
             //    if (message.Text.ToLower().Contains("hello"))

@@ -23,11 +23,21 @@ namespace RehabilityApplication.CoreLib
                 Name = "Василий", Surname = "Шкурихин", Id = 1462846866
             });
 
-            clients.Add(new dbClient { IsSelected = true, Snils = "012345678901"});
-            clients.Add(new dbClient { IsSelected = true, Snils = "123456789102"});
-            clients.Add(new dbClient { IsSelected = true, Snils = "234567890123"});
-            clients.Add(new dbClient { IsSelected = true, Snils = "345678901234"});
-            clients.Add(new dbClient { IsSelected = true, Snils = "456789012345"});
+            for (int i = 0; i < 10000; i++)
+            {
+                long number = 100000000000;
+                long snils = number + i;
+                string newSnils = snils.ToString().Substring(1, snils.ToString().Length-1);
+                clients.Add(new dbClient { IsSelected = true, Snils = newSnils });
+            }
+
+
+
+            //clients.Add(new dbClient { IsSelected = true, Snils = "012345678901"});
+            //clients.Add(new dbClient { IsSelected = true, Snils = "123456789102"});
+            //clients.Add(new dbClient { IsSelected = true, Snils = "234567890123"});
+            //clients.Add(new dbClient { IsSelected = true, Snils = "345678901234"});
+            //clients.Add(new dbClient { IsSelected = true, Snils = "456789012345"});
         }
     }
 }

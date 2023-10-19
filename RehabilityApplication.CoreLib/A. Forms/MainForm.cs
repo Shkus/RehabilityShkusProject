@@ -1,4 +1,7 @@
-﻿namespace RehabilityApplication.CoreLib
+﻿using DevExpress.XtraSplashScreen;
+using System.Threading.Tasks;
+
+namespace RehabilityApplication.CoreLib
 {
     /// <summary>
     /// Класс главной формы приложения.
@@ -25,13 +28,13 @@
         /// </summary>
         ucDocumentViewer documentViewLayer = new ucDocumentViewer();
 
-        delegate void barButto1ItemClick();
-
         /// <summary>
         /// Конструктор формы.
         /// </summary>
         public MainForm()
         {
+            int Count = 0;
+
             // Инициализция элементов управления формы.
             InitializeComponent();
 
@@ -53,6 +56,27 @@
                 CoreGlobalCommandManager.StartCommand(DatabaseCommandType.DatabaseWasInitializated);
             };
 
+            btnShowSplashScreen.ItemClick += (s, e) =>
+            {
+                Task.Run(() =>
+                {
+                    SplashScreenManager.ShowForm(this, typeof(ProgressForm), true, true, true, true);
+                    System.Threading.Thread.Sleep(5000);
+                    SplashScreenManager.CloseForm();
+                });
+            };
+
+            btnGenerateDocuments.ItemClick += (s, e) =>
+            {
+                Task.Run(() =>
+                {
+                    SplashScreenManager.ShowForm(this, typeof(ProgressForm), true, true, true, true);
+                    DocumentGenerationManager.GenerateDocuments();
+                    SplashScreenManager.CloseForm();
+                });
+
+                
+            };
         }
 
         /// <summary>

@@ -29,9 +29,11 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             RC = new DevExpress.XtraBars.Ribbon.RibbonControl();
             Skins = new DevExpress.XtraBars.SkinRibbonGalleryBarItem();
             SkinPalettes = new DevExpress.XtraBars.SkinPaletteRibbonGalleryBarItem();
+            btnShowSplashScreen = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -40,15 +42,16 @@
             groupDocumentHandles = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
+            btnGenerateDocuments = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             SuspendLayout();
             // 
             // RC
             // 
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 4;
+            RC.MaxItemId = 6;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -73,6 +76,13 @@
             SkinPalettes.Id = 2;
             SkinPalettes.Name = "SkinPalettes";
             // 
+            // btnShowSplashScreen
+            // 
+            btnShowSplashScreen.Caption = "Показать сплэш-скрин";
+            btnShowSplashScreen.Id = 4;
+            btnShowSplashScreen.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnShowSplashScreen.ImageOptions.SvgImage");
+            btnShowSplashScreen.Name = "btnShowSplashScreen";
+            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -81,6 +91,7 @@
             // 
             // groupDatabase
             // 
+            groupDatabase.ItemLinks.Add(btnShowSplashScreen);
             groupDatabase.Name = "groupDatabase";
             groupDatabase.Text = "База данных";
             // 
@@ -103,6 +114,7 @@
             // 
             // groupDocumentHandles
             // 
+            groupDocumentHandles.ItemLinks.Add(btnGenerateDocuments);
             groupDocumentHandles.Name = "groupDocumentHandles";
             groupDocumentHandles.Text = "Обработка";
             // 
@@ -116,6 +128,13 @@
             // DLAF
             // 
             DLAF.LookAndFeel.SkinName = "The Bezier";
+            // 
+            // btnGenerateDocuments
+            // 
+            btnGenerateDocuments.Caption = "Сгенерировать документацию";
+            btnGenerateDocuments.Id = 5;
+            btnGenerateDocuments.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnGenerateDocuments.ImageOptions.SvgImage");
+            btnGenerateDocuments.Name = "btnGenerateDocuments";
             // 
             // MainForm
             // 
@@ -146,5 +165,7 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup groupDocumentHandles;
         private DevExpress.XtraBars.SkinRibbonGalleryBarItem Skins;
         private DevExpress.XtraBars.SkinPaletteRibbonGalleryBarItem SkinPalettes;
+        private DevExpress.XtraBars.BarButtonItem btnShowSplashScreen;
+        private DevExpress.XtraBars.BarButtonItem btnGenerateDocuments;
     }
 }
