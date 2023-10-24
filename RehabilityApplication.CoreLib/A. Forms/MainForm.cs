@@ -1,5 +1,7 @@
 ﻿using DevExpress.XtraSplashScreen;
+using System;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RehabilityApplication.CoreLib
 {
@@ -56,6 +58,16 @@ namespace RehabilityApplication.CoreLib
                 CoreGlobalCommandManager.StartCommand(DatabaseCommandType.DatabaseWasInitializated);
             };
 
+            this.FormClosing += (s, e) =>
+            {
+                DialogResult dr = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы уверены, что хотите выйти из программы?"));
+
+                if (dr != DialogResult.OK)
+                {
+                    e.Cancel = true;
+                }
+            };
+
             btnShowSplashScreen.ItemClick += (s, e) =>
             {
                 Task.Run(() =>
@@ -75,7 +87,7 @@ namespace RehabilityApplication.CoreLib
                     SplashScreenManager.CloseForm();
                 });
 
-                
+
             };
         }
 
@@ -100,6 +112,77 @@ namespace RehabilityApplication.CoreLib
             {
                 sourceDataViewLayer.BringToFront();
             }
+        }
+
+        private void btnOpenFileDialog_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            DialogResult dr = openFileDialog.ShowDialog();
+        }
+
+        private void bShowYesNoDialog_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы довольны своей зарплатой?"));
+
+            if (result == DialogResult.OK)
+            {
+                this.Text = "OK";
+            }
+            else
+            {
+                this.Text = "CANCEL";
+            }
+        }
+
+        private void bVasyaQuestion_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы хотите попасть в IT?"));
+
+            if (result == DialogResult.OK)
+            {
+                this.Text = "Чууувааак";
+            }
+            else
+            {
+                this.Text = "Врешь...";
+            }
+
+        }
+
+        private void bIvanQuestion_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Хочешь здоровья?"));
+
+            if (result == DialogResult.OK)
+            {
+                this.Text = "Закаляйся!";
+            }
+            else
+            {
+                this.Text = "Твой выбор(";
+            }
+        }
+
+        private void bShowMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Ты знаешь, а твоя лицензия закончилась, ещё вчера. Будь добр, оплати подписку и живи спокойно дальше!!!"));
+        }
+
+        private void bVasiliyOkMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Уважаемый, помни, что каждое нажатие клавишы ОК приводит тебя к тому, что ты станешь подкаблучником и будешь со всем соглашаться. Понял?"));
+        }
+
+        private void bIvanOkMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Необходимо хотя раз в день делать зарядку, полезно для кровообращения "));
+        }
+
+        private void bCreateFolderOnYandexDisk_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+           bool result = YandexDiskManager.CreateFolder("/25-10-2023/", $"{DateTime.Now.ToString("dd.MM.yyyy, HH_mm_ss_fff")}", "Евгений");
+
         }
     }
 }

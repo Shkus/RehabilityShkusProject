@@ -173,6 +173,8 @@ namespace RehabilityApplication.CoreLib
                     await client.SendDocumentAsync(message.Chat.Id, new InputFileStream(stream, Path.GetFileName(adresspath)));
                     return;
                 }
+
+
                 if (message.Text.ToLower().StartsWith("genpdfclient") ||
                         message.Text.ToLower().StartsWith("gpc"))
                 {
@@ -194,6 +196,27 @@ namespace RehabilityApplication.CoreLib
                     return;
 
                 }
+
+
+
+                if (message.Text.ToLower().StartsWith("createfolder") ||
+                        message.Text.ToLower().StartsWith("cf"))
+                {
+                    string[] args = message.Text.Split('|', StringSplitOptions.RemoveEmptyEntries);
+
+                    try
+                    {
+                        if (YandexDiskManager.IsInitializedTokes==false)
+                        {
+                            YandexDiskManager.Init();
+                        }
+
+                        CoreGlobalCommandManager.StartReceiveDataCommand(YandexDiskManagerCommandType.CreateFolder, new List<string> { args[1] , args[2], args[3] });
+                    }
+                    catch { }
+                    return;
+                }
+
             }
             //if (message?.Text != null)
             //{

@@ -34,6 +34,14 @@
             Skins = new DevExpress.XtraBars.SkinRibbonGalleryBarItem();
             SkinPalettes = new DevExpress.XtraBars.SkinPaletteRibbonGalleryBarItem();
             btnShowSplashScreen = new DevExpress.XtraBars.BarButtonItem();
+            btnGenerateDocuments = new DevExpress.XtraBars.BarButtonItem();
+            btnOpenFileDialog = new DevExpress.XtraBars.BarButtonItem();
+            bShowYesNoDialog = new DevExpress.XtraBars.BarButtonItem();
+            bVasyaQuestion = new DevExpress.XtraBars.BarButtonItem();
+            bIvanQuestion = new DevExpress.XtraBars.BarButtonItem();
+            bShowMessage = new DevExpress.XtraBars.BarButtonItem();
+            bVasiliyOkMessage = new DevExpress.XtraBars.BarButtonItem();
+            bIvanOkMessage = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -42,18 +50,20 @@
             groupDocumentHandles = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
-            btnGenerateDocuments = new DevExpress.XtraBars.BarButtonItem();
+            pageYandexDisk = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            groupYandex = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            bCreateFolderOnYandexDisk = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             SuspendLayout();
             // 
             // RC
             // 
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 6;
+            RC.MaxItemId = 14;
             RC.Name = "RC";
-            RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments });
+            RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk });
             RC.QuickToolbarItemLinks.Add(Skins);
             RC.QuickToolbarItemLinks.Add(SkinPalettes);
             RC.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2007;
@@ -83,6 +93,69 @@
             btnShowSplashScreen.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnShowSplashScreen.ImageOptions.SvgImage");
             btnShowSplashScreen.Name = "btnShowSplashScreen";
             // 
+            // btnGenerateDocuments
+            // 
+            btnGenerateDocuments.Caption = "Сгенерировать документацию";
+            btnGenerateDocuments.Id = 5;
+            btnGenerateDocuments.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnGenerateDocuments.ImageOptions.SvgImage");
+            btnGenerateDocuments.Name = "btnGenerateDocuments";
+            // 
+            // btnOpenFileDialog
+            // 
+            btnOpenFileDialog.Caption = "Открыть окно открытия файла";
+            btnOpenFileDialog.Id = 6;
+            btnOpenFileDialog.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnOpenFileDialog.ImageOptions.SvgImage");
+            btnOpenFileDialog.Name = "btnOpenFileDialog";
+            btnOpenFileDialog.ItemClick += btnOpenFileDialog_ItemClick;
+            // 
+            // bShowYesNoDialog
+            // 
+            bShowYesNoDialog.Caption = "Открыть ДА/НЕТ диалоговое окно";
+            bShowYesNoDialog.Id = 7;
+            bShowYesNoDialog.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowYesNoDialog.ImageOptions.SvgImage");
+            bShowYesNoDialog.Name = "bShowYesNoDialog";
+            bShowYesNoDialog.ItemClick += bShowYesNoDialog_ItemClick;
+            // 
+            // bVasyaQuestion
+            // 
+            bVasyaQuestion.Caption = "Вопрос Василия";
+            bVasyaQuestion.Id = 8;
+            bVasyaQuestion.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bVasyaQuestion.ImageOptions.SvgImage");
+            bVasyaQuestion.Name = "bVasyaQuestion";
+            bVasyaQuestion.ItemClick += bVasyaQuestion_ItemClick;
+            // 
+            // bIvanQuestion
+            // 
+            bIvanQuestion.Caption = "Вопрос Ивана";
+            bIvanQuestion.Id = 9;
+            bIvanQuestion.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bIvanQuestion.ImageOptions.SvgImage");
+            bIvanQuestion.Name = "bIvanQuestion";
+            bIvanQuestion.ItemClick += bIvanQuestion_ItemClick;
+            // 
+            // bShowMessage
+            // 
+            bShowMessage.Caption = "Покажи сообщение";
+            bShowMessage.Id = 10;
+            bShowMessage.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowMessage.ImageOptions.SvgImage");
+            bShowMessage.Name = "bShowMessage";
+            bShowMessage.ItemClick += bShowMessage_ItemClick;
+            // 
+            // bVasiliyOkMessage
+            // 
+            bVasiliyOkMessage.Caption = "Василий, твой месседж";
+            bVasiliyOkMessage.Id = 11;
+            bVasiliyOkMessage.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bVasiliyOkMessage.ImageOptions.SvgImage");
+            bVasiliyOkMessage.Name = "bVasiliyOkMessage";
+            bVasiliyOkMessage.ItemClick += bVasiliyOkMessage_ItemClick;
+            // 
+            // bIvanOkMessage
+            // 
+            bIvanOkMessage.Caption = "Иван, твой месседж";
+            bIvanOkMessage.Id = 12;
+            bIvanOkMessage.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bIvanOkMessage.ImageOptions.SvgImage");
+            bIvanOkMessage.Name = "bIvanOkMessage";
+            bIvanOkMessage.ItemClick += bIvanOkMessage_ItemClick;
+            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -92,6 +165,13 @@
             // groupDatabase
             // 
             groupDatabase.ItemLinks.Add(btnShowSplashScreen);
+            groupDatabase.ItemLinks.Add(btnOpenFileDialog);
+            groupDatabase.ItemLinks.Add(bShowYesNoDialog);
+            groupDatabase.ItemLinks.Add(bVasyaQuestion);
+            groupDatabase.ItemLinks.Add(bIvanQuestion);
+            groupDatabase.ItemLinks.Add(bShowMessage);
+            groupDatabase.ItemLinks.Add(bVasiliyOkMessage);
+            groupDatabase.ItemLinks.Add(bIvanOkMessage);
             groupDatabase.Name = "groupDatabase";
             groupDatabase.Text = "База данных";
             // 
@@ -129,12 +209,25 @@
             // 
             DLAF.LookAndFeel.SkinName = "The Bezier";
             // 
-            // btnGenerateDocuments
+            // pageYandexDisk
             // 
-            btnGenerateDocuments.Caption = "Сгенерировать документацию";
-            btnGenerateDocuments.Id = 5;
-            btnGenerateDocuments.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnGenerateDocuments.ImageOptions.SvgImage");
-            btnGenerateDocuments.Name = "btnGenerateDocuments";
+            pageYandexDisk.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupYandex });
+            pageYandexDisk.Name = "pageYandexDisk";
+            pageYandexDisk.Text = "Яндекс.Диск";
+            // 
+            // groupYandex
+            // 
+            groupYandex.ItemLinks.Add(bCreateFolderOnYandexDisk);
+            groupYandex.Name = "groupYandex";
+            groupYandex.Text = "Яндекс";
+            // 
+            // bCreateFolderOnYandexDisk
+            // 
+            bCreateFolderOnYandexDisk.Caption = "Создать папку";
+            bCreateFolderOnYandexDisk.Id = 13;
+            bCreateFolderOnYandexDisk.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bCreateFolderOnYandexDisk.ImageOptions.SvgImage");
+            bCreateFolderOnYandexDisk.Name = "bCreateFolderOnYandexDisk";
+            bCreateFolderOnYandexDisk.ItemClick += bCreateFolderOnYandexDisk_ItemClick;
             // 
             // MainForm
             // 
@@ -167,5 +260,15 @@
         private DevExpress.XtraBars.SkinPaletteRibbonGalleryBarItem SkinPalettes;
         private DevExpress.XtraBars.BarButtonItem btnShowSplashScreen;
         private DevExpress.XtraBars.BarButtonItem btnGenerateDocuments;
+        private DevExpress.XtraBars.BarButtonItem btnOpenFileDialog;
+        private DevExpress.XtraBars.BarButtonItem bShowYesNoDialog;
+        private DevExpress.XtraBars.BarButtonItem bVasyaQuestion;
+        private DevExpress.XtraBars.BarButtonItem bIvanQuestion;
+        private DevExpress.XtraBars.BarButtonItem bShowMessage;
+        private DevExpress.XtraBars.BarButtonItem bVasiliyOkMessage;
+        private DevExpress.XtraBars.BarButtonItem bIvanOkMessage;
+        private DevExpress.XtraBars.BarButtonItem bCreateFolderOnYandexDisk;
+        private DevExpress.XtraBars.Ribbon.RibbonPage pageYandexDisk;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup groupYandex;
     }
 }

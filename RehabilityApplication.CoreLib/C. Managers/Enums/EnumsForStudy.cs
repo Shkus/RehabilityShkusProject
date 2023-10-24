@@ -39,4 +39,9 @@ namespace RehabilityApplication.CoreLib
         ClientAlreadyExist,
         ClientIsNotExist
     }
+
+    public enum YandexDiskManagerCommandType
+    {
+        CreateFolder
+    }
 }
