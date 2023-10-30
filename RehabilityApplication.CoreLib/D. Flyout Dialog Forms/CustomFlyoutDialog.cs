@@ -20,7 +20,7 @@ namespace RehabilityApplication.CoreLib
         {
             CustomFlyoutDialog customDialog = new CustomFlyoutDialog(owner, action, UserControl);
             DialogResult result = customDialog.ShowDialog();
-            return result;
+            return result;//;'lfgn;xdfioj
         }
     }
 

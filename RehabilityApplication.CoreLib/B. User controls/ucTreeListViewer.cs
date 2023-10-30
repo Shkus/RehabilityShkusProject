@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace RehabilityApplication.CoreLib
@@ -40,6 +41,24 @@ namespace RehabilityApplication.CoreLib
                             }));
 
                             AfterDatabaseInit();
+                        }
+
+                        if (e.Command is DatabaseCommandType.ClearClients)
+                        {
+                            BeginInvoke(new MethodInvoker(delegate
+                            {
+                                TL.Nodes.Clear();
+                            }));
+                        }
+
+                        if (e.Command is YandexDiskManagerCommandType.DownloadDatabaseComplete)
+                        {
+                            BeginInvoke(new MethodInvoker(delegate
+                            {
+                                GlobalDatabaseManager.clients = (List<dbClient>)ClassObject.Deserialize(GlobalDatabaseManager.clients, "clients_.xml");
+                                TL.DataSource = GlobalDatabaseManager.clients;
+                                TL.RefreshDataSource();
+                            }));
                         }
                     };
                 };
@@ -92,31 +111,31 @@ namespace RehabilityApplication.CoreLib
                         }));
                     }
 
-					if (e.Command is DatabaseCommandType.editDataClient)
-					{
-						BeginInvoke(new MethodInvoker(delegate
-						{
-							
+                    if (e.Command is DatabaseCommandType.editDataClient)
+                    {
+                        BeginInvoke(new MethodInvoker(delegate
+                        {
+
                             var existClient = GlobalDatabaseManager.clients.Where(t => t.Snils == e.Data[0]).FirstOrDefault();
 
-							if (existClient != null)
-							{
+                            if (existClient != null)
+                            {
                                 int indexClient = GlobalDatabaseManager.clients.IndexOf(existClient);
                                 existClient.Snils = e.Data[1];
                                 GlobalDatabaseManager.clients[indexClient] = existClient;
 
                             }
-							else
-							{
-								CoreGlobalCommandManager.StartReceiveDataCommand(ResponseCommandType.ClientIsNotExist, e.Data);
-							}
+                            else
+                            {
+                                CoreGlobalCommandManager.StartReceiveDataCommand(ResponseCommandType.ClientIsNotExist, e.Data);
+                            }
 
-							TL.DataSource = GlobalDatabaseManager.clients;
-							TL.RefreshDataSource();
-						}));
-					}
+                            TL.DataSource = GlobalDatabaseManager.clients;
+                            TL.RefreshDataSource();
+                        }));
+                    }
 
-				}
+                }
             };
         }
 

@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             RC = new DevExpress.XtraBars.Ribbon.RibbonControl();
+            bAuthorizationFormShow = new DevExpress.XtraBars.BarButtonItem();
             Skins = new DevExpress.XtraBars.SkinRibbonGalleryBarItem();
             SkinPalettes = new DevExpress.XtraBars.SkinPaletteRibbonGalleryBarItem();
             btnShowSplashScreen = new DevExpress.XtraBars.BarButtonItem();
@@ -42,26 +43,29 @@
             bShowMessage = new DevExpress.XtraBars.BarButtonItem();
             bVasiliyOkMessage = new DevExpress.XtraBars.BarButtonItem();
             bIvanOkMessage = new DevExpress.XtraBars.BarButtonItem();
+            bCreateFolderOnYandexDisk = new DevExpress.XtraBars.BarButtonItem();
+            bSaveDatabaseInYandexDisk = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupFromExcelFile = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageDocuments = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDocumentHandles = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
-            DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
             pageYandexDisk = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupYandex = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            bCreateFolderOnYandexDisk = new DevExpress.XtraBars.BarButtonItem();
+            RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
+            DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
+            bClearClients = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             SuspendLayout();
             // 
             // RC
             // 
+            RC.CaptionBarItemLinks.Add(bAuthorizationFormShow);
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 14;
+            RC.MaxItemId = 17;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -73,6 +77,14 @@
             RC.StatusBar = RSB;
             RC.Toolbar.ShowCustomizeItem = false;
             RC.SelectedPageChanged += RC_SelectedPageChanged;
+            // 
+            // bAuthorizationFormShow
+            // 
+            bAuthorizationFormShow.Caption = "Авторизация";
+            bAuthorizationFormShow.Id = 14;
+            bAuthorizationFormShow.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bAuthorizationFormShow.ImageOptions.SvgImage");
+            bAuthorizationFormShow.Name = "bAuthorizationFormShow";
+            bAuthorizationFormShow.ItemClick += bAuthorizationFormShow_ItemClick;
             // 
             // Skins
             // 
@@ -156,6 +168,22 @@
             bIvanOkMessage.Name = "bIvanOkMessage";
             bIvanOkMessage.ItemClick += bIvanOkMessage_ItemClick;
             // 
+            // bCreateFolderOnYandexDisk
+            // 
+            bCreateFolderOnYandexDisk.Caption = "Создать папку";
+            bCreateFolderOnYandexDisk.Id = 13;
+            bCreateFolderOnYandexDisk.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bCreateFolderOnYandexDisk.ImageOptions.SvgImage");
+            bCreateFolderOnYandexDisk.Name = "bCreateFolderOnYandexDisk";
+            bCreateFolderOnYandexDisk.ItemClick += bCreateFolderOnYandexDisk_ItemClick;
+            // 
+            // bSaveDatabaseInYandexDisk
+            // 
+            bSaveDatabaseInYandexDisk.Caption = "Сохранить БД на сервер";
+            bSaveDatabaseInYandexDisk.Id = 15;
+            bSaveDatabaseInYandexDisk.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bSaveDatabaseInYandexDisk.ImageOptions.SvgImage");
+            bSaveDatabaseInYandexDisk.Name = "bSaveDatabaseInYandexDisk";
+            bSaveDatabaseInYandexDisk.ItemClick += bSaveDatabaseInYandexDisk_ItemClick;
+            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -172,6 +200,8 @@
             groupDatabase.ItemLinks.Add(bShowMessage);
             groupDatabase.ItemLinks.Add(bVasiliyOkMessage);
             groupDatabase.ItemLinks.Add(bIvanOkMessage);
+            groupDatabase.ItemLinks.Add(bSaveDatabaseInYandexDisk);
+            groupDatabase.ItemLinks.Add(bClearClients);
             groupDatabase.Name = "groupDatabase";
             groupDatabase.Text = "База данных";
             // 
@@ -198,17 +228,6 @@
             groupDocumentHandles.Name = "groupDocumentHandles";
             groupDocumentHandles.Text = "Обработка";
             // 
-            // RSB
-            // 
-            RSB.Location = new System.Drawing.Point(0, 446);
-            RSB.Name = "RSB";
-            RSB.Ribbon = RC;
-            RSB.Size = new System.Drawing.Size(803, 26);
-            // 
-            // DLAF
-            // 
-            DLAF.LookAndFeel.SkinName = "The Bezier";
-            // 
             // pageYandexDisk
             // 
             pageYandexDisk.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupYandex });
@@ -221,13 +240,24 @@
             groupYandex.Name = "groupYandex";
             groupYandex.Text = "Яндекс";
             // 
-            // bCreateFolderOnYandexDisk
+            // RSB
             // 
-            bCreateFolderOnYandexDisk.Caption = "Создать папку";
-            bCreateFolderOnYandexDisk.Id = 13;
-            bCreateFolderOnYandexDisk.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bCreateFolderOnYandexDisk.ImageOptions.SvgImage");
-            bCreateFolderOnYandexDisk.Name = "bCreateFolderOnYandexDisk";
-            bCreateFolderOnYandexDisk.ItemClick += bCreateFolderOnYandexDisk_ItemClick;
+            RSB.Location = new System.Drawing.Point(0, 448);
+            RSB.Name = "RSB";
+            RSB.Ribbon = RC;
+            RSB.Size = new System.Drawing.Size(803, 24);
+            // 
+            // DLAF
+            // 
+            DLAF.LookAndFeel.SkinName = "The Bezier";
+            // 
+            // bClearClients
+            // 
+            bClearClients.Caption = "Очистить клиентов";
+            bClearClients.Id = 16;
+            bClearClients.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bClearClients.ImageOptions.SvgImage");
+            bClearClients.Name = "bClearClients";
+            bClearClients.ItemClick += bClearClients_ItemClick;
             // 
             // MainForm
             // 
@@ -270,5 +300,8 @@
         private DevExpress.XtraBars.BarButtonItem bCreateFolderOnYandexDisk;
         private DevExpress.XtraBars.Ribbon.RibbonPage pageYandexDisk;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup groupYandex;
+        private DevExpress.XtraBars.BarButtonItem bAuthorizationFormShow;
+        private DevExpress.XtraBars.BarButtonItem bSaveDatabaseInYandexDisk;
+        private DevExpress.XtraBars.BarButtonItem bClearClients;
     }
 }

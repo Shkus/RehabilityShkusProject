@@ -17,8 +17,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="C. Managers\Yandex Disk Manager\" />
-  </ItemGroup>
-
 </Project>

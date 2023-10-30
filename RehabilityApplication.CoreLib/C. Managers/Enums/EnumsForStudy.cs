@@ -31,7 +31,8 @@ namespace RehabilityApplication.CoreLib
         DatabaseWasInitializated,
         AddNewClientInit,
         RemoveClient,
-        editDataClient
+        editDataClient,
+        ClearClients
     }
 
     public enum ResponseCommandType
@@ -42,6 +43,11 @@ namespace RehabilityApplication.CoreLib
 
     public enum YandexDiskManagerCommandType
     {
-        CreateFolder
+        CreateFolder,
+        FolderStructureWasReaded,
+        DatabaseUploaded,
+        PleaseDownloadDatabase,
+        DownloadDatabaseComplete
+
     }
 }

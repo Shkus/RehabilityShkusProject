@@ -1,5 +1,7 @@
 ﻿using DevExpress.XtraSplashScreen;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -10,6 +12,7 @@ namespace RehabilityApplication.CoreLib
     /// </summary>
     public partial class MainForm : DevExpress.XtraBars.Ribbon.RibbonForm
     {
+        const string clientFile = "clients.xml";
         /// <summary>
         /// Элемент управления меню, по нажатию кнопк приложения.
         /// </summary>
@@ -31,6 +34,11 @@ namespace RehabilityApplication.CoreLib
         ucDocumentViewer documentViewLayer = new ucDocumentViewer();
 
         /// <summary>
+        /// Слой отображения структуры папок на Яндекс диске
+        /// </summary>
+        ucStructureViewer structureViewer = new ucStructureViewer();
+
+        /// <summary>
         /// Конструктор формы.
         /// </summary>
         public MainForm()
@@ -49,6 +57,8 @@ namespace RehabilityApplication.CoreLib
             this.Controls.Add(sourceDataViewLayer);
             // Добавляем слой отображения документов на форму.
             this.Controls.Add(documentViewLayer);
+            // Добавляем слой отображения структуры папок на Яндекс диске.
+            this.Controls.Add(structureViewer);
 
             this.Shown += (s, e) =>
             {
@@ -56,6 +66,48 @@ namespace RehabilityApplication.CoreLib
                 TelegramBotManager.Init();
 
                 CoreGlobalCommandManager.StartCommand(DatabaseCommandType.DatabaseWasInitializated);
+
+                CoreGlobalCommandManager.CommandInitialized += (s, e) =>
+                {
+                    if (e.Command is YandexDiskManagerCommandType.DatabaseUploaded)
+                    {
+                        YandexDiskManager.GetFolderStructure("/25-10-2023/Database");
+                        //MessageBox.Show("База данных успешно загружена на сервер!");
+                    }
+
+                };
+
+                CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
+                {
+
+                    if (e.Command is YandexDiskManagerCommandType.FolderStructureWasReaded)
+                    {
+                        List<ITreeListItem> structure = e.Data;
+
+                        var files = structure.Where(t => t is HostFileItem).ToList();
+
+                        HostFileItem dbXml = (HostFileItem)files.Where(t => t.Name == "db.xml").FirstOrDefault();
+                        if (dbXml != null)
+                        {
+                            string md5 = FileManager.GetMd5(clientFile);
+
+                            if (md5 == dbXml.Md5)
+                            {
+                                //MessageBox.Show("Ура, файл загружен успешно!");
+                            }
+                            else
+                            {
+                                //MessageBox.Show("Упс, похоже файл недогрузился! Повтори попытку!");
+                            }
+                        }
+                        else
+                        {
+                            //MessageBox.Show("Увы, файл не был загружен!");
+                        }
+                    }
+                };
+
+                bAuthorizationFormShow.PerformClick();
             };
 
             this.FormClosing += (s, e) =>
@@ -111,6 +163,11 @@ namespace RehabilityApplication.CoreLib
             if (RC.SelectedPage.Name == nameof(this.pageSourceData))
             {
                 sourceDataViewLayer.BringToFront();
+            }
+
+            if (RC.SelectedPage.Name == nameof(this.pageYandexDisk))
+            {
+                structureViewer.BringToFront();
             }
         }
 
@@ -181,8 +238,25 @@ namespace RehabilityApplication.CoreLib
 
         private void bCreateFolderOnYandexDisk_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-           bool result = YandexDiskManager.CreateFolder("/25-10-2023/", $"{DateTime.Now.ToString("dd.MM.yyyy, HH_mm_ss_fff")}", "Евгений");
+            bool result = YandexDiskManager.CreateFolder("/25-10-2023/", $"{DateTime.Now.ToString("dd.MM.yyyy, HH_mm_ss_fff")}", "Евгений");
 
+        }
+
+        private void bAuthorizationFormShow_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CustomFlyoutDialog.ShowForm(this, null, new ucAuthorizationForm());
+        }
+
+        private void bSaveDatabaseInYandexDisk_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            var ourClients = GlobalDatabaseManager.clients;
+            ClassObject.Serialize(ourClients, clientFile);
+            YandexDiskManager.UploadFile("/25-10-2023/Database/db.xml", clientFile);
+        }
+
+        private void bClearClients_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CoreGlobalCommandManager.StartCommand(DatabaseCommandType.ClearClients);
         }
     }
 }

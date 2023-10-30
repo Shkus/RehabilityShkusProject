@@ -197,7 +197,7 @@ namespace RehabilityApplication.CoreLib
 
                 }
 
-
+                
 
                 if (message.Text.ToLower().StartsWith("createfolder") ||
                         message.Text.ToLower().StartsWith("cf"))
@@ -211,7 +211,6 @@ namespace RehabilityApplication.CoreLib
                             YandexDiskManager.Init();
                         }
 
-                        CoreGlobalCommandManager.StartReceiveDataCommand(YandexDiskManagerCommandType.CreateFolder, new List<string> { args[1] , args[2], args[3] });
                     }
                     catch { }
                     return;
