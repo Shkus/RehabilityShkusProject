@@ -107,7 +107,7 @@ namespace RehabilityApplication.CoreLib
                     }
                 };
 
-                bAuthorizationFormShow.PerformClick();
+                //bAuthorizationFormShow.PerformClick();
             };
 
             this.FormClosing += (s, e) =>

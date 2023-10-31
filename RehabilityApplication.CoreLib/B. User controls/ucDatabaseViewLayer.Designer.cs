@@ -143,14 +143,14 @@
             dpPassports.OriginalSize = new System.Drawing.Size(400, 200);
             dpPassports.SavedDock = DevExpress.XtraBars.Docking.DockingStyle.Right;
             dpPassports.SavedIndex = 2;
-            dpPassports.Size = new System.Drawing.Size(647, 309);
+            dpPassports.Size = new System.Drawing.Size(647, 305);
             dpPassports.Text = "Документы, удостоверяющие личность";
             // 
             // controlContainer1
             // 
             controlContainer1.Location = new System.Drawing.Point(0, 0);
             controlContainer1.Name = "controlContainer1";
-            controlContainer1.Size = new System.Drawing.Size(647, 309);
+            controlContainer1.Size = new System.Drawing.Size(647, 305);
             controlContainer1.TabIndex = 0;
             // 
             // dpProductsInClient
@@ -164,14 +164,14 @@
             dpProductsInClient.OriginalSize = new System.Drawing.Size(200, 200);
             dpProductsInClient.SavedDock = DevExpress.XtraBars.Docking.DockingStyle.Right;
             dpProductsInClient.SavedIndex = 1;
-            dpProductsInClient.Size = new System.Drawing.Size(647, 309);
+            dpProductsInClient.Size = new System.Drawing.Size(647, 305);
             dpProductsInClient.Text = "Товары получателя";
             // 
             // dockPanel1_Container
             // 
             dockPanel1_Container.Location = new System.Drawing.Point(0, 0);
             dockPanel1_Container.Name = "dockPanel1_Container";
-            dockPanel1_Container.Size = new System.Drawing.Size(647, 309);
+            dockPanel1_Container.Size = new System.Drawing.Size(647, 305);
             dockPanel1_Container.TabIndex = 0;
             // 
             // dpCalls
@@ -183,14 +183,14 @@
             dpCalls.Location = new System.Drawing.Point(0, 0);
             dpCalls.Name = "dpCalls";
             dpCalls.OriginalSize = new System.Drawing.Size(200, 200);
-            dpCalls.Size = new System.Drawing.Size(647, 309);
+            dpCalls.Size = new System.Drawing.Size(1103, 396);
             dpCalls.Text = "Звонки";
             // 
             // controlContainer2
             // 
             controlContainer2.Location = new System.Drawing.Point(0, 0);
             controlContainer2.Name = "controlContainer2";
-            controlContainer2.Size = new System.Drawing.Size(647, 309);
+            controlContainer2.Size = new System.Drawing.Size(1103, 396);
             controlContainer2.TabIndex = 0;
             // 
             // DocumentManager
@@ -221,7 +221,7 @@
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             Name = "ucDatabaseViewLayer";
-            Size = new System.Drawing.Size(653, 338);
+            Size = new System.Drawing.Size(1109, 429);
             ((System.ComponentModel.ISupportInitialize)documentGroup1).EndInit();
             ((System.ComponentModel.ISupportInitialize)document3).EndInit();
             ((System.ComponentModel.ISupportInitialize)document2).EndInit();

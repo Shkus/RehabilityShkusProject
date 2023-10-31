@@ -32,7 +32,11 @@ namespace RehabilityApplication.CoreLib
         AddNewClientInit,
         RemoveClient,
         editDataClient,
-        ClearClients
+        ClearClients,
+        FocusedClientWasChangedPleaseShowPassports,
+	    FocusedClientWasChangedPleaseShowProductsInClients,
+        FocusedClientWasChangedPLeaseShowClient,
+        FocusedClientWasChangedPLeaseShowInClientCall
     }
 
     public enum ResponseCommandType

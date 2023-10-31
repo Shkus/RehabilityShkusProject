@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -27,8 +28,6 @@ namespace RehabilityApplication.CoreLib
 
             this.HandleCreated += (s, e) =>
             {
-
-
                 CoreGlobalCommandManager.CommandInitialized += (s, e) =>
                 {
                     if (dataType == SourceDataType.Clients)
@@ -63,7 +62,79 @@ namespace RehabilityApplication.CoreLib
                     };
                 };
 
+                CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
+                {
+                    if (e.Command is DatabaseCommandType.FocusedClientWasChangedPleaseShowPassports)
+                    {
+                        if (dataType == SourceDataType.Passports)
+                        {
+                            BeginInvoke(new MethodInvoker(delegate
+                            {
+                                List<dbPersonalDocument> list = (List<dbPersonalDocument>)e.Data;
+                                TL.DataSource = list;
+                                TL.RefreshDataSource();
+                            }));
+                        }
+                    }
 
+                    if (e.Command is DatabaseCommandType.FocusedClientWasChangedPLeaseShowInClientCall)
+                    {
+                        if (dataType == SourceDataType.Calls)
+                        {
+                            BeginInvoke(new MethodInvoker(delegate
+                            {
+                                List<dbCall> list = (List<dbCall>)e.Data;
+                                TL.DataSource = list;
+                                TL.RefreshDataSource();
+                            }));
+                        }
+                    }
+
+                    if (e.Command is DatabaseCommandType.FocusedClientWasChangedPleaseShowProductsInClients)
+                    {
+                        if (dataType == SourceDataType.ProductsInClient)
+                        {
+                            BeginInvoke(new MethodInvoker(delegate
+                            {
+                                List<dbProductsInClient> ProductName = (List<dbProductsInClient>)e.Data;
+                                TL.DataSource = ProductName;
+                                TL.RefreshDataSource();
+                            }));
+                        }
+                    }
+                };
+
+                TL.FocusedNodeChanged += (s, e) =>
+                {
+                    if (dataType == SourceDataType.Clients)
+                    {
+                        if (TL.FocusedNode != null)
+                        {
+                            dbClient myNode = (dbClient)TL.GetDataRecordByNode(TL.FocusedNode);
+                            string parentId = myNode.Id;
+
+                            var pasports = (from a in GlobalDatabaseManager.personalDocuments
+                                            where a.ClientId == parentId
+                                            select a).ToList();
+
+                            CoreGlobalCommandManager.StartReceiveDataCommand(DatabaseCommandType.FocusedClientWasChangedPleaseShowPassports, pasports);
+
+                            var ClientCall = (from a in GlobalDatabaseManager.ClientCalls
+                                              where a.ClientId == parentId
+                                              select a).ToList();
+
+                            CoreGlobalCommandManager.StartReceiveDataCommand(DatabaseCommandType.FocusedClientWasChangedPLeaseShowInClientCall, ClientCall);
+
+                            
+
+                            var productsClient = (from a in GlobalDatabaseManager.productsInClient 
+                                                  where a.ClientId == parentId 
+                                                  select a).ToList();
+                            CoreGlobalCommandManager.StartReceiveDataCommand(DatabaseCommandType.FocusedClientWasChangedPleaseShowProductsInClients, productsClient);
+
+						}
+                    }
+                };
             };
         }
 
