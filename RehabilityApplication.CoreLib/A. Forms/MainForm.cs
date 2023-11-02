@@ -39,6 +39,11 @@ namespace RehabilityApplication.CoreLib
         ucStructureViewer structureViewer = new ucStructureViewer();
 
         /// <summary>
+        /// Слой отображения контрактов и списков контрактов
+        /// </summary>
+        ucContractView contractsView = new ucContractView();
+
+        /// <summary>
         /// Конструктор формы.
         /// </summary>
         public MainForm()
@@ -47,18 +52,20 @@ namespace RehabilityApplication.CoreLib
 
             // Инициализция элементов управления формы.
             InitializeComponent();
-
+            
             // Подключение элемента управления меню к кнопке приложения.
             RC.ApplicationButtonDropDownControl = backMenu;
 
             // Добавляем слой отображения БД на форму.
-            this.Controls.Add(databaseViewLayer);
+            this.PC.Controls.Add(databaseViewLayer);
             // Добавляем слой отображения исходных данных на форму.
-            this.Controls.Add(sourceDataViewLayer);
+            this.PC.Controls.Add(sourceDataViewLayer);
             // Добавляем слой отображения документов на форму.
-            this.Controls.Add(documentViewLayer);
+            this.PC.Controls.Add(documentViewLayer);
             // Добавляем слой отображения структуры папок на Яндекс диске.
-            this.Controls.Add(structureViewer);
+            this.PC.Controls.Add(structureViewer);
+            // Добавляем слой отображения конрактов.
+            this.PC.Controls.Add(contractsView);
 
             this.Shown += (s, e) =>
             {
@@ -69,7 +76,7 @@ namespace RehabilityApplication.CoreLib
 
                 CoreGlobalCommandManager.CommandInitialized += (s, e) =>
                 {
-                    if (e.Command is YandexDiskManagerCommandType.DatabaseUploaded)
+                    if(e.Command is YandexDiskManagerCommandType.DatabaseUploaded)
                     {
                         YandexDiskManager.GetFolderStructure("/25-10-2023/Database");
                         //MessageBox.Show("База данных успешно загружена на сервер!");
@@ -80,18 +87,18 @@ namespace RehabilityApplication.CoreLib
                 CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
                 {
 
-                    if (e.Command is YandexDiskManagerCommandType.FolderStructureWasReaded)
+                    if(e.Command is YandexDiskManagerCommandType.FolderStructureWasReaded)
                     {
                         List<ITreeListItem> structure = e.Data;
 
                         var files = structure.Where(t => t is HostFileItem).ToList();
 
                         HostFileItem dbXml = (HostFileItem)files.Where(t => t.Name == "db.xml").FirstOrDefault();
-                        if (dbXml != null)
+                        if(dbXml != null)
                         {
                             string md5 = FileManager.GetMd5(clientFile);
 
-                            if (md5 == dbXml.Md5)
+                            if(md5 == dbXml.Md5)
                             {
                                 //MessageBox.Show("Ура, файл загружен успешно!");
                             }
@@ -114,7 +121,7 @@ namespace RehabilityApplication.CoreLib
             {
                 DialogResult dr = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы уверены, что хотите выйти из программы?"));
 
-                if (dr != DialogResult.OK)
+                if(dr != DialogResult.OK)
                 {
                     e.Cancel = true;
                 }
@@ -141,6 +148,8 @@ namespace RehabilityApplication.CoreLib
 
 
             };
+
+
         }
 
         /// <summary>
@@ -150,24 +159,29 @@ namespace RehabilityApplication.CoreLib
         /// <param name="e"></param>
         private void RC_SelectedPageChanged(object sender, System.EventArgs e)
         {
-            if (RC.SelectedPage.Name == nameof(this.pageDocuments))
+            if(RC.SelectedPage.Name == nameof(this.pageDocuments))
             {
                 documentViewLayer.BringToFront();
             }
 
-            if (RC.SelectedPage.Name == nameof(this.pageDatabase))
+            if(RC.SelectedPage.Name == nameof(this.pageDatabase))
             {
                 databaseViewLayer.BringToFront();
             }
 
-            if (RC.SelectedPage.Name == nameof(this.pageSourceData))
+            if(RC.SelectedPage.Name == nameof(this.pageSourceData))
             {
                 sourceDataViewLayer.BringToFront();
             }
 
-            if (RC.SelectedPage.Name == nameof(this.pageYandexDisk))
+            if(RC.SelectedPage.Name == nameof(this.pageYandexDisk))
             {
                 structureViewer.BringToFront();
+            }
+
+            if(RC.SelectedPage.Name == nameof(this.pageContracts))
+            {
+                contractsView.BringToFront();
             }
         }
 
@@ -182,7 +196,7 @@ namespace RehabilityApplication.CoreLib
         {
             DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы довольны своей зарплатой?"));
 
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 this.Text = "OK";
             }
@@ -196,7 +210,7 @@ namespace RehabilityApplication.CoreLib
         {
             DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы хотите попасть в IT?"));
 
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 this.Text = "Чууувааак";
             }
@@ -211,7 +225,7 @@ namespace RehabilityApplication.CoreLib
         {
             DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Хочешь здоровья?"));
 
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 this.Text = "Закаляйся!";
             }

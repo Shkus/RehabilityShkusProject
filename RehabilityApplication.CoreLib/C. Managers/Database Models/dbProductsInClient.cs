@@ -1,8 +1,10 @@
-﻿namespace RehabilityApplication.CoreLib
+﻿using System;
+
+namespace RehabilityApplication.CoreLib
 {
     public class dbProductsInClient
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string ClientId { get; set; }
         public string Title { get; set; }
 

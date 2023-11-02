@@ -1,22 +1,28 @@
-﻿using DevExpress.CodeParser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace RehabilityApplication.CoreLib
 {
     public static class YandexDiskManager
     {
+        #region Поля и свойства
+
         public static Dictionary<string, string> tokens = new Dictionary<string, string>();
+        public static List<ITreeListItem> structure { get; set; } = new List<ITreeListItem>();
 
         public static bool IsInitializedTokes = false;
+
+        #endregion
+
+        #region Методы
+
+        #region Инициализация
 
         public static void Init()
         {
@@ -46,8 +52,54 @@ namespace RehabilityApplication.CoreLib
             IsInitializedTokes = true;
         }
 
+        #endregion
 
+        #region Базовые методы
 
+        /// <summary>
+        /// Создание папки.
+        /// </summary>
+        /// <param name="TargetFolder">Целевая папка, куда будет производиться создание новой папки в виде [/folder/].</param>
+        /// <param name="NewFolder">Имя новой папки.</param>
+        /// <param name="name">Имя пользователя, чей токен будет использован в качестве хранилища.</param>
+        /// <returns></returns>
+        public static bool CreateFolder(string TargetFolder, string NewFolder, string name)
+        {
+            return Task<bool>.Run(async () =>
+            {
+                if (IsInitializedTokes == false)
+                {
+                    Init();
+                    IsInitializedTokes = true;
+                }
+
+                string Target = $"{TargetFolder.Substring(1, TargetFolder.Length - 2)}/{NewFolder}".NormalizeToUrl();
+                string baseLink = "https://cloud-api.yandex.net";
+                string resourcLink = "v1/disk/resources";
+                string parameters = $"path={Target}";
+                string url = $"{baseLink}/{resourcLink}?{parameters}";
+                var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpRequest.Method = "PUT";
+                httpRequest.Headers.Add("Authorization", $"OAuth {tokens[name]}");
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                string result = "";
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    result = streamReader.ReadToEnd();
+                    Console.WriteLine("RESULT:");
+                    Console.WriteLine(result);
+                    Console.WriteLine("");
+                }
+                return true;
+            }).Result;
+        }
+
+        /// <summary>
+        /// Загрузка файла с Яндекс диска.
+        /// </summary>
+        /// <param name="TargetFilename">Целевой файл в виде [/folder/file.ext].</param>
+        /// <param name="LocalFileName">Локальный путь, куда будет сохраняться файл [D:\folder\savedfile.ext].</param>
+        /// <returns></returns>
         public static bool DownloadFile(string TargetFilename, string LocalFileName)
         {
             if (IsInitializedTokes == false)
@@ -71,55 +123,41 @@ namespace RehabilityApplication.CoreLib
             }).Result;
         }
 
-
-
-
-
-        public static bool CreateFolder(string TargetFolder, string NewFolder, string name)
+        /// <summary>
+        /// Загрузка файла на Яндекс диск.
+        /// </summary>
+        /// <param name="TargetFilePath">Целевой файл [/folder/file.ext]</param>
+        /// <param name="TargetLocalFileName">Целевой файл с компьютера [D:\folder\savedfile.ext].</param>
+        /// <returns></returns>
+        public static bool UploadFile(string TargetFilePath, string TargetLocalFileName)
         {
+            if (IsInitializedTokes == false)
+            {
+                Init();
+                IsInitializedTokes = true;
+            }
+
             return Task<bool>.Run(async () =>
             {
-                if (IsInitializedTokes == false)
+                string url = $"https://webdav.yandex.ru/{TargetFilePath}";
+                string myfile = TargetLocalFileName;
+                WebClient wc = new WebClient();
+                wc.Headers.Add("Authorization", $"OAuth {tokens["Евгений"]}");
+                wc.UploadFileCompleted += (ss, ee) =>
                 {
-                    Init();
-                    IsInitializedTokes = true;
-                }
-
-                int age = 10;
-                double height = 175;
-                string str = "Ваш возраст: " + age + " лет," + height + " мм";
-                string str2 = $"Ваш возраст: {age} лет, {height} мм";
-                string str3 = string.Format("Ваш возраст: {0} лет, {1} мм", age, height);
-
-                string Target = $"{TargetFolder.Substring(1, TargetFolder.Length - 2)}/{NewFolder}".NormalizeToUrl();
-                string baseLink = "https://cloud-api.yandex.net"; // cloud-api.yandex.net
-                string resourcLink = "v1/disk/resources"; // v1/disk/resources
-                //string parameters = $"path={Target}&force_async=true"; // path=Test%2FVasiliy
-                string parameters = $"path={Target}"; // path=Test%2FVasiliy
-                string url = $"{baseLink}/{resourcLink}?{parameters}"; // https://cloud-api.yandex.net/v1/disk/resources?path=VS%20folder%2F12345
-                var httpRequest = (HttpWebRequest)WebRequest.Create(url); // https://cloud-api.yandex.net/v1/disk/resources?path=Test%2FVasiliy
-                httpRequest.Method = "PUT";
-                httpRequest.Headers.Add("Authorization", $"OAuth {tokens[name]}");
-                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                string result = "";
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    result = streamReader.ReadToEnd();
-                    Console.WriteLine("RESULT:");
-                    Console.WriteLine(result);
-                    Console.WriteLine("");
-                }
+                    // Загрузка на диск завершена
+                    CoreGlobalCommandManager.StartCommand(YandexDiskManagerCommandType.DatabaseUploaded);
+                };
+                wc.UploadFileAsync(new Uri(url), "PUT", myfile);
                 return true;
             }).Result;
         }
 
-        public static string NormalizeToUrl(this string Data)
-        {
-            return Data.Replace("//", "/").Replace("/", "%2F").Replace(" ", "%20").Replace(":", "%3C");
-        }
-
-        public static List<ITreeListItem> structure { get; set; } = new List<ITreeListItem>();
-
+        /// <summary>
+        /// Получаем список файлов и папко для указанной папки на Яндекс диске.
+        /// </summary>
+        /// <param name="TargetFolder">Целевая папка для сканирования [/folder/].</param>
+        /// <returns>Возращает признак - успешено ли выполнилось сканирование?</returns>
         public static bool GetFolderStructure(string TargetFolder = "/")
         {
             if (IsInitializedTokes == false)
@@ -137,6 +175,12 @@ namespace RehabilityApplication.CoreLib
             }).Result;
         }
 
+        /// <summary>
+        /// Рекурсивное определение структуры папки и получение ответа от Яндекс диска об успешности сканирования.
+        /// </summary>
+        /// <param name="RootFolder">Папка сканирования [/folder/].</param>
+        /// <param name="FolderId">Идентификатор текущей сканируемой папки.</param>
+        /// <returns>Возвращает true - если успешно.</returns>
         static bool GetFolderContent(string RootFolder, string FolderId = "$")
         {
             return Task<bool>.Run(() =>
@@ -175,6 +219,11 @@ namespace RehabilityApplication.CoreLib
 
         }
 
+        /// <summary>
+        /// Получение метаданных списка файлов и папок.
+        /// </summary>
+        /// <param name="Response">Ответ от Яндекс диска.</param>
+        /// <returns>Возвращает структуру файлов и папок.</returns>
         public static IEnumerable<ITreeListItem> GetMetaInformationFromResponse(this string Response)
         {
             // Поиск между квадратными скобками
@@ -200,6 +249,11 @@ namespace RehabilityApplication.CoreLib
             }
         }
 
+        /// <summary>
+        /// Получение для указанного элемента ответа от Яндекс диска данных.
+        /// </summary>
+        /// <param name="ResponseItem">Текущий элемент ответа от сервера.</param>
+        /// <returns>Данные по указанному элементу.</returns>
         public static ITreeListItem GetITreeListItem(this string ResponseItem)
         {
             string RI_Replaced = ResponseItem.Replace(",\"", "•");
@@ -256,40 +310,23 @@ namespace RehabilityApplication.CoreLib
             }
         }
 
+        #endregion
 
+        #region Вспомогательные методы
 
-
-
-        public static bool UploadFile(string TargetFilePath, string TargetLocalFileName)
+        /// <summary>
+        /// Нормализация Url, чтобы сервис понимал ссылку.
+        /// </summary>
+        /// <param name="Data">Исходная ссылка.</param>
+        /// <returns>Нормализованная ссылка для отправки по сети.</returns>
+        public static string NormalizeToUrl(this string Data)
         {
-            if (IsInitializedTokes == false)
-            {
-                Init();
-                IsInitializedTokes = true;
-            }
-
-            return Task<bool>.Run(async () =>
-            {
-                string url = $"https://webdav.yandex.ru/{TargetFilePath}";
-                string myfile = TargetLocalFileName;
-                WebClient wc = new WebClient();
-                wc.Headers.Add("Authorization", $"OAuth {tokens["Евгений"]}");
-                wc.UploadFileCompleted += (ss, ee) =>
-                {
-                    // Загрузка на диск завершена
-                    CoreGlobalCommandManager.StartCommand(YandexDiskManagerCommandType.DatabaseUploaded);
-                };
-                wc.UploadFileAsync(new Uri(url), "PUT", myfile);
-                return true;
-            }).Result;
+            return Data.Replace("//", "/").Replace("/", "%2F").Replace(" ", "%20").Replace(":", "%3C");
         }
 
+        #endregion
 
-
-
-
-
-
+        #endregion
     }
 
     public interface ITreeListItem
@@ -346,5 +383,4 @@ namespace RehabilityApplication.CoreLib
         [Browsable(false)]
         public HostFileSystemItemType Type { get; set; } = HostFileSystemItemType.File;
     }
-
 }
