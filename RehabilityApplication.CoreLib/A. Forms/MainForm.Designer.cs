@@ -46,6 +46,13 @@
             this.bCreateFolderOnYandexDisk = new DevExpress.XtraBars.BarButtonItem();
             this.bSaveDatabaseInYandexDisk = new DevExpress.XtraBars.BarButtonItem();
             this.bClearClients = new DevExpress.XtraBars.BarButtonItem();
+            this.bCreateDatabase = new DevExpress.XtraBars.BarButtonItem();
+            this.bCreateTable = new DevExpress.XtraBars.BarButtonItem();
+            this.bAddRecord = new DevExpress.XtraBars.BarButtonItem();
+            this.bShowDatabase = new DevExpress.XtraBars.BarButtonItem();
+            this.bDeleteRecord = new DevExpress.XtraBars.BarButtonItem();
+            this.tsIsChanges = new DevExpress.XtraBars.BarToggleSwitchItem();
+            this.bSync = new DevExpress.XtraBars.BarButtonItem();
             this.pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -54,11 +61,13 @@
             this.groupDocumentHandles = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.pageYandexDisk = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.groupYandex = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.pageContracts = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            this.groupContractActions = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.pageSQLite = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            this.groupSQLite = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
             this.PC = new DevExpress.XtraEditors.PanelControl();
-            this.pageContracts = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.groupContractActions = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ((System.ComponentModel.ISupportInitialize)this.RC).BeginInit();
             ((System.ComponentModel.ISupportInitialize)this.PC).BeginInit();
             this.SuspendLayout();
@@ -67,17 +76,17 @@
             // 
             this.RC.CaptionBarItemLinks.Add(this.bAuthorizationFormShow);
             this.RC.ExpandCollapseItem.Id = 0;
-            this.RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { this.bAuthorizationFormShow, this.RC.ExpandCollapseItem, this.RC.SearchEditItem, this.Skins, this.SkinPalettes, this.btnShowSplashScreen, this.btnGenerateDocuments, this.btnOpenFileDialog, this.bShowYesNoDialog, this.bVasyaQuestion, this.bIvanQuestion, this.bShowMessage, this.bVasiliyOkMessage, this.bIvanOkMessage, this.bCreateFolderOnYandexDisk, this.bSaveDatabaseInYandexDisk, this.bClearClients });
+            this.RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { this.bAuthorizationFormShow, this.RC.ExpandCollapseItem, this.RC.SearchEditItem, this.Skins, this.SkinPalettes, this.btnShowSplashScreen, this.btnGenerateDocuments, this.btnOpenFileDialog, this.bShowYesNoDialog, this.bVasyaQuestion, this.bIvanQuestion, this.bShowMessage, this.bVasiliyOkMessage, this.bIvanOkMessage, this.bCreateFolderOnYandexDisk, this.bSaveDatabaseInYandexDisk, this.bClearClients, this.bCreateDatabase, this.bCreateTable, this.bAddRecord, this.bShowDatabase, this.bDeleteRecord, this.tsIsChanges, this.bSync });
             this.RC.Location = new System.Drawing.Point(0, 0);
-            this.RC.MaxItemId = 17;
+            this.RC.MaxItemId = 24;
             this.RC.Name = "RC";
-            this.RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { this.pageDatabase, this.pageSourceData, this.pageDocuments, this.pageYandexDisk, this.pageContracts });
+            this.RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { this.pageDatabase, this.pageSourceData, this.pageDocuments, this.pageYandexDisk, this.pageContracts, this.pageSQLite });
             this.RC.QuickToolbarItemLinks.Add(this.Skins);
             this.RC.QuickToolbarItemLinks.Add(this.SkinPalettes);
             this.RC.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2007;
             this.RC.ShowQatLocationSelector = false;
             this.RC.ShowToolbarCustomizeItem = false;
-            this.RC.Size = new System.Drawing.Size(803, 162);
+            this.RC.Size = new System.Drawing.Size(1004, 162);
             this.RC.StatusBar = this.RSB;
             this.RC.Toolbar.ShowCustomizeItem = false;
             this.RC.SelectedPageChanged += this.RC_SelectedPageChanged;
@@ -196,6 +205,62 @@
             this.bClearClients.Name = "bClearClients";
             this.bClearClients.ItemClick += this.bClearClients_ItemClick;
             // 
+            // bCreateDatabase
+            // 
+            this.bCreateDatabase.Caption = "Создать БД";
+            this.bCreateDatabase.Id = 17;
+            this.bCreateDatabase.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bCreateDatabase.ImageOptions.SvgImage");
+            this.bCreateDatabase.Name = "bCreateDatabase";
+            this.bCreateDatabase.ItemClick += this.bCreateDatabase_ItemClick;
+            // 
+            // bCreateTable
+            // 
+            this.bCreateTable.Caption = "Создать таблицу";
+            this.bCreateTable.Id = 18;
+            this.bCreateTable.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bCreateTable.ImageOptions.SvgImage");
+            this.bCreateTable.Name = "bCreateTable";
+            this.bCreateTable.ItemClick += this.bCreateTable_ItemClick;
+            // 
+            // bAddRecord
+            // 
+            this.bAddRecord.Caption = "Добавить запись";
+            this.bAddRecord.Id = 19;
+            this.bAddRecord.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bAddRecord.ImageOptions.SvgImage");
+            this.bAddRecord.Name = "bAddRecord";
+            this.bAddRecord.ItemClick += this.bAddRecord_ItemClick;
+            // 
+            // bShowDatabase
+            // 
+            this.bShowDatabase.Caption = "Показать записи";
+            this.bShowDatabase.Id = 20;
+            this.bShowDatabase.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowDatabase.ImageOptions.SvgImage");
+            this.bShowDatabase.Name = "bShowDatabase";
+            this.bShowDatabase.ItemClick += this.bShowDatabase_ItemClick;
+            // 
+            // bDeleteRecord
+            // 
+            this.bDeleteRecord.Caption = "Удалить запись";
+            this.bDeleteRecord.Id = 21;
+            this.bDeleteRecord.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDeleteRecord.ImageOptions.SvgImage");
+            this.bDeleteRecord.Name = "bDeleteRecord";
+            this.bDeleteRecord.ItemClick += this.bDeleteRecord_ItemClick;
+            // 
+            // tsIsChanges
+            // 
+            this.tsIsChanges.Caption = "Сохранять как изменение";
+            this.tsIsChanges.Id = 22;
+            this.tsIsChanges.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("tsIsChanges.ImageOptions.SvgImage");
+            this.tsIsChanges.Name = "tsIsChanges";
+            this.tsIsChanges.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large | DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithText | DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithoutText;
+            // 
+            // bSync
+            // 
+            this.bSync.Caption = "Синхронизация";
+            this.bSync.Id = 23;
+            this.bSync.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bSync.ImageOptions.SvgImage");
+            this.bSync.Name = "bSync";
+            this.bSync.ItemClick += this.bSync_ItemClick;
+            // 
             // pageDatabase
             // 
             this.pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { this.groupDatabase });
@@ -252,25 +317,6 @@
             this.groupYandex.Name = "groupYandex";
             this.groupYandex.Text = "Яндекс";
             // 
-            // RSB
-            // 
-            this.RSB.Location = new System.Drawing.Point(0, 446);
-            this.RSB.Name = "RSB";
-            this.RSB.Ribbon = this.RC;
-            this.RSB.Size = new System.Drawing.Size(803, 26);
-            // 
-            // DLAF
-            // 
-            this.DLAF.LookAndFeel.SkinName = "The Bezier";
-            // 
-            // PC
-            // 
-            this.PC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PC.Location = new System.Drawing.Point(0, 162);
-            this.PC.Name = "PC";
-            this.PC.Size = new System.Drawing.Size(803, 284);
-            this.PC.TabIndex = 2;
-            // 
             // pageContracts
             // 
             this.pageContracts.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { this.groupContractActions });
@@ -282,12 +328,49 @@
             this.groupContractActions.Name = "groupContractActions";
             this.groupContractActions.Text = "Действия";
             // 
+            // pageSQLite
+            // 
+            this.pageSQLite.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { this.groupSQLite });
+            this.pageSQLite.Name = "pageSQLite";
+            this.pageSQLite.Text = "SQLite";
+            // 
+            // groupSQLite
+            // 
+            this.groupSQLite.ItemLinks.Add(this.bCreateDatabase);
+            this.groupSQLite.ItemLinks.Add(this.bCreateTable);
+            this.groupSQLite.ItemLinks.Add(this.bAddRecord);
+            this.groupSQLite.ItemLinks.Add(this.bShowDatabase);
+            this.groupSQLite.ItemLinks.Add(this.bDeleteRecord);
+            this.groupSQLite.ItemLinks.Add(this.tsIsChanges);
+            this.groupSQLite.ItemLinks.Add(this.bSync);
+            this.groupSQLite.Name = "groupSQLite";
+            this.groupSQLite.Text = "Действия SQLite";
+            // 
+            // RSB
+            // 
+            this.RSB.Location = new System.Drawing.Point(0, 607);
+            this.RSB.Name = "RSB";
+            this.RSB.Ribbon = this.RC;
+            this.RSB.Size = new System.Drawing.Size(1004, 24);
+            // 
+            // DLAF
+            // 
+            this.DLAF.LookAndFeel.SkinName = "The Bezier";
+            // 
+            // PC
+            // 
+            this.PC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PC.Location = new System.Drawing.Point(0, 162);
+            this.PC.Name = "PC";
+            this.PC.Size = new System.Drawing.Size(1004, 445);
+            this.PC.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(803, 472);
+            this.ClientSize = new System.Drawing.Size(1004, 631);
             this.Controls.Add(this.PC);
             this.Controls.Add(this.RSB);
             this.Controls.Add(this.RC);
@@ -331,5 +414,14 @@
         private DevExpress.XtraEditors.PanelControl PC;
         private DevExpress.XtraBars.Ribbon.RibbonPage pageContracts;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup groupContractActions;
+        private DevExpress.XtraBars.Ribbon.RibbonPage pageSQLite;
+        private DevExpress.XtraBars.BarButtonItem bCreateDatabase;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup groupSQLite;
+        private DevExpress.XtraBars.BarButtonItem bCreateTable;
+        private DevExpress.XtraBars.BarButtonItem bAddRecord;
+        private DevExpress.XtraBars.BarButtonItem bShowDatabase;
+        private DevExpress.XtraBars.BarButtonItem bDeleteRecord;
+        private DevExpress.XtraBars.BarToggleSwitchItem tsIsChanges;
+        private DevExpress.XtraBars.BarButtonItem bSync;
     }
 }

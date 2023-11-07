@@ -67,7 +67,7 @@ namespace RehabilityApplication.CoreLib
                 }
                 else if(myNode is dbReestr)
                 {
-                    Rectangle rect = Rectangle.Inflate(e.Bounds, (-6 -16), 0) ;
+                    Rectangle rect = Rectangle.Inflate(e.Bounds, -6, 0) ;
                     System.Drawing.Image img;
                     img = Properties.Resources.list;
 
@@ -76,7 +76,7 @@ namespace RehabilityApplication.CoreLib
                 }
                 //else if(myNode is dbClientInReestr)
                 {
-                    Rectangle rect = Rectangle.Inflate(e.Bounds, (-6 -26), 0);
+                    Rectangle rect = Rectangle.Inflate(e.Bounds, -6, 0);
                     System.Drawing.Image img;
                     img = Properties.Resources.list;
 

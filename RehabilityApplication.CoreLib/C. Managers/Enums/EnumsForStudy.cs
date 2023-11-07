@@ -54,4 +54,12 @@ namespace RehabilityApplication.CoreLib
         DownloadDatabaseComplete
 
     }
+
+
+    public enum SQLiteCommandType
+    {
+        LoadDataComplete,
+        DeleteRecordPlease,
+        DeleteRecordPleaseAsChange,
+    }
 }

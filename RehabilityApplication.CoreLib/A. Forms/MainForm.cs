@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace RehabilityApplication.CoreLib
 {
@@ -13,6 +14,9 @@ namespace RehabilityApplication.CoreLib
     public partial class MainForm : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         const string clientFile = "clients.xml";
+
+        const string tableName = "Persons";
+
         /// <summary>
         /// Элемент управления меню, по нажатию кнопк приложения.
         /// </summary>
@@ -44,6 +48,11 @@ namespace RehabilityApplication.CoreLib
         ucContractView contractsView = new ucContractView();
 
         /// <summary>
+        /// Слой отображения данных SQLite
+        /// </summary>
+        ucSQLiteViewer sqliteView = new ucSQLiteViewer();
+
+        /// <summary>
         /// Конструктор формы.
         /// </summary>
         public MainForm()
@@ -52,9 +61,13 @@ namespace RehabilityApplication.CoreLib
 
             // Инициализция элементов управления формы.
             InitializeComponent();
-            
+
+            ApplicationSettings.TS = this.tsIsChanges;
+
             // Подключение элемента управления меню к кнопке приложения.
             RC.ApplicationButtonDropDownControl = backMenu;
+
+            //sqliteView = new ucSQLiteViewer(tsIsChanges);
 
             // Добавляем слой отображения БД на форму.
             this.PC.Controls.Add(databaseViewLayer);
@@ -66,9 +79,14 @@ namespace RehabilityApplication.CoreLib
             this.PC.Controls.Add(structureViewer);
             // Добавляем слой отображения конрактов.
             this.PC.Controls.Add(contractsView);
+            // Добавляем слой отображения данных SQLite.
+            this.PC.Controls.Add(sqliteView);
 
             this.Shown += (s, e) =>
             {
+
+
+
                 GlobalDatabaseManager.Init();
                 TelegramBotManager.Init();
 
@@ -183,6 +201,11 @@ namespace RehabilityApplication.CoreLib
             {
                 contractsView.BringToFront();
             }
+
+            if(RC.SelectedPage.Name == nameof(this.pageSQLite))
+            {
+                sqliteView.BringToFront();
+            }
         }
 
         private void btnOpenFileDialog_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -271,6 +294,57 @@ namespace RehabilityApplication.CoreLib
         private void bClearClients_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             CoreGlobalCommandManager.StartCommand(DatabaseCommandType.ClearClients);
+        }
+
+        private void bCreateDatabase_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            SqliteManager.CreateDatabaseLocal("Database.db");
+        }
+
+        private void bCreateTable_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            SqliteManager.CreateTableInDatabase(tableName);
+        }
+
+        private void bAddRecord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            string columnNames = "Name, Age, IsSelected";
+            if(tsIsChanges.Checked == false)
+            {
+
+                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Tom', 22, true");
+                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Alice', 32, true");
+                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Bryan', 34, false");
+                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Oliver', 19, true");
+                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Dag', 55, true");
+            }
+            else
+            {
+                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Tom', 22, true");
+                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Alice', 32, true");
+                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Bryan', 34, false");
+                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Oliver', 19, true");
+                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Dag', 55, true");
+            }
+
+        }
+
+        private void bShowDatabase_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            var data = SqliteManager.GetRecords(tableName);
+
+            CoreGlobalCommandManager.StartReceiveDataCommand(SQLiteCommandType.LoadDataComplete, data);
+        }
+
+        private void bDeleteRecord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CoreGlobalCommandManager.StartCommand(SQLiteCommandType.DeleteRecordPlease);
+            bShowDatabase.PerformClick();
+        }
+
+        private void bSync_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            SqliteManager.Synchronize();
         }
     }
 }
