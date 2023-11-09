@@ -68,6 +68,7 @@
             this.RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
             this.PC = new DevExpress.XtraEditors.PanelControl();
+            this.bMapping = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)this.RC).BeginInit();
             ((System.ComponentModel.ISupportInitialize)this.PC).BeginInit();
             this.SuspendLayout();
@@ -76,9 +77,9 @@
             // 
             this.RC.CaptionBarItemLinks.Add(this.bAuthorizationFormShow);
             this.RC.ExpandCollapseItem.Id = 0;
-            this.RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { this.bAuthorizationFormShow, this.RC.ExpandCollapseItem, this.RC.SearchEditItem, this.Skins, this.SkinPalettes, this.btnShowSplashScreen, this.btnGenerateDocuments, this.btnOpenFileDialog, this.bShowYesNoDialog, this.bVasyaQuestion, this.bIvanQuestion, this.bShowMessage, this.bVasiliyOkMessage, this.bIvanOkMessage, this.bCreateFolderOnYandexDisk, this.bSaveDatabaseInYandexDisk, this.bClearClients, this.bCreateDatabase, this.bCreateTable, this.bAddRecord, this.bShowDatabase, this.bDeleteRecord, this.tsIsChanges, this.bSync });
+            this.RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { this.bAuthorizationFormShow, this.RC.ExpandCollapseItem, this.RC.SearchEditItem, this.Skins, this.SkinPalettes, this.btnShowSplashScreen, this.btnGenerateDocuments, this.btnOpenFileDialog, this.bShowYesNoDialog, this.bVasyaQuestion, this.bIvanQuestion, this.bShowMessage, this.bVasiliyOkMessage, this.bIvanOkMessage, this.bCreateFolderOnYandexDisk, this.bSaveDatabaseInYandexDisk, this.bClearClients, this.bCreateDatabase, this.bCreateTable, this.bAddRecord, this.bShowDatabase, this.bDeleteRecord, this.tsIsChanges, this.bSync, this.bMapping });
             this.RC.Location = new System.Drawing.Point(0, 0);
-            this.RC.MaxItemId = 24;
+            this.RC.MaxItemId = 25;
             this.RC.Name = "RC";
             this.RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { this.pageDatabase, this.pageSourceData, this.pageDocuments, this.pageYandexDisk, this.pageContracts, this.pageSQLite });
             this.RC.QuickToolbarItemLinks.Add(this.Skins);
@@ -343,6 +344,7 @@
             this.groupSQLite.ItemLinks.Add(this.bDeleteRecord);
             this.groupSQLite.ItemLinks.Add(this.tsIsChanges);
             this.groupSQLite.ItemLinks.Add(this.bSync);
+            this.groupSQLite.ItemLinks.Add(this.bMapping);
             this.groupSQLite.Name = "groupSQLite";
             this.groupSQLite.Text = "Действия SQLite";
             // 
@@ -364,6 +366,14 @@
             this.PC.Name = "PC";
             this.PC.Size = new System.Drawing.Size(1004, 445);
             this.PC.TabIndex = 2;
+            // 
+            // bMapping
+            // 
+            this.bMapping.Caption = "Сопоставление";
+            this.bMapping.Id = 24;
+            this.bMapping.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bMapping.ImageOptions.SvgImage");
+            this.bMapping.Name = "bMapping";
+            this.bMapping.ItemClick += this.bMapping_ItemClick;
             // 
             // MainForm
             // 
@@ -423,5 +433,6 @@
         private DevExpress.XtraBars.BarButtonItem bDeleteRecord;
         private DevExpress.XtraBars.BarToggleSwitchItem tsIsChanges;
         private DevExpress.XtraBars.BarButtonItem bSync;
+        private DevExpress.XtraBars.BarButtonItem bMapping;
     }
 }

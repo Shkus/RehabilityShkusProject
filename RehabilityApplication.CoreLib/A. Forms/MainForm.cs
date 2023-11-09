@@ -346,5 +346,34 @@ namespace RehabilityApplication.CoreLib
         {
             SqliteManager.Synchronize();
         }
+
+        private void bMapping_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            var data = SqliteManager.MapData(tableName);
+            CoreGlobalCommandManager.StartReceiveDataCommand(SQLiteCommandType.LoadDataComplete, data);
+
+            //List<ToyClass> list = new List<ToyClass>();
+
+            ////////////ToyClass car1 = new CarClass() { Name = "Masha" };
+
+            ////////////Product sh1 = new Shkaf();
+            ////////////Product sh2 = new Shkaf();
+            ////////////Product sh3 = new Shkaf();
+
+            ////////////Product dr1 = new Door();
+            ////////////Product dr2 = new Door();
+            ////////////Product dr3 = new Door();
+
+            ////////////car1.Sold(new List<Product> { sh1, dr1, sh2, dr2, dr3, sh3 });
+
+            //CarClass car1 = new CarClass() { Engine = "V6", Id="564" };
+            //CarClass car2 = new CarClass(car1) { Engine = "V8" };
+
+            //list.Add(doll1);
+            //list.Add(car1);
+
+            //doll1.Plakat();
+            ////car1.Ehat();
+        }
     }
 }

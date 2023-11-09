@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DevExpress.XtraBars.Docking2010.Views.BaseRegistrator;
+using Dapper;
+using DevExpress.Mvvm.Native;
 
 namespace RehabilityApplication.CoreLib
 {
@@ -247,6 +249,24 @@ namespace RehabilityApplication.CoreLib
 
                 System.IO.File.Move(sqlFile, sqlFile + "_");
             }
+        }
+
+        //List<Persons> persons = new List<Persons>();
+        public static List<dbCall> MapData(string TableName)
+        {
+            List<dbCall> pers = new List<dbCall>();    
+
+            string appPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+            string dbFolderPath = System.IO.Path.GetDirectoryName(appPath);
+            string connectionString = $"Data Source={dbFilename};Version=3;New=true";
+
+            using(SQLiteConnection db = new SQLiteConnection(connectionString))
+            {
+                var list = db.Query<dbCall>($"SELECT * FROM {TableName}");
+                list.ForEach(t=> pers.Add(t));
+            }
+
+            return pers;
         }
     }
 }
