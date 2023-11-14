@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraSplashScreen;
+﻿using DevExpress.Utils.MVVM;
+using DevExpress.XtraSplashScreen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,6 +101,11 @@ namespace RehabilityApplication.CoreLib
                         //MessageBox.Show("База данных успешно загружена на сервер!");
                     }
 
+                    if(e.Command is EnumLanguageType.Russian || e.Command is EnumLanguageType.English)
+                    {
+                        RelanguageUI();
+                    }
+
                 };
 
                 CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
@@ -169,6 +175,43 @@ namespace RehabilityApplication.CoreLib
 
 
         }
+
+        private void RelanguageUI()
+        {
+            bCreateTable.SetResourceString();
+            bAddRecord.SetResourceString();
+            bCreateDatabase.SetResourceString();
+            bDeleteRecord.SetResourceString();
+            bIvanOkMessage.SetResourceString();
+            bIvanQuestion.SetResourceString();
+            bMapping.SetResourceString();
+            bSaveDatabaseInYandexDisk.SetResourceString();
+            bShowDatabase.SetResourceString();
+            bShowMessage.SetResourceString();
+            bShowYesNoDialog.SetResourceString();
+            bSync.SetResourceString();
+            btnGenerateDocuments.SetResourceString();
+            bVasiliyOkMessage.SetResourceString();
+            btnShowSplashScreen.SetResourceString();
+            btnOpenFileDialog.SetResourceString();
+            bClearClients.SetResourceString();
+            bCreateFolderOnYandexDisk.SetResourceString();
+            tsIsChanges.SetResourceString();
+            this.SetResourceString();
+            pageContracts.SetResourceString();
+            pageDatabase.SetResourceString();
+            pageDocuments.SetResourceString();
+            pageSourceData.SetResourceString();
+            pageSQLite.SetResourceString();
+            pageYandexDisk.SetResourceString();
+            groupContractActions.SetResourceString();
+            groupDatabase.SetResourceString();
+            groupDocumentHandles.SetResourceString();
+            groupFromExcelFile.SetResourceString();
+            groupSQLite.SetResourceString();
+            groupYandex.SetResourceString();
+        }
+
 
         /// <summary>
         /// Обработчик события переключения вкладок.
@@ -369,11 +412,23 @@ namespace RehabilityApplication.CoreLib
             //CarClass car1 = new CarClass() { Engine = "V6", Id="564" };
             //CarClass car2 = new CarClass(car1) { Engine = "V8" };
 
-            //list.Add(doll1);
+            //lis.Add(doll1);
             //list.Add(car1);
 
             //doll1.Plakat();
             ////car1.Ehat();
+        }
+
+        private void bEngLang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            ApplicationSettings.CurrentLanguage = EnumLanguageType.English;
+            //CoreGlobalCommandManager.StartCommand(EnumLanguageType.English);
+        }
+
+        private void bRusLang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            ApplicationSettings.CurrentLanguage = EnumLanguageType.Russian;
+            //CoreGlobalCommandManager.StartCommand(EnumLanguageType.Russian);
         }
     }
 }

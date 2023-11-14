@@ -19,6 +19,25 @@ namespace RehabilityApplication.CoreLib
             InitializeComponent();
 
             tabNotifiesPanel.Controls.Add(ucNotifyMessages);
+            CoreGlobalCommandManager.CommandInitialized += (s, e) =>
+            {
+                if(e.Command is EnumLanguageType.Russian || e.Command is EnumLanguageType.English)
+                {
+                    Relanguage();
+                }
+            };
+
         }
+
+        private void Relanguage()
+        {
+            tabHelp.SetResourceString();
+            btnExitApplication.SetResourceString();
+            tabSettings.SetResourceString();
+            tabNotifies.SetResourceString();
+        }
+
     }
 }
+
+

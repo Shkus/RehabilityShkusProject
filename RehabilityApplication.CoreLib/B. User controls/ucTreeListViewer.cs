@@ -60,6 +60,11 @@ namespace RehabilityApplication.CoreLib
                             }));
                         }
                     };
+
+                    if(e.Command is EnumLanguageType.Russian || e.Command is EnumLanguageType.English)
+                    {
+                        RelanguageUI();
+                    }
                 };
 
                 CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
@@ -136,6 +141,12 @@ namespace RehabilityApplication.CoreLib
                     }
                 };
             };
+        }
+
+
+        void RelanguageUI()
+        {
+            TL.SetResourceString();
         }
 
         void AfterDatabaseInit()

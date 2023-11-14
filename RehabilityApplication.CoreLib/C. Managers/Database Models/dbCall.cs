@@ -5,17 +5,17 @@ namespace RehabilityApplication.CoreLib
 {
     public class dbCall
     {
-        [DisplayName("Идентификатор")]
+        //[DisplayName("Идентификатор")]
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        [DisplayName("Дата")]
+        //[DisplayName("Дата")]
         public string Date { get; set; }
-        [DisplayName("Коментарий")]
+        //[DisplayName("Коментарий")]
         public string Comment { get; set; }
-        [DisplayName("Телефон")]
+        //[DisplayName("Телефон")]
         public string Telephone { get; set; }
-        [DisplayName("Клиент Id")]
+        //[DisplayName("Клиент Id")]
         public string ClientId { get; set; }
-        [DisplayName("Выделен?")]
+        //[DisplayName("Выделен?")]
         public bool IsSelected { get; set; }
         public dbCall() { }
     }

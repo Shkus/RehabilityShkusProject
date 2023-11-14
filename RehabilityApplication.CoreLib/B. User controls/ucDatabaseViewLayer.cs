@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 
+
 namespace RehabilityApplication.CoreLib
 {
     /// <summary>
@@ -36,6 +37,24 @@ namespace RehabilityApplication.CoreLib
             this.dpCalls.Controls.Add(this.callsView);
 
             this.Dock = DockStyle.Fill;
+
+            CoreGlobalCommandManager.CommandInitialized += (s, e) =>
+            {
+                if(e.Command is EnumLanguageType.Russian || e.Command is EnumLanguageType.English)
+                {
+                    ReLanguageUI();
+                }
+            };
         }
+        private void ReLanguageUI()
+        {
+            dpCalls.SetResourceString();
+            dpClients.SetResourceString();
+            dpPassports.SetResourceString();
+            dpProductsInClient.SetResourceString();
+
+        }
+
+
     }
 }
