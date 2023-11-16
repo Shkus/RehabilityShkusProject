@@ -71,6 +71,9 @@
             RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
             PC = new DevExpress.XtraEditors.PanelControl();
+            bDocumentType1 = new DevExpress.XtraBars.BarButtonItem();
+            bDocumentType2 = new DevExpress.XtraBars.BarButtonItem();
+            bDocumentType3 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PC).BeginInit();
             SuspendLayout();
@@ -81,9 +84,9 @@
             RC.CaptionBarItemLinks.Add(bRusLang);
             RC.CaptionBarItemLinks.Add(bEngLang);
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3 });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 27;
+            RC.MaxItemId = 30;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk, pageContracts, pageSQLite });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -331,6 +334,9 @@
             // groupDocumentHandles
             // 
             groupDocumentHandles.ItemLinks.Add(btnGenerateDocuments);
+            groupDocumentHandles.ItemLinks.Add(bDocumentType1);
+            groupDocumentHandles.ItemLinks.Add(bDocumentType2);
+            groupDocumentHandles.ItemLinks.Add(bDocumentType3);
             groupDocumentHandles.Name = "groupDocumentHandles";
             groupDocumentHandles.Text = "Обработка";
             // 
@@ -395,6 +401,30 @@
             PC.Size = new System.Drawing.Size(1004, 443);
             PC.TabIndex = 2;
             // 
+            // bDocumentType1
+            // 
+            bDocumentType1.Caption = "Документ #1";
+            bDocumentType1.Id = 27;
+            bDocumentType1.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType1.ImageOptions.SvgImage");
+            bDocumentType1.Name = "bDocumentType1";
+            bDocumentType1.ItemClick += bDocumentType1_ItemClick;
+            // 
+            // bDocumentType2
+            // 
+            bDocumentType2.Caption = "Документ #2";
+            bDocumentType2.Id = 28;
+            bDocumentType2.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType2.ImageOptions.SvgImage");
+            bDocumentType2.Name = "bDocumentType2";
+            bDocumentType2.ItemClick += bDocumentType2_ItemClick;
+            // 
+            // bDocumentType3
+            // 
+            bDocumentType3.Caption = "Документ #3";
+            bDocumentType3.Id = 29;
+            bDocumentType3.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType3.ImageOptions.SvgImage");
+            bDocumentType3.Name = "bDocumentType3";
+            bDocumentType3.ItemClick += bDocumentType3_ItemClick;
+            // 
             // MainForm
             // 
             AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
@@ -456,5 +486,8 @@
         private DevExpress.XtraBars.BarButtonItem bMapping;
         private DevExpress.XtraBars.BarButtonItem bRusLang;
         private DevExpress.XtraBars.BarButtonItem bEngLang;
+        private DevExpress.XtraBars.BarButtonItem bDocumentType1;
+        private DevExpress.XtraBars.BarButtonItem bDocumentType2;
+        private DevExpress.XtraBars.BarButtonItem bDocumentType3;
     }
 }

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Resources;
-using DevExpress.XtraBars;
-using System.Threading;
+﻿using DevExpress.XtraBars;
 using DevExpress.XtraBars.Ribbon;
-using System.Windows.Controls;
-using System.Reflection;
 using DevExpress.XtraTreeList;
+using System;
+using System.Reflection;
 
 namespace RehabilityApplication.CoreLib
 {

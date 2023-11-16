@@ -30,6 +30,7 @@
   <ItemGroup>
     <Folder Include="E. Resources\" />
     <Folder Include="F. Language Resources\" />
+    <Folder Include="Templates\" />
   </ItemGroup>
 
   <ItemGroup>

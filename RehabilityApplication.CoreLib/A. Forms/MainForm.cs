@@ -1,11 +1,16 @@
 ﻿using DevExpress.Utils.MVVM;
+using DevExpress.Xpo;
+using DevExpress.XtraRichEdit;
+using DevExpress.XtraScheduler.Outlook.Native;
 using DevExpress.XtraSplashScreen;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Xml.Linq;
 
 namespace RehabilityApplication.CoreLib
 {
@@ -430,5 +435,193 @@ namespace RehabilityApplication.CoreLib
             ApplicationSettings.CurrentLanguage = EnumLanguageType.Russian;
             //CoreGlobalCommandManager.StartCommand(EnumLanguageType.Russian);
         }
+
+        private void bDocumentType1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            ////DocumentType1 documentType1 = new DocumentType1() { Name = "Meridian", Description = "Пуско-наладочные работы" };
+            //DocumentType1 documentType1 = new DocumentType1() { Name = "Роботех", Description = "Починить робота" };
+
+            //documentType1.GenerateDocument();
+
+            // Ivan
+            IvanTemplateResume itr = new IvanTemplateResume()
+            {
+                Name = "Иван",
+                Profession = "Грузчик",
+                Objective = "Шланги",
+                Skills = "Копать и не копать",
+                Jobtitle = "Старший Грузчик",
+                Company = "Промет",
+                StartDate = "2019",
+                Description_experience = "Бери больше, кидай дальше",
+                Y_E = "2005-2008",
+                INS = "Пермский радиотехнический",
+                T_S = "10 из 10"
+
+
+
+
+            };
+            itr.GenerateDocument();
+
+
+        }
+
+        private void bDocumentType2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            //DocumentType2 documentType2 = new DocumentType2() {Name = "Горец", Company = "Роботех", Address = "ул. Шоссе Космнавтов 395, лит. Е", City = "Пермь",
+            //RecepientName = "Дункин Маклауд", Title = "Проект СВЕЗАААААА!!!"};
+
+            //documentType2.GenerateDocument();
+
+            // VasiliyVa
+
+            VasiliyResumeType vrt = new VasiliyResumeType()
+            {
+                name = "Васиилий",
+                surname = "Шкурихин",
+                address = "Пермь",
+                phone = "89222415995",
+                mail = "ru",
+                about = "Начинающий C# разработчик",
+                startDate = "2009",
+                jobTitle = "Начальник бюро сборки и испытаний перспективной авиации",
+                company = "АО «Пермский завод Машиностроитель»",
+                describe = "хватит с меня",
+                year = "2003",
+                school = "СОШ",
+                totalScore = "4,5",
+                hobby = "программирование, квадроциклы, снегоходы"
+				
+			};
+
+			vrt.GenerateDocument();
+
+		}
+
+        private void bDocumentType3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            //DocumentType3 documentType3 = new DocumentType3()
+            //{
+            //    Name = "Дункан",
+            //    Surname = "Маклауд"
+            //};
+
+            //documentType3.GenerateDocument();
+        }
+    }
+
+
+
+    public class DocumentType1
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [AutoReplace(ParameterName: "%Name%")]
+        public string Name { get; set; }
+        [AutoReplace(ParameterName: "%Description%")]
+        public string Description { get; set; }
+        public string TemplateFilename = @"D:\!!! Базовые элементы\Рабочий стол\Акт выполненных работ.docx";
+        public DocumentType1() { }
+    }
+
+    public class DocumentType2
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [AutoReplace(ParameterName: "%RecepientName%")]
+        public string RecepientName { get; set; }
+        [AutoReplace(ParameterName: "%Title%")]
+        public string Title { get; set; }
+        [AutoReplace(ParameterName: "%Company%")]
+        public string Company { get; set; }
+        [AutoReplace(ParameterName: "%Address%")]
+        public string Address { get; set; }
+        [AutoReplace(ParameterName: "%City%")]
+        public string City { get; set; } // %CITY%
+        [AutoReplace(ParameterName: "%Name%")]
+        public string Name { get; set; } // %NAME%
+
+
+        public string TemplateFilename = @"D:\!!! Базовые элементы\Рабочий стол\RECEPIENTNAME.docx";
+        public DocumentType2() { }
+    }
+    public class DocumentType3
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [AutoReplace(ParameterName: "%Name%")]
+        public string Name { get; set; }
+        [AutoReplace(ParameterName: "%Surname%")]
+        public string Surname { get; set; }
+        public string TemplateFilename = @"D:\!!! Базовые элементы\Рабочий стол\Resume.docx";
+        public DocumentType3() { }
+    }
+
+    public class VasiliyResumeType
+
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [AutoReplace("%Name%")]
+        public string name { get; set; }
+        [AutoReplace("%Surname%")]
+        public string surname { get; set; }
+		[AutoReplace("%Address%")]
+		public string address { get; set; }
+		[AutoReplace("%Phone%")]
+		public string phone { get; set; }
+		[AutoReplace("%Mail%")]
+		public string mail { get; set; }
+		[AutoReplace("%About%")]
+        public string about { get; set; }
+        [AutoReplace("%Start_Date%")]
+        public string startDate { get; set; }
+        [AutoReplace("%Job_Title%")]
+        public string jobTitle { get; set; }
+        [AutoReplace("%Company%")]
+        public string company { get; set; }
+        [AutoReplace("%Describe%")]
+        public string describe { get; set; }
+        [AutoReplace("%Year%")]
+        public string year { get; set; }
+        [AutoReplace("%School%")]
+        public string school { get; set; }
+        [AutoReplace("%Total_Score%")]
+        public string totalScore { get; set; }
+        [AutoReplace("%Hobby%")]
+        public string hobby { get; set; }
+
+        public string TemplateFilename = @"D:\!!! Базовые элементы\Рабочий стол\VasiliyTemplate.docx";
+        public VasiliyResumeType() { }
+    }
+
+
+    public class IvanTemplateResume
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [AutoReplace(ParameterName: "%Name%")]
+        public string Name { get; set; }
+        [AutoReplace(ParameterName: "%Profession%")]
+        public string Profession { get; set; }
+        [AutoReplace(ParameterName: "%objective%")]
+        public string Objective { get; set; }
+        [AutoReplace(ParameterName: "%Skills%")]
+        public string Skills { get; set; }
+        [AutoReplace("%Jobtitle%")]
+        public string Jobtitle { get; set; }
+        [AutoReplace("%Company%")]
+        public string Company { get; set; }
+        [AutoReplace("%StartDate%")]
+        public string StartDate { get; set; }
+        [AutoReplace("%Decription_experience%")]
+        public string Description_experience { get; set; }
+        [AutoReplace("%Year_Education%")]
+        public string Y_E { get; set; }
+        [AutoReplace("%Institute%")]
+        public string INS { get; set; }
+        [AutoReplace("%Total_Score%")]
+        public string T_S { get; set; }
+
+
+
+        public string TemplateFilename = @"D:\!!! Базовые элементы\Рабочий стол\IvanTemplate.docx";
+        public IvanTemplateResume() { }
     }
 }
