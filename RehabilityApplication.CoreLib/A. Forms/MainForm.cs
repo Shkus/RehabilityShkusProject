@@ -492,12 +492,12 @@ namespace RehabilityApplication.CoreLib
                 school = "СОШ",
                 totalScore = "4,5",
                 hobby = "программирование, квадроциклы, снегоходы"
-				
-			};
 
-			vrt.GenerateDocument();
+            };
 
-		}
+            vrt.GenerateDocument();
+
+        }
 
         private void bDocumentType3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -508,6 +508,18 @@ namespace RehabilityApplication.CoreLib
             //};
 
             //documentType3.GenerateDocument();
+        }
+
+        private void bClientEditor_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucClientEditor(new TelegramBotUser(), 300));
+
+            if(result == DialogResult.OK)
+            {
+            }
+            else
+            {
+            }
         }
     }
 
@@ -563,13 +575,13 @@ namespace RehabilityApplication.CoreLib
         public string name { get; set; }
         [AutoReplace("%Surname%")]
         public string surname { get; set; }
-		[AutoReplace("%Address%")]
-		public string address { get; set; }
-		[AutoReplace("%Phone%")]
-		public string phone { get; set; }
-		[AutoReplace("%Mail%")]
-		public string mail { get; set; }
-		[AutoReplace("%About%")]
+        [AutoReplace("%Address%")]
+        public string address { get; set; }
+        [AutoReplace("%Phone%")]
+        public string phone { get; set; }
+        [AutoReplace("%Mail%")]
+        public string mail { get; set; }
+        [AutoReplace("%About%")]
         public string about { get; set; }
         [AutoReplace("%Start_Date%")]
         public string startDate { get; set; }

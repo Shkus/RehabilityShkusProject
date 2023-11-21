@@ -56,6 +56,9 @@
             tsIsChanges = new DevExpress.XtraBars.BarToggleSwitchItem();
             bSync = new DevExpress.XtraBars.BarButtonItem();
             bMapping = new DevExpress.XtraBars.BarButtonItem();
+            bDocumentType1 = new DevExpress.XtraBars.BarButtonItem();
+            bDocumentType2 = new DevExpress.XtraBars.BarButtonItem();
+            bDocumentType3 = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -71,9 +74,7 @@
             RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
             PC = new DevExpress.XtraEditors.PanelControl();
-            bDocumentType1 = new DevExpress.XtraBars.BarButtonItem();
-            bDocumentType2 = new DevExpress.XtraBars.BarButtonItem();
-            bDocumentType3 = new DevExpress.XtraBars.BarButtonItem();
+            bClientEditor = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PC).BeginInit();
             SuspendLayout();
@@ -84,9 +85,9 @@
             RC.CaptionBarItemLinks.Add(bRusLang);
             RC.CaptionBarItemLinks.Add(bEngLang);
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3 });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 30;
+            RC.MaxItemId = 31;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk, pageContracts, pageSQLite });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -94,7 +95,7 @@
             RC.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2007;
             RC.ShowQatLocationSelector = false;
             RC.ShowToolbarCustomizeItem = false;
-            RC.Size = new System.Drawing.Size(1004, 162);
+            RC.Size = new System.Drawing.Size(873, 162);
             RC.StatusBar = RSB;
             RC.Toolbar.ShowCustomizeItem = false;
             RC.SelectedPageChanged += RC_SelectedPageChanged;
@@ -293,6 +294,30 @@
             bMapping.Name = "bMapping";
             bMapping.ItemClick += bMapping_ItemClick;
             // 
+            // bDocumentType1
+            // 
+            bDocumentType1.Caption = "Документ #1";
+            bDocumentType1.Id = 27;
+            bDocumentType1.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType1.ImageOptions.SvgImage");
+            bDocumentType1.Name = "bDocumentType1";
+            bDocumentType1.ItemClick += bDocumentType1_ItemClick;
+            // 
+            // bDocumentType2
+            // 
+            bDocumentType2.Caption = "Документ #2";
+            bDocumentType2.Id = 28;
+            bDocumentType2.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType2.ImageOptions.SvgImage");
+            bDocumentType2.Name = "bDocumentType2";
+            bDocumentType2.ItemClick += bDocumentType2_ItemClick;
+            // 
+            // bDocumentType3
+            // 
+            bDocumentType3.Caption = "Документ #3";
+            bDocumentType3.Id = 29;
+            bDocumentType3.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType3.ImageOptions.SvgImage");
+            bDocumentType3.Name = "bDocumentType3";
+            bDocumentType3.ItemClick += bDocumentType3_ItemClick;
+            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -311,6 +336,7 @@
             groupDatabase.ItemLinks.Add(bIvanOkMessage);
             groupDatabase.ItemLinks.Add(bSaveDatabaseInYandexDisk);
             groupDatabase.ItemLinks.Add(bClearClients);
+            groupDatabase.ItemLinks.Add(bClientEditor);
             groupDatabase.Name = "groupDatabase";
             groupDatabase.Text = "База данных";
             // 
@@ -384,10 +410,10 @@
             // 
             // RSB
             // 
-            RSB.Location = new System.Drawing.Point(0, 605);
+            RSB.Location = new System.Drawing.Point(0, 442);
             RSB.Name = "RSB";
             RSB.Ribbon = RC;
-            RSB.Size = new System.Drawing.Size(1004, 26);
+            RSB.Size = new System.Drawing.Size(873, 24);
             // 
             // DLAF
             // 
@@ -398,39 +424,23 @@
             PC.Dock = System.Windows.Forms.DockStyle.Fill;
             PC.Location = new System.Drawing.Point(0, 162);
             PC.Name = "PC";
-            PC.Size = new System.Drawing.Size(1004, 443);
+            PC.Size = new System.Drawing.Size(873, 280);
             PC.TabIndex = 2;
             // 
-            // bDocumentType1
+            // bClientEditor
             // 
-            bDocumentType1.Caption = "Документ #1";
-            bDocumentType1.Id = 27;
-            bDocumentType1.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType1.ImageOptions.SvgImage");
-            bDocumentType1.Name = "bDocumentType1";
-            bDocumentType1.ItemClick += bDocumentType1_ItemClick;
-            // 
-            // bDocumentType2
-            // 
-            bDocumentType2.Caption = "Документ #2";
-            bDocumentType2.Id = 28;
-            bDocumentType2.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType2.ImageOptions.SvgImage");
-            bDocumentType2.Name = "bDocumentType2";
-            bDocumentType2.ItemClick += bDocumentType2_ItemClick;
-            // 
-            // bDocumentType3
-            // 
-            bDocumentType3.Caption = "Документ #3";
-            bDocumentType3.Id = 29;
-            bDocumentType3.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocumentType3.ImageOptions.SvgImage");
-            bDocumentType3.Name = "bDocumentType3";
-            bDocumentType3.ItemClick += bDocumentType3_ItemClick;
+            bClientEditor.Caption = "Открыть редактор клиента";
+            bClientEditor.Id = 30;
+            bClientEditor.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bClientEditor.ImageOptions.SvgImage");
+            bClientEditor.Name = "bClientEditor";
+            bClientEditor.ItemClick += bClientEditor_ItemClick;
             // 
             // MainForm
             // 
             AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1004, 631);
+            ClientSize = new System.Drawing.Size(873, 466);
             Controls.Add(PC);
             Controls.Add(RSB);
             Controls.Add(RC);
@@ -489,5 +499,6 @@
         private DevExpress.XtraBars.BarButtonItem bDocumentType1;
         private DevExpress.XtraBars.BarButtonItem bDocumentType2;
         private DevExpress.XtraBars.BarButtonItem bDocumentType3;
+        private DevExpress.XtraBars.BarButtonItem bClientEditor;
     }
 }

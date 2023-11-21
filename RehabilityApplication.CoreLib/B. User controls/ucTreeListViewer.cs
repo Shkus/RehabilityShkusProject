@@ -30,9 +30,9 @@ namespace RehabilityApplication.CoreLib
             {
                 CoreGlobalCommandManager.CommandInitialized += (s, e) =>
                 {
-                    if (dataType == SourceDataType.Clients)
+                    if(dataType == SourceDataType.Clients)
                     {
-                        if (e.Command is DatabaseCommandType.DatabaseWasInitializated)
+                        if(e.Command is DatabaseCommandType.DatabaseWasInitializated)
                         {
                             BeginInvoke(new MethodInvoker(delegate
                             {
@@ -42,7 +42,7 @@ namespace RehabilityApplication.CoreLib
                             AfterDatabaseInit();
                         }
 
-                        if (e.Command is DatabaseCommandType.ClearClients)
+                        if(e.Command is DatabaseCommandType.ClearClients)
                         {
                             BeginInvoke(new MethodInvoker(delegate
                             {
@@ -50,7 +50,7 @@ namespace RehabilityApplication.CoreLib
                             }));
                         }
 
-                        if (e.Command is YandexDiskManagerCommandType.DownloadDatabaseComplete)
+                        if(e.Command is YandexDiskManagerCommandType.DownloadDatabaseComplete)
                         {
                             BeginInvoke(new MethodInvoker(delegate
                             {
@@ -69,9 +69,9 @@ namespace RehabilityApplication.CoreLib
 
                 CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
                 {
-                    if (e.Command is DatabaseCommandType.FocusedClientWasChangedPleaseShowPassports)
+                    if(e.Command is DatabaseCommandType.FocusedClientWasChangedPleaseShowPassports)
                     {
-                        if (dataType == SourceDataType.Passports)
+                        if(dataType == SourceDataType.Passports)
                         {
                             BeginInvoke(new MethodInvoker(delegate
                             {
@@ -82,9 +82,9 @@ namespace RehabilityApplication.CoreLib
                         }
                     }
 
-                    if (e.Command is DatabaseCommandType.FocusedClientWasChangedPLeaseShowInClientCall)
+                    if(e.Command is DatabaseCommandType.FocusedClientWasChangedPLeaseShowInClientCall)
                     {
-                        if (dataType == SourceDataType.Calls)
+                        if(dataType == SourceDataType.Calls)
                         {
                             BeginInvoke(new MethodInvoker(delegate
                             {
@@ -95,9 +95,9 @@ namespace RehabilityApplication.CoreLib
                         }
                     }
 
-                    if (e.Command is DatabaseCommandType.FocusedClientWasChangedPleaseShowProductsInClients)
+                    if(e.Command is DatabaseCommandType.FocusedClientWasChangedPleaseShowProductsInClients)
                     {
-                        if (dataType == SourceDataType.ProductsInClient)
+                        if(dataType == SourceDataType.ProductsInClient)
                         {
                             BeginInvoke(new MethodInvoker(delegate
                             {
@@ -111,9 +111,9 @@ namespace RehabilityApplication.CoreLib
 
                 TL.FocusedNodeChanged += (s, e) =>
                 {
-                    if (dataType == SourceDataType.Clients)
+                    if(dataType == SourceDataType.Clients)
                     {
-                        if (TL.FocusedNode != null)
+                        if(TL.FocusedNode != null)
                         {
                             dbClient myNode = (dbClient)TL.GetDataRecordByNode(TL.FocusedNode);
                             string parentId = myNode.Id;
@@ -130,16 +130,25 @@ namespace RehabilityApplication.CoreLib
 
                             CoreGlobalCommandManager.StartReceiveDataCommand(DatabaseCommandType.FocusedClientWasChangedPLeaseShowInClientCall, ClientCall);
 
-                            
 
-                            var productsClient = (from a in GlobalDatabaseManager.productsInClient 
-                                                  where a.ClientId == parentId 
+
+                            var productsClient = (from a in GlobalDatabaseManager.productsInClient
+                                                  where a.ClientId == parentId
                                                   select a).ToList();
                             CoreGlobalCommandManager.StartReceiveDataCommand(DatabaseCommandType.FocusedClientWasChangedPleaseShowProductsInClients, productsClient);
 
-						}
+                        }
                     }
                 };
+            };
+
+            TL.DoubleClick += (s, e) =>
+            {
+                if(_tableType == SourceDataType.Clients)
+                {
+                    dbClient clientNode = (dbClient)TL.GetDataRecordByNode(TL.FocusedNode);
+                    DialogResult dialogResult = CustomFlyoutDialog.ShowForm(null, null, new ucClientEditor(clientNode));
+                }
             };
         }
 
@@ -153,15 +162,15 @@ namespace RehabilityApplication.CoreLib
         {
             CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
             {
-                if (_tableType == SourceDataType.Clients)
+                if(_tableType == SourceDataType.Clients)
                 {
-                    if (e.Command is DatabaseCommandType.AddNewClientInit)
+                    if(e.Command is DatabaseCommandType.AddNewClientInit)
                     {
                         BeginInvoke(new MethodInvoker(delegate
                         {
                             var existClient = GlobalDatabaseManager.clients.Where(t => t.Snils == e.Data[0]).FirstOrDefault();
 
-                            if (existClient != null)
+                            if(existClient != null)
                             {
                                 CoreGlobalCommandManager.StartReceiveDataCommand(ResponseCommandType.ClientAlreadyExist, e.Data);
                                 return;
@@ -173,13 +182,13 @@ namespace RehabilityApplication.CoreLib
                         }));
                     }
 
-                    if (e.Command is DatabaseCommandType.RemoveClient)
+                    if(e.Command is DatabaseCommandType.RemoveClient)
                     {
                         BeginInvoke(new MethodInvoker(delegate
                         {
                             var existClient = GlobalDatabaseManager.clients.Where(t => t.Snils == e.Data[0]).FirstOrDefault();
 
-                            if (existClient != null)
+                            if(existClient != null)
                             {
                                 GlobalDatabaseManager.clients.Remove(existClient);
                             }
@@ -193,14 +202,14 @@ namespace RehabilityApplication.CoreLib
                         }));
                     }
 
-                    if (e.Command is DatabaseCommandType.editDataClient)
+                    if(e.Command is DatabaseCommandType.editDataClient)
                     {
                         BeginInvoke(new MethodInvoker(delegate
                         {
 
                             var existClient = GlobalDatabaseManager.clients.Where(t => t.Snils == e.Data[0]).FirstOrDefault();
 
-                            if (existClient != null)
+                            if(existClient != null)
                             {
                                 int indexClient = GlobalDatabaseManager.clients.IndexOf(existClient);
                                 existClient.Snils = e.Data[1];
@@ -217,6 +226,30 @@ namespace RehabilityApplication.CoreLib
                         }));
                     }
 
+                    if(e.Command is DatabaseCommandType.AddNewClientFromForm)
+                    {
+                        GlobalDatabaseManager.clients.Add(e.Data);
+                        TL.DataSource = GlobalDatabaseManager.clients;
+                        TL.RefreshDataSource();
+                    }
+
+                    if(e.Command is DatabaseCommandType.EditClientFromForm)
+                    {
+                        var anyClientExist = GlobalDatabaseManager.clients.FirstOrDefault(t=> t.Id == (e.Data as dbClient).Id);
+
+                        if(anyClientExist !=null)
+                        {
+                            // Middle
+                            int index = GlobalDatabaseManager.clients.IndexOf(anyClientExist);
+                            GlobalDatabaseManager.clients[index] = e.Data;
+                            
+                            //////// Junior
+                            //////anyClientExist = e.Data;
+                        }
+
+                        TL.DataSource = GlobalDatabaseManager.clients;
+                        TL.RefreshDataSource();
+                    }
                 }
             };
         }

@@ -30,6 +30,8 @@ namespace RehabilityApplication.CoreLib
     {
         DatabaseWasInitializated,
         AddNewClientInit,
+        AddNewClientFromForm,
+        EditClientFromForm,
         RemoveClient,
         editDataClient,
         ClearClients,
