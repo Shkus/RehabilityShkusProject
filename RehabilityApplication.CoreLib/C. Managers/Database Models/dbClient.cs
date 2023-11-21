@@ -9,6 +9,10 @@ namespace RehabilityApplication.CoreLib
     {
         [AutoGenControl(controlType = ControlType.TextBox, ControlWidth = 200, LabelTitle = "СНИЛС", LabelWidth = 70)]
         public string Snils { get; set; }
+
+        [AutoGenControl(controlType = ControlType.TextBox, ControlWidth = 200, LabelTitle = "Кол-во", LabelWidth = 70)]
+        public int Count { get; set; }
+
         public bool IsSelected { get; set; }
         public string Id { get; set; } = Guid.NewGuid().ToString();
         [AutoGenControl(controlType = ControlType.TextBox, ControlWidth = 200, LabelTitle = "Ф.И.О.", LabelWidth = 70)]
