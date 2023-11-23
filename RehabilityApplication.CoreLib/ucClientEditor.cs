@@ -21,7 +21,7 @@ namespace RehabilityApplication.CoreLib
         // Senior try
         object template;
 
-        public ucClientEditor(object anyObject, int height = 300)
+        public ucClientEditor(object anyObject, int height = 300, int width = 1000)
         {
             InitializeComponent();
 
@@ -48,10 +48,11 @@ namespace RehabilityApplication.CoreLib
             ////////////////////teSnils.DataBindings.Add(new Binding("Text", clonedClient, nameof(clonedClient.Snils)));
             ////////////////////tsIsSelected.DataBindings.Add(new Binding("IsOn", clonedClient, nameof(clonedClient.IsSelected)));
             ///
-            this.Load += (s, e) =>
-            {
-                this.Height = height;
-            };
+            //this. += (s, e) =>
+            //{
+            this.Height = height;
+            this.Width = width;
+            //};
             // Senior
             this.Panel.Build(anyObject);
         }

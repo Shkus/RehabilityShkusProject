@@ -512,7 +512,7 @@ namespace RehabilityApplication.CoreLib
 
         private void bClientEditor_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucClientEditor(new dbClient() {Count = 1234 }, 300));
+            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucClientEditor(new dbClient() {Count = 1234 }, 500, 1000));
 
             if(result == DialogResult.OK)
             {

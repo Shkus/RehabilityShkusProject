@@ -16,6 +16,12 @@ namespace RehabilityApplication.CoreLib
         public string LabelTitle { get; set; }
         public int LabelWidth { get; set; } = 100;
         public int ControlWidth { get; set; } = 100;
+
+        public bool IsInLine { get; set; } = false;
+
+        public object ComboBoxItems { get; set; }
+
+        public string HeaderTitle { get; set; } = string.Empty;
     }
 
     public enum ControlType
