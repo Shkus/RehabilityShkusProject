@@ -512,7 +512,7 @@ namespace RehabilityApplication.CoreLib
 
         private void bClientEditor_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucClientEditor(new dbClient() {Count = 1234 }, 500, 1000));
+            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucClientEditor(new dbClient() { Count = 1234 }, 500, 1000));
 
             if(result == DialogResult.OK)
             {
@@ -521,6 +521,28 @@ namespace RehabilityApplication.CoreLib
             {
             }
         }
+
+        private void bOpenExcelFile_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            ExcelFileManager.OpenExcelFile();
+        }
+
+        private void bShowAsTreeList_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CoreGlobalCommandManager.StartCommand(SourceDataCommandType.ShowAsTreeList);
+        }
+
+        private void bShowAsExcelView_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            CoreGlobalCommandManager.StartCommand(SourceDataCommandType.ShowAsExcelView);
+        }
+    }
+
+
+    public enum SourceDataCommandType
+    {
+        ShowAsTreeList,
+        ShowAsExcelView,
     }
 
 

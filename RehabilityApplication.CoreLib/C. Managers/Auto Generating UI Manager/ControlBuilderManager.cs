@@ -1,14 +1,9 @@
 ﻿using DevExpress.XtraEditors;
-using DevExpress.XtraLayout.Filtering.Templates;
-using DevExpress.XtraPrinting.Native;
-using RehabilityApplication.CoreLib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RehabilityApplication.CoreLib
@@ -53,6 +48,9 @@ namespace RehabilityApplication.CoreLib
                             break;
                         case ControlType.DateEdit:
                             CreateDateEdit(property);
+                            break;
+                        case ControlType.ComboBoxByEnum:
+                            CreateComboBoxByEnum(property);
                             break;
                         //case ControlType.DateEdit:
                         //    CreateDateEdit1(property);
@@ -543,6 +541,147 @@ namespace RehabilityApplication.CoreLib
                 Fundament.Controls.Add(toggleSwitch);
             }
         }
+
+        private static void CreateComboBoxByEnum(PropertyInfo prop)
+        {
+            IEnumerable<Attribute> instructions = from a in prop.GetCustomAttributes()
+                                                  where a is AutoGenControlAttribute
+                                                  select a;
+
+            AutoGenControlAttribute autoGenControlAttribute = instructions.First() as AutoGenControlAttribute;
+
+            Type propType = prop.PropertyType;
+            List<string> values = propType.GetDescriptionsList();
+
+            object propValue = prop.GetValue(currentObject, new object[] { });
+
+            Control previousControl = null;
+
+            if(Fundament.Controls.Count != 0)
+            {
+                previousControl = Fundament.Controls[Fundament.Controls.Count - 1];
+            }
+
+            if(autoGenControlAttribute.HeaderTitle != string.Empty)
+            {
+                LabelControl headerControl = new LabelControl()
+                {
+                    Top = previousControl == null ? 30 : previousControl.Top + previousControl.Height + offsetY,
+                    Left = 30,
+                    Text = autoGenControlAttribute.HeaderTitle,
+                    Font = new System.Drawing.Font("Arial", 18),
+                    ForeColor = Color.Red
+                };
+                Fundament.Controls.Add(headerControl);
+                previousControl = headerControl;
+            }
+
+            if(Fundament.Controls.Count != 0)
+            {
+                if(autoGenControlAttribute.IsInLine == false)
+                {
+                    LabelControl labelControl = new LabelControl()
+                    {
+                        Top = previousControl.Top + previousControl.Height + offsetY,
+                        Left = 30,
+                        Text = autoGenControlAttribute.LabelTitle,
+                        AutoSizeMode = LabelAutoSizeMode.None,
+                        Width = autoGenControlAttribute.LabelWidth
+                    };
+                    Fundament.Controls.Add(labelControl);
+                    ComboBoxEdit teControl = new ComboBoxEdit()
+                    {
+                        Top = previousControl.Top + previousControl.Height + offsetY,
+                        Left = labelControl.Left + labelControl.Width + 50,
+                        Width = autoGenControlAttribute.ControlWidth,
+                    };
+
+                    teControl.Text = propValue.ToString().GetEnumByValue(propType).ToDescription();
+                    teControl.Properties.Items.AddRange(values);
+                    teControl.DataBindings.Add(new Binding("Text", currentObject, prop.Name, false, DataSourceUpdateMode.OnPropertyChanged));
+
+                    teControl.TextChanged += (s, e) =>
+                    {
+                        prop.SetValue(currentObject, teControl.Text.GetEnumByDescription(propType));
+                    };
+
+                    Fundament.Controls.Add(teControl);
+                }
+                else
+                {
+                    LabelControl labelControl = new LabelControl()
+                    {
+                        Top = previousControl.Top,
+                        Left = previousControl.Left + previousControl.Width + offsetX,
+                        Text = autoGenControlAttribute.LabelTitle,
+                        AutoSizeMode = LabelAutoSizeMode.None,
+                        Width = autoGenControlAttribute.LabelWidth
+                    };
+                    Fundament.Controls.Add(labelControl);
+                    ComboBoxEdit teControl = new ComboBoxEdit()
+                    {
+                        Top = previousControl.Top,
+                        Left = labelControl.Left + labelControl.Width + 50,
+                        Width = autoGenControlAttribute.ControlWidth,
+                    };
+
+                    teControl.Text = propValue.ToString().GetEnumByValue(propType).ToDescription();
+                    teControl.Properties.Items.AddRange(values);
+                    teControl.DataBindings.Add(new Binding("Text", currentObject, prop.Name, false, DataSourceUpdateMode.OnPropertyChanged));
+
+                    teControl.TextChanged += (s, e) =>
+                    {
+                        prop.SetValue(currentObject, teControl.Text.GetEnumByDescription(propType));
+                    };
+
+                    Fundament.Controls.Add(teControl);
+                }
+            }
+            else
+            {
+                LabelControl labelControl = new LabelControl()
+                {
+                    Top = 30,
+                    Left = 30,
+                    Text = autoGenControlAttribute.LabelTitle,
+                    AutoSizeMode = LabelAutoSizeMode.None,
+                    Width = autoGenControlAttribute.LabelWidth
+                };
+                Fundament.Controls.Add(labelControl);
+                ComboBoxEdit teControl = new ComboBoxEdit()
+                {
+                    Top = 30,
+                    Left = labelControl.Left + labelControl.Width + 50,
+                    Width = autoGenControlAttribute.ControlWidth,
+                };
+
+                teControl.Text = propValue.ToString().GetEnumByValue(propType).ToDescription();
+                teControl.Properties.Items.AddRange(values);
+                teControl.DataBindings.Add(new Binding("Text", currentObject, prop.Name, false, DataSourceUpdateMode.OnPropertyChanged));
+
+                teControl.TextChanged += (s, e) =>
+                {
+                    prop.SetValue(currentObject, teControl.Text.GetEnumByDescription(propType));
+                };
+
+                Fundament.Controls.Add(teControl);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     //private static void CreateDateEdit1(PropertyInfo prop)

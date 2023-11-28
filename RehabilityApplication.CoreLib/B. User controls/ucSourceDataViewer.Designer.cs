@@ -13,7 +13,7 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if(disposing && (components != null))
             {
                 components.Dispose();
             }
@@ -28,30 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
-            spreadsheetControl1 = new DevExpress.XtraSpreadsheet.SpreadsheetControl();
+            Table = new DevExpress.XtraSpreadsheet.SpreadsheetControl();
+            TL = new DevExpress.XtraTreeList.TreeList();
+            ((System.ComponentModel.ISupportInitialize)TL).BeginInit();
             SuspendLayout();
             // 
-            // spreadsheetControl1
+            // Table
             // 
-            spreadsheetControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            spreadsheetControl1.Location = new System.Drawing.Point(0, 0);
-            spreadsheetControl1.Name = "spreadsheetControl1";
-            spreadsheetControl1.Size = new System.Drawing.Size(467, 350);
-            spreadsheetControl1.TabIndex = 0;
-            spreadsheetControl1.Text = "spreadsheetControl1";
+            Table.Dock = System.Windows.Forms.DockStyle.Fill;
+            Table.Location = new System.Drawing.Point(0, 0);
+            Table.Name = "Table";
+            Table.Size = new System.Drawing.Size(467, 350);
+            Table.TabIndex = 0;
+            Table.Text = "Text";
+            // 
+            // TL
+            // 
+            TL.Dock = System.Windows.Forms.DockStyle.Fill;
+            TL.Location = new System.Drawing.Point(0, 0);
+            TL.Name = "TL";
+            TL.Size = new System.Drawing.Size(467, 350);
+            TL.TabIndex = 1;
             // 
             // ucSourceDataViewer
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(spreadsheetControl1);
+            Controls.Add(Table);
+            Controls.Add(TL);
             Name = "ucSourceDataViewer";
             Size = new System.Drawing.Size(467, 350);
+            ((System.ComponentModel.ISupportInitialize)TL).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DevExpress.XtraSpreadsheet.SpreadsheetControl spreadsheetControl1;
+        private DevExpress.XtraSpreadsheet.SpreadsheetControl Table;
+        private DevExpress.XtraTreeList.TreeList TL;
     }
 }

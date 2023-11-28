@@ -29,6 +29,7 @@ namespace RehabilityApplication.CoreLib
         TextBox,
         ToggleSwitch,
         ComboBox,
+        ComboBoxByEnum,
         Button,
         DateEdit,
     }

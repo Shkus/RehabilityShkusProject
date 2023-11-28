@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,5 +64,30 @@ namespace RehabilityApplication.CoreLib
         LoadDataComplete,
         DeleteRecordPlease,
         DeleteRecordPleaseAsChange,
+    }
+
+
+
+
+    public enum DevelopersType
+    {
+        [Description("Выбрать...")]
+        NotSelected,
+        [Description("Джуниор")]
+        Junior,
+        [Description("Старший джун")]
+        JuniorPlus,
+        [Description("Младший мидл")]
+        MiddleMinus,
+        [Description("Мидл")]
+        Middle,
+        [Description("Старший мидл")]
+        MiddlePlus,
+        [Description("Сеньор")]
+        Senior,
+        [Description("Старший сеньор")]
+        SeniorPlus,
+        [Description("Эксперт")]
+        SeniorOverFlow,
     }
 }

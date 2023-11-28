@@ -1,7 +1,4 @@
-﻿using DevExpress.Charts.Native;
-using DevExpress.DataAccess.Web.Native;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 
@@ -26,6 +23,8 @@ namespace RehabilityApplication.CoreLib
 
 
 
+        [AutoGenControl(controlType = ControlType.ComboBoxByEnum, ControlWidth = 200, LabelTitle = "Опыт разработки", LabelWidth = 100)]
+        public DevelopersType DevelopersType { get; set;}
 
 
         [AutoGenControl(controlType = ControlType.DateEdit, ControlWidth = 100, LabelTitle = "Дата начала контракта", LabelWidth = 150, HeaderTitle = "Календарь")]

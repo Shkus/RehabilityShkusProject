@@ -59,6 +59,10 @@
             bDocumentType1 = new DevExpress.XtraBars.BarButtonItem();
             bDocumentType2 = new DevExpress.XtraBars.BarButtonItem();
             bDocumentType3 = new DevExpress.XtraBars.BarButtonItem();
+            bClientEditor = new DevExpress.XtraBars.BarButtonItem();
+            bOpenExcelFile = new DevExpress.XtraBars.BarButtonItem();
+            bShowAsExcelView = new DevExpress.XtraBars.BarButtonItem();
+            bShowAsTreeList = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -74,7 +78,6 @@
             RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
             PC = new DevExpress.XtraEditors.PanelControl();
-            bClientEditor = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PC).BeginInit();
             SuspendLayout();
@@ -85,9 +88,9 @@
             RC.CaptionBarItemLinks.Add(bRusLang);
             RC.CaptionBarItemLinks.Add(bEngLang);
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor, bOpenExcelFile, bShowAsExcelView, bShowAsTreeList });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 31;
+            RC.MaxItemId = 34;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk, pageContracts, pageSQLite });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -318,6 +321,38 @@
             bDocumentType3.Name = "bDocumentType3";
             bDocumentType3.ItemClick += bDocumentType3_ItemClick;
             // 
+            // bClientEditor
+            // 
+            bClientEditor.Caption = "Открыть редактор клиента";
+            bClientEditor.Id = 30;
+            bClientEditor.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bClientEditor.ImageOptions.SvgImage");
+            bClientEditor.Name = "bClientEditor";
+            bClientEditor.ItemClick += bClientEditor_ItemClick;
+            // 
+            // bOpenExcelFile
+            // 
+            bOpenExcelFile.Caption = "Открыть Excel-файл";
+            bOpenExcelFile.Id = 31;
+            bOpenExcelFile.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bOpenExcelFile.ImageOptions.SvgImage");
+            bOpenExcelFile.Name = "bOpenExcelFile";
+            bOpenExcelFile.ItemClick += bOpenExcelFile_ItemClick;
+            // 
+            // bShowAsExcelView
+            // 
+            bShowAsExcelView.Caption = "Отобразить как Excel";
+            bShowAsExcelView.Id = 32;
+            bShowAsExcelView.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowAsExcelView.ImageOptions.SvgImage");
+            bShowAsExcelView.Name = "bShowAsExcelView";
+            bShowAsExcelView.ItemClick += bShowAsExcelView_ItemClick;
+            // 
+            // bShowAsTreeList
+            // 
+            bShowAsTreeList.Caption = "Отобразить как TreeList";
+            bShowAsTreeList.Id = 33;
+            bShowAsTreeList.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowAsTreeList.ImageOptions.SvgImage");
+            bShowAsTreeList.Name = "bShowAsTreeList";
+            bShowAsTreeList.ItemClick += bShowAsTreeList_ItemClick;
+            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -348,6 +383,9 @@
             // 
             // groupFromExcelFile
             // 
+            groupFromExcelFile.ItemLinks.Add(bOpenExcelFile);
+            groupFromExcelFile.ItemLinks.Add(bShowAsExcelView);
+            groupFromExcelFile.ItemLinks.Add(bShowAsTreeList);
             groupFromExcelFile.Name = "groupFromExcelFile";
             groupFromExcelFile.Text = "Источник Excel";
             // 
@@ -427,14 +465,6 @@
             PC.Size = new System.Drawing.Size(873, 280);
             PC.TabIndex = 2;
             // 
-            // bClientEditor
-            // 
-            bClientEditor.Caption = "Открыть редактор клиента";
-            bClientEditor.Id = 30;
-            bClientEditor.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bClientEditor.ImageOptions.SvgImage");
-            bClientEditor.Name = "bClientEditor";
-            bClientEditor.ItemClick += bClientEditor_ItemClick;
-            // 
             // MainForm
             // 
             AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
@@ -500,5 +530,8 @@
         private DevExpress.XtraBars.BarButtonItem bDocumentType2;
         private DevExpress.XtraBars.BarButtonItem bDocumentType3;
         private DevExpress.XtraBars.BarButtonItem bClientEditor;
+        private DevExpress.XtraBars.BarButtonItem bOpenExcelFile;
+        private DevExpress.XtraBars.BarButtonItem bShowAsExcelView;
+        private DevExpress.XtraBars.BarButtonItem bShowAsTreeList;
     }
 }

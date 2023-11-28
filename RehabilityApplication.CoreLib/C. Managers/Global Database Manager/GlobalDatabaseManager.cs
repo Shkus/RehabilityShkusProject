@@ -17,9 +17,6 @@ namespace RehabilityApplication.CoreLib
         public static List<ITree> treeListItemReestr = new List<ITree>();
         public static List<dbClientInReestr> clientIR = new List<dbClientInReestr>();
 
-
-
-
         public static void Init()
         {
             // Добавляем пользователей в телеграм бота.
@@ -383,11 +380,6 @@ namespace RehabilityApplication.CoreLib
             treeListItems.Add(clientIR1);
             treeListItems.Add(clientIR2);
             treeListItems.Add(clientIR3);
-
-
-
-
-
 		}
 
     }
