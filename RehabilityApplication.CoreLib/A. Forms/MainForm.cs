@@ -524,7 +524,7 @@ namespace RehabilityApplication.CoreLib
 
         private void bOpenExcelFile_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            ExcelFileManager.OpenExcelFile();
+            JuniorExcelFileManager.OpenExcelFile();
         }
 
         private void bShowAsTreeList_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -536,6 +536,29 @@ namespace RehabilityApplication.CoreLib
         {
             CoreGlobalCommandManager.StartCommand(SourceDataCommandType.ShowAsExcelView);
         }
+
+        private void bShowProducts_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            //// Middle
+            //ProductHeader ph = new ProductHeader();
+            //MiddleExcelUniversalFileManager.OpenExcelFile(ph);
+
+            //// Senior
+            ProductHeader ph = new ProductHeader();
+            SeniorExcelUniversalFileManager<ProductItem, ProductHeader>.OpenExcelFile(ph);
+        }
+
+        private void bShowClientSimplified_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            TableItem2Header ph = new TableItem2Header();
+            SeniorExcelUniversalFileManager<TableItem2, TableItem2Header>.OpenExcelFile(ph);
+        }
+
+        private void bShowEO_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+			EOHeader ph = new EOHeader();
+			SeniorExcelUniversalFileManager<EOItem, EOHeader>.OpenExcelFile(ph);
+		}
     }
 
 

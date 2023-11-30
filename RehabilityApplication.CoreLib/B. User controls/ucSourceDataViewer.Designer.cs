@@ -45,8 +45,10 @@
             // TL
             // 
             TL.Dock = System.Windows.Forms.DockStyle.Fill;
+            TL.KeyFieldName = "IDN ";
             TL.Location = new System.Drawing.Point(0, 0);
             TL.Name = "TL";
+            TL.ParentFieldName = "ParentIDN";
             TL.Size = new System.Drawing.Size(467, 350);
             TL.TabIndex = 1;
             // 
@@ -54,8 +56,8 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(Table);
             Controls.Add(TL);
+            Controls.Add(Table);
             Name = "ucSourceDataViewer";
             Size = new System.Drawing.Size(467, 350);
             ((System.ComponentModel.ISupportInitialize)TL).EndInit();

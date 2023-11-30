@@ -8,7 +8,7 @@ using DevExpress.Spreadsheet;
 
 namespace RehabilityApplication.CoreLib
 {
-    public static class ExcelFileManager
+    public static class JuniorExcelFileManager
     {
         private static string excelFileName;
         public static List<ExcelRowItem> Data = new List<ExcelRowItem>();

@@ -23,13 +23,13 @@ namespace RehabilityApplication.CoreLib
                 if(e.Command is SourceDataCommandType.ShowAsTreeList)
                 {
                     TL.BringToFront();
-                    TL.DataSource = ExcelFileManager.Data;
+                    TL.DataSource = JuniorExcelFileManager.Data;
                 }
 
                 if(e.Command is SourceDataCommandType.ShowAsExcelView)
                 {
                     Table.BringToFront();
-                    List<ExcelRowItem> data = ExcelFileManager.Data;
+                    List<ExcelRowItem> data = JuniorExcelFileManager.Data;
 
                     Table.ActiveWorksheet.Cells[0, 0].Value = "Дата";
                     Table.ActiveWorksheet.Cells[0, 1].Value = "СНИЛС";
@@ -63,6 +63,17 @@ namespace RehabilityApplication.CoreLib
                         Table.ActiveWorksheet.Columns[i].AutoFit();
                     }
 
+                }
+            };
+
+
+            CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
+            {
+                if(e.Command is ExcelReadDataCommandType.GetDataComplete)
+                {
+                    TL.BringToFront();
+                    TL.DataSource = e.Data;
+                    TL.RefreshDataSource();
                 }
             };
         }

@@ -63,6 +63,9 @@
             bOpenExcelFile = new DevExpress.XtraBars.BarButtonItem();
             bShowAsExcelView = new DevExpress.XtraBars.BarButtonItem();
             bShowAsTreeList = new DevExpress.XtraBars.BarButtonItem();
+            bShowProducts = new DevExpress.XtraBars.BarButtonItem();
+            bShowClientSimplified = new DevExpress.XtraBars.BarButtonItem();
+            bShowEO = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -88,9 +91,9 @@
             RC.CaptionBarItemLinks.Add(bRusLang);
             RC.CaptionBarItemLinks.Add(bEngLang);
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor, bOpenExcelFile, bShowAsExcelView, bShowAsTreeList });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor, bOpenExcelFile, bShowAsExcelView, bShowAsTreeList, bShowProducts, bShowClientSimplified, bShowEO });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 34;
+            RC.MaxItemId = 37;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk, pageContracts, pageSQLite });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -353,6 +356,30 @@
             bShowAsTreeList.Name = "bShowAsTreeList";
             bShowAsTreeList.ItemClick += bShowAsTreeList_ItemClick;
             // 
+            // bShowProducts
+            // 
+            bShowProducts.Caption = "Таблица продуктов";
+            bShowProducts.Id = 34;
+            bShowProducts.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowProducts.ImageOptions.SvgImage");
+            bShowProducts.Name = "bShowProducts";
+            bShowProducts.ItemClick += bShowProducts_ItemClick;
+            // 
+            // bShowClientSimplified
+            // 
+            bShowClientSimplified.Caption = "Упрощенные данные клиентов";
+            bShowClientSimplified.Id = 35;
+            bShowClientSimplified.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowClientSimplified.ImageOptions.SvgImage");
+            bShowClientSimplified.Name = "bShowClientSimplified";
+            bShowClientSimplified.ItemClick += bShowClientSimplified_ItemClick;
+            // 
+            // bShowEO
+            // 
+            bShowEO.Caption = "ЭО";
+            bShowEO.Id = 36;
+            bShowEO.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bShowEO.ImageOptions.SvgImage");
+            bShowEO.Name = "bShowEO";
+            bShowEO.ItemClick += bShowEO_ItemClick;
+            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -386,6 +413,9 @@
             groupFromExcelFile.ItemLinks.Add(bOpenExcelFile);
             groupFromExcelFile.ItemLinks.Add(bShowAsExcelView);
             groupFromExcelFile.ItemLinks.Add(bShowAsTreeList);
+            groupFromExcelFile.ItemLinks.Add(bShowProducts);
+            groupFromExcelFile.ItemLinks.Add(bShowClientSimplified);
+            groupFromExcelFile.ItemLinks.Add(bShowEO);
             groupFromExcelFile.Name = "groupFromExcelFile";
             groupFromExcelFile.Text = "Источник Excel";
             // 
@@ -448,10 +478,10 @@
             // 
             // RSB
             // 
-            RSB.Location = new System.Drawing.Point(0, 442);
+            RSB.Location = new System.Drawing.Point(0, 440);
             RSB.Name = "RSB";
             RSB.Ribbon = RC;
-            RSB.Size = new System.Drawing.Size(873, 24);
+            RSB.Size = new System.Drawing.Size(873, 26);
             // 
             // DLAF
             // 
@@ -462,7 +492,7 @@
             PC.Dock = System.Windows.Forms.DockStyle.Fill;
             PC.Location = new System.Drawing.Point(0, 162);
             PC.Name = "PC";
-            PC.Size = new System.Drawing.Size(873, 280);
+            PC.Size = new System.Drawing.Size(873, 278);
             PC.TabIndex = 2;
             // 
             // MainForm
@@ -533,5 +563,8 @@
         private DevExpress.XtraBars.BarButtonItem bOpenExcelFile;
         private DevExpress.XtraBars.BarButtonItem bShowAsExcelView;
         private DevExpress.XtraBars.BarButtonItem bShowAsTreeList;
+        private DevExpress.XtraBars.BarButtonItem bShowProducts;
+        private DevExpress.XtraBars.BarButtonItem bShowClientSimplified;
+        private DevExpress.XtraBars.BarButtonItem bShowEO;
     }
 }
