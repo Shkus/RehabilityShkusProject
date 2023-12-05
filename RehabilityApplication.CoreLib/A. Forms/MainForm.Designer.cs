@@ -81,6 +81,7 @@
             RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
             PC = new DevExpress.XtraEditors.PanelControl();
+            bDocxWithImage = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PC).BeginInit();
             SuspendLayout();
@@ -91,9 +92,9 @@
             RC.CaptionBarItemLinks.Add(bRusLang);
             RC.CaptionBarItemLinks.Add(bEngLang);
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor, bOpenExcelFile, bShowAsExcelView, bShowAsTreeList, bShowProducts, bShowClientSimplified, bShowEO });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor, bOpenExcelFile, bShowAsExcelView, bShowAsTreeList, bShowProducts, bShowClientSimplified, bShowEO, bDocxWithImage });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 37;
+            RC.MaxItemId = 38;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk, pageContracts, pageSQLite });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -431,6 +432,7 @@
             groupDocumentHandles.ItemLinks.Add(bDocumentType1);
             groupDocumentHandles.ItemLinks.Add(bDocumentType2);
             groupDocumentHandles.ItemLinks.Add(bDocumentType3);
+            groupDocumentHandles.ItemLinks.Add(bDocxWithImage);
             groupDocumentHandles.Name = "groupDocumentHandles";
             groupDocumentHandles.Text = "Обработка";
             // 
@@ -478,10 +480,10 @@
             // 
             // RSB
             // 
-            RSB.Location = new System.Drawing.Point(0, 440);
+            RSB.Location = new System.Drawing.Point(0, 442);
             RSB.Name = "RSB";
             RSB.Ribbon = RC;
-            RSB.Size = new System.Drawing.Size(873, 26);
+            RSB.Size = new System.Drawing.Size(873, 24);
             // 
             // DLAF
             // 
@@ -492,8 +494,16 @@
             PC.Dock = System.Windows.Forms.DockStyle.Fill;
             PC.Location = new System.Drawing.Point(0, 162);
             PC.Name = "PC";
-            PC.Size = new System.Drawing.Size(873, 278);
+            PC.Size = new System.Drawing.Size(873, 280);
             PC.TabIndex = 2;
+            // 
+            // bDocxWithImage
+            // 
+            bDocxWithImage.Caption = "Документ с изображением и таблицей";
+            bDocxWithImage.Id = 37;
+            bDocxWithImage.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocxWithImage.ImageOptions.SvgImage");
+            bDocxWithImage.Name = "bDocxWithImage";
+            bDocxWithImage.ItemClick += bDocxWithImage_ItemClick;
             // 
             // MainForm
             // 
@@ -566,5 +576,6 @@
         private DevExpress.XtraBars.BarButtonItem bShowProducts;
         private DevExpress.XtraBars.BarButtonItem bShowClientSimplified;
         private DevExpress.XtraBars.BarButtonItem bShowEO;
+        private DevExpress.XtraBars.BarButtonItem bDocxWithImage;
     }
 }

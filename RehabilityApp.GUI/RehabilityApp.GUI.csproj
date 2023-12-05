@@ -3,8 +3,9 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWindowsForms>False</UseWindowsForms>
+    <UseWindowsForms>True</UseWindowsForms>
     <Platforms>AnyCPU;x64</Platforms>
+    <UseWPF>False</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>

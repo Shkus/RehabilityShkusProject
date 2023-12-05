@@ -556,9 +556,92 @@ namespace RehabilityApplication.CoreLib
 
         private void bShowEO_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-			EOHeader ph = new EOHeader();
-			SeniorExcelUniversalFileManager<EOItem, EOHeader>.OpenExcelFile(ph);
-		}
+            EOHeader ph = new EOHeader();
+            SeniorExcelUniversalFileManager<EOItem, EOHeader>.OpenExcelFile(ph);
+        }
+
+        private void bDocxWithImage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            ResumeItem ri = new ResumeItem()
+            {
+                Birthday = "06.04.1983",
+                FIO = "Пашин Евгений Юрьевич",
+                Post = "Старший разработчик",
+                Avatar = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Рабочий стол\Шаблоны\Aatar.jpg"),
+                WorkPlaces = new List<WorkPlaceItem>()
+                {
+                    new WorkPlaceItem()
+                    {
+                        Duty = "Математическое моделирование процесса разрушения образцов",
+                        StartDate = "07.2005",
+                        EndDate = "09.2005",
+                        Postbefore = "Лаборант",
+                        Workplace = "Основание-2"
+                    },
+                    new WorkPlaceItem()
+                    {
+                        Duty = "Служу Отечеству",
+                        StartDate = "12.2005",
+                        EndDate = "12.2006",
+                        Postbefore = "Солдат",
+                        Workplace = "Армия"
+                    },
+                    new WorkPlaceItem()
+                    {
+                        Duty = "Конструирование, написание программ для станков, автоматизация технологических процессов",
+                        StartDate = "12.2006",
+                        EndDate = "03.2015",
+                        Postbefore = "Конструктор",
+                        Workplace = "Основание-2"
+                    },
+                    new WorkPlaceItem()
+                    {
+                        Duty = "Разработка приложений",
+                        StartDate = "02.2018",
+                        EndDate = "02.2022",
+                        Postbefore = "Программист 2 категории",
+                        Workplace = "Галургия"
+                    },
+                    new WorkPlaceItem()
+                    {
+                        Duty = "Разработка приложений",
+                        StartDate = "02.2022",
+                        EndDate = "06.2023",
+                        Postbefore = "Программист 2 категории",
+                        Workplace = "Роботех"
+                    },
+                    new WorkPlaceItem()
+                    {
+                        Duty = "Разработка технологичсеких проектов",
+                        StartDate = "06.2023",
+                        EndDate = "сей день",
+                        Postbefore = "Главный специалист",
+                        Workplace = "РН-БашНИПИНефть"
+                    },
+                }
+            };
+
+            ri.GenerateWithTables<ResumeItem, WorkPlaceItem>();
+
+
+            ActItem ai = new ActItem()
+            {
+                Birthday = "545645456",
+                Code = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Изображения\avalonia-logo-128.png"),
+                FIO = "sdasdsf",
+                Snils = "012345678901",
+                Addresses = new List<AddressItem>()
+                {
+                    new AddressItem() { Apartment = "12", City = "Пермь", Count = "120", House = "44", Street = "Мира" },
+                    new AddressItem() { Apartment = "22", City = "Пермь", Count = "240", House = "1", Street = "Стахановская" },
+                    new AddressItem() { Apartment = "32", City = "Пермь", Count = "360", House = "7", Street = "Борчанинова" },
+                    new AddressItem() { Apartment = "42", City = "Пермь", Count = "480", House = "12", Street = "Революции" },
+                }
+            };
+
+             ai.GenerateWithTables<ActItem, AddressItem>();
+
+        }
     }
 
 
