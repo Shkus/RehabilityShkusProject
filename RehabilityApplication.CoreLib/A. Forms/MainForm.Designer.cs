@@ -66,6 +66,7 @@
             bShowProducts = new DevExpress.XtraBars.BarButtonItem();
             bShowClientSimplified = new DevExpress.XtraBars.BarButtonItem();
             bShowEO = new DevExpress.XtraBars.BarButtonItem();
+            bDocxWithImage = new DevExpress.XtraBars.BarButtonItem();
             pageDatabase = new DevExpress.XtraBars.Ribbon.RibbonPage();
             groupDatabase = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             pageSourceData = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -81,7 +82,9 @@
             RSB = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             DLAF = new DevExpress.LookAndFeel.DefaultLookAndFeel(components);
             PC = new DevExpress.XtraEditors.PanelControl();
-            bDocxWithImage = new DevExpress.XtraBars.BarButtonItem();
+            grpZip = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            bZipFolder = new DevExpress.XtraBars.BarButtonItem();
+            bUnzipFile = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)RC).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PC).BeginInit();
             SuspendLayout();
@@ -92,9 +95,9 @@
             RC.CaptionBarItemLinks.Add(bRusLang);
             RC.CaptionBarItemLinks.Add(bEngLang);
             RC.ExpandCollapseItem.Id = 0;
-            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor, bOpenExcelFile, bShowAsExcelView, bShowAsTreeList, bShowProducts, bShowClientSimplified, bShowEO, bDocxWithImage });
+            RC.Items.AddRange(new DevExpress.XtraBars.BarItem[] { bAuthorizationFormShow, bRusLang, bEngLang, RC.ExpandCollapseItem, RC.SearchEditItem, Skins, SkinPalettes, btnShowSplashScreen, btnGenerateDocuments, btnOpenFileDialog, bShowYesNoDialog, bVasyaQuestion, bIvanQuestion, bShowMessage, bVasiliyOkMessage, bIvanOkMessage, bCreateFolderOnYandexDisk, bSaveDatabaseInYandexDisk, bClearClients, bCreateDatabase, bCreateTable, bAddRecord, bShowDatabase, bDeleteRecord, tsIsChanges, bSync, bMapping, bDocumentType1, bDocumentType2, bDocumentType3, bClientEditor, bOpenExcelFile, bShowAsExcelView, bShowAsTreeList, bShowProducts, bShowClientSimplified, bShowEO, bDocxWithImage, bZipFolder, bUnzipFile });
             RC.Location = new System.Drawing.Point(0, 0);
-            RC.MaxItemId = 38;
+            RC.MaxItemId = 40;
             RC.Name = "RC";
             RC.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { pageDatabase, pageSourceData, pageDocuments, pageYandexDisk, pageContracts, pageSQLite });
             RC.QuickToolbarItemLinks.Add(Skins);
@@ -381,6 +384,14 @@
             bShowEO.Name = "bShowEO";
             bShowEO.ItemClick += bShowEO_ItemClick;
             // 
+            // bDocxWithImage
+            // 
+            bDocxWithImage.Caption = "Документ с изображением и таблицей";
+            bDocxWithImage.Id = 37;
+            bDocxWithImage.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocxWithImage.ImageOptions.SvgImage");
+            bDocxWithImage.Name = "bDocxWithImage";
+            bDocxWithImage.ItemClick += bDocxWithImage_ItemClick;
+            // 
             // pageDatabase
             // 
             pageDatabase.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDatabase });
@@ -422,7 +433,7 @@
             // 
             // pageDocuments
             // 
-            pageDocuments.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDocumentHandles });
+            pageDocuments.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { groupDocumentHandles, grpZip });
             pageDocuments.Name = "pageDocuments";
             pageDocuments.Text = "Документы";
             // 
@@ -497,13 +508,28 @@
             PC.Size = new System.Drawing.Size(873, 280);
             PC.TabIndex = 2;
             // 
-            // bDocxWithImage
+            // grpZip
             // 
-            bDocxWithImage.Caption = "Документ с изображением и таблицей";
-            bDocxWithImage.Id = 37;
-            bDocxWithImage.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bDocxWithImage.ImageOptions.SvgImage");
-            bDocxWithImage.Name = "bDocxWithImage";
-            bDocxWithImage.ItemClick += bDocxWithImage_ItemClick;
+            grpZip.ItemLinks.Add(bZipFolder);
+            grpZip.ItemLinks.Add(bUnzipFile);
+            grpZip.Name = "grpZip";
+            grpZip.Text = "Архивация";
+            // 
+            // bZipFolder
+            // 
+            bZipFolder.Caption = "Архивация папки";
+            bZipFolder.Id = 38;
+            bZipFolder.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bZipFolder.ImageOptions.SvgImage");
+            bZipFolder.Name = "bZipFolder";
+            bZipFolder.ItemClick += bZipFolder_ItemClick;
+            // 
+            // bUnzipFile
+            // 
+            bUnzipFile.Caption = "Распаковка архива";
+            bUnzipFile.Id = 39;
+            bUnzipFile.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("bUnzipFile.ImageOptions.SvgImage");
+            bUnzipFile.Name = "bUnzipFile";
+            bUnzipFile.ItemClick += bUnzipFile_ItemClick;
             // 
             // MainForm
             // 
@@ -577,5 +603,8 @@
         private DevExpress.XtraBars.BarButtonItem bShowClientSimplified;
         private DevExpress.XtraBars.BarButtonItem bShowEO;
         private DevExpress.XtraBars.BarButtonItem bDocxWithImage;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup grpZip;
+        private DevExpress.XtraBars.BarButtonItem bZipFolder;
+        private DevExpress.XtraBars.BarButtonItem bUnzipFile;
     }
 }

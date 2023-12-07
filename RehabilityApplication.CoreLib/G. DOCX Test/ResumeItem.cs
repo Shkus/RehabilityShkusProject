@@ -9,6 +9,8 @@ namespace RehabilityApplication.CoreLib
         public string Id { get; set; } = Guid.NewGuid().ToString(); 
         [AutoReplace("#FIO#")]
         public string FIO { get; set; }
+        [AutoReplace("#COST#")]
+        public string Cost { get; set; }
         [AutoReplace("#POST#")]
         public string Post { get; set; }   
         [AutoReplace("#BIRTHDAY#")]

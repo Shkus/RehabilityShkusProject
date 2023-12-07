@@ -543,9 +543,12 @@ namespace RehabilityApplication.CoreLib
             //ProductHeader ph = new ProductHeader();
             //MiddleExcelUniversalFileManager.OpenExcelFile(ph);
 
-            //// Senior
-            ProductHeader ph = new ProductHeader();
-            SeniorExcelUniversalFileManager<ProductItem, ProductHeader>.OpenExcelFile(ph);
+            ////////// Senior
+            //////ProductHeader ph = new ProductHeader();
+            //////SeniorExcelUniversalFileManager<ProductItem, ProductHeader>.OpenExcelFile(ph);
+
+            EoFillItemHeader ph = new EoFillItemHeader();
+            SeniorExcelUniversalFileManager<EoFillItem, EoFillItemHeader>.OpenExcelFile(ph);
         }
 
         private void bShowClientSimplified_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -567,7 +570,8 @@ namespace RehabilityApplication.CoreLib
                 Birthday = "06.04.1983",
                 FIO = "Пашин Евгений Юрьевич",
                 Post = "Старший разработчик",
-                Avatar = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Рабочий стол\Шаблоны\Aatar.jpg"),
+                Cost = "от 300 000 рублей",
+                Avatar = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Рабочий стол\Work\Images\IMG_20200224_162454.jpg"),
                 WorkPlaces = new List<WorkPlaceItem>()
                 {
                     new WorkPlaceItem()
@@ -614,7 +618,7 @@ namespace RehabilityApplication.CoreLib
                     {
                         Duty = "Разработка технологичсеких проектов",
                         StartDate = "06.2023",
-                        EndDate = "сей день",
+                        EndDate = "настоящее время",
                         Postbefore = "Главный специалист",
                         Workplace = "РН-БашНИПИНефть"
                     },
@@ -624,23 +628,40 @@ namespace RehabilityApplication.CoreLib
             ri.GenerateWithTables<ResumeItem, WorkPlaceItem>();
 
 
-            ActItem ai = new ActItem()
+            //ActItem ai = new ActItem()
+            //{
+            //    Birthday = "545645456",
+            //    Code = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Изображения\avalonia-logo-128.png"),
+            //    FIO = "sdasdsf",
+            //    Snils = "012345678901",
+            //    Addresses = new List<AddressItem>()
+            //    {
+            //        new AddressItem() { Apartment = "12", City = "Пермь", Count = "120", House = "44", Street = "Мира" },
+            //        new AddressItem() { Apartment = "22", City = "Пермь", Count = "240", House = "1", Street = "Стахановская" },
+            //        new AddressItem() { Apartment = "32", City = "Пермь", Count = "360", House = "7", Street = "Борчанинова" },
+            //        new AddressItem() { Apartment = "42", City = "Пермь", Count = "480", House = "12", Street = "Революции" },
+            //    }
+            //};
+
+            // ai.GenerateWithTables<ActItem, AddressItem>();
+
+        }
+
+        private void bZipFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            SplashScreenManager.ShowSkinSplashScreen("");
+            ZipManager.ZipFolder();
+            //ZipManager.ZipFiles();
+        }
+
+        private void bUnzipFile_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Task.Run(() =>
             {
-                Birthday = "545645456",
-                Code = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Изображения\avalonia-logo-128.png"),
-                FIO = "sdasdsf",
-                Snils = "012345678901",
-                Addresses = new List<AddressItem>()
-                {
-                    new AddressItem() { Apartment = "12", City = "Пермь", Count = "120", House = "44", Street = "Мира" },
-                    new AddressItem() { Apartment = "22", City = "Пермь", Count = "240", House = "1", Street = "Стахановская" },
-                    new AddressItem() { Apartment = "32", City = "Пермь", Count = "360", House = "7", Street = "Борчанинова" },
-                    new AddressItem() { Apartment = "42", City = "Пермь", Count = "480", House = "12", Street = "Революции" },
-                }
-            };
-
-             ai.GenerateWithTables<ActItem, AddressItem>();
-
+                SplashScreenManager.ShowFluentSplashScreen("");
+                ZipManager.UnzipFile();
+                SplashScreenManager.CloseForm();
+            });
         }
     }
 

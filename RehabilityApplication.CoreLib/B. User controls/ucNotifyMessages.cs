@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraSplashScreen;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,10 +27,16 @@ namespace RehabilityApplication.CoreLib
                 {
                     messages.Add(new MessageItem { Text = e.Text });
 
+                    SplashScreenManager.Default.SetWaitFormDescription(e.Text);
+
+                    //Application.DoEvents();
+
                     BeginInvoke(new MethodInvoker(delegate
                     {
+                        //tlNotifyMessageList.SuspendLayout();
                         tlNotifyMessageList.DataSource = messages;
                         tlNotifyMessageList.RefreshDataSource();
+                        //tlNotifyMessageList.ResumeLayout();
                     }));
                 };
             };

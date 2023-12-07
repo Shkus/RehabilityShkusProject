@@ -1,17 +1,12 @@
-﻿using DevExpress.DataAccess.Native.Excel;
-using DevExpress.DocumentServices.ServiceModel.DataContracts;
-using DevExpress.Mvvm.Native;
-using DevExpress.XtraReports.Wizards.Templates;
+﻿using DevExpress.XtraPrinting;
 using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.API.Native;
-using DevExpress.XtraRichEdit.Model;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Documents;
-using System.Xml.Linq;
 using SearchOptions = DevExpress.XtraRichEdit.API.Native.SearchOptions;
 using Table = DevExpress.XtraRichEdit.API.Native.Table;
 
@@ -77,9 +72,9 @@ namespace RehabilityApplication.CoreLib
                                 DocumentPosition position = rangeForInsertImage.Start;
                                 Bitmap piValue = (Bitmap)pi.GetValue(document);
                                 DocumentImage di = docServer.Document.Images.Insert(position, piValue);
-                                di.ScaleX = 1f;
-                                //di.ScaleY = (float)1;
-                                di.ScaleY = 1f;
+
+                                di.ScaleX = 0.15f;
+                                di.ScaleY = 0.15f;
 
                                 docServer.Document.Delete(rangeForInsertImage);
                             }
@@ -88,17 +83,26 @@ namespace RehabilityApplication.CoreLib
                         {
                             List<W> workPlaces = (List<W>)pi.GetValue(document);
 
-                            //var tables = docServer.Document.Tables;
+                            // Поиск номера таблицы, в которой хранятся построчные данные
+                            List<PropertyInfo> patternPlace = workPlaces.First().GetType().GetRuntimeProperties().ToList();
+                            string patternPlaceReplaceParameterName = patternPlace.First().GetCustomAttribute<AutoReplaceAttribute>().ParameterName.ToString();
+                            CoreGlobalCommandManager.StartCommand(null, $"Поисковый паттерн: {patternPlaceReplaceParameterName}");
+                            List<DocumentRange> ranges = docServer.Document.FindAll(patternPlaceReplaceParameterName, SearchOptions.None).ToList();
 
-                            //DocumentRange[] rangesWorkplace = docServer.Document.FindAll("#WORKPLACE#", SearchOptions.None);
+                            DocumentRange first = ranges.First();
+                            List<Table> tables = docServer.Document.Tables.ToList();
 
-                            //DevExpress.XtraRichEdit.API.Native.TableCell tablesWithWorkplace = docServer.Document.Tables.GetTableCell(rangesWorkplace.First().Start);
+                            int tableIndex = -1;
+                            CoreGlobalCommandManager.StartCommand(null, "Значение индекса таблицы до поиска = -1");
 
-                            //var tableIndex = docServer.Document.Tables.IndexOf(tablesWithWorkplace.First());
-
-                            //CoreGlobalCommandManager.StartCommand(null, tableIndex.ToString());
-
-                            int tableIndex = 2;
+                            foreach(var tbl in tables)
+                            {
+                                if(tbl.Range.Start < first.Start && tbl.Range.End > first.End)
+                                {
+                                    tableIndex = tables.IndexOf(tbl);
+                                    CoreGlobalCommandManager.StartCommand(null, $"Значение индекса таблицы после поиска = {tableIndex}");
+                                }
+                            }
 
                             Table table = docServer.Document.Tables[tableIndex];
 
@@ -113,8 +117,6 @@ namespace RehabilityApplication.CoreLib
                                 cellValues.Add(value);
                                 CoreGlobalCommandManager.StartCommand(null, value);
                             }
-
-                            CoreGlobalCommandManager.StartCommand(null, "Так, я здесь!");
 
                             foreach(var item in workPlaces)
                             {
@@ -158,6 +160,16 @@ namespace RehabilityApplication.CoreLib
 
                 string saveName = $@"{targetFolder}\{document.Id}.doc";
                 docServer.SaveDocument(saveName, DocumentFormat.Doc);
+
+                PdfExportOptions options = new PdfExportOptions();
+                options.DocumentOptions.Author = "Pashin Evgeniy";
+                options.Compressed = false;
+                options.ImageQuality = PdfJpegImageQuality.Highest;
+                string path = $"{saveName.Replace(".doc", ".pdf")}";
+                using(FileStream pdfFileStream = new FileStream(path, FileMode.Create))
+                {
+                    docServer.ExportToPdf(pdfFileStream, options);
+                }
             }
         }
 

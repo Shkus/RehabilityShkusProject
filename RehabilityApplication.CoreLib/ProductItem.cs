@@ -32,4 +32,23 @@ namespace RehabilityApplication.CoreLib
     }
 
     public class ProductHeader : ProductItem { }
+
+
+    public class EoFillItem
+    {
+        [ExcelColumnItem(ChapterName = "Направление", ColumnName = "Дата")]
+        public string DirectName { get; set; }
+        [ExcelColumnItem(ChapterName = "Направление", ColumnName = "Номер")]
+        public string DirectNumber { get; set; }
+        [ExcelColumnItem(ChapterName = "Заявка", ColumnName = "СНИЛС")]
+        public string Snils { get; set; }
+        [ExcelColumnItem(ChapterName = "Заявка", ColumnName = "ФИО")]
+        public string Fio { get; set; }
+        [ExcelColumnItem(ChapterName = "Акт приема-передачи", ColumnName = "Кол-во по акту")]
+        public string Count { get; set; }
+        [ExcelColumnItem(ChapterName = "Акт приема-передачи", ColumnName = "Цена за ед., руб.")]
+        public string Cost { get; set; }
+    }
+
+    public class EoFillItemHeader : EoFillItem { }
 }
