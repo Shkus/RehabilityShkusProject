@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RehabilityApplication.CoreLib
 {
-	internal class TestSave
+	public class TestSave
 	{
 	}
 }
