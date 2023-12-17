@@ -14,659 +14,669 @@ using System.Xml.Linq;
 
 namespace RehabilityApplication.CoreLib
 {
-    /// <summary>
-    /// Класс главной формы приложения.
-    /// </summary>
-    public partial class MainForm : DevExpress.XtraBars.Ribbon.RibbonForm
-    {
-        const string clientFile = "clients.xml";
-
-        const string tableName = "Persons";
-
-        /// <summary>
-        /// Элемент управления меню, по нажатию кнопк приложения.
-        /// </summary>
-        ucBackstageMenu backMenu = new ucBackstageMenu();
-
-        /// <summary>
-        /// Слой отображения базы данных.
-        /// </summary>
-        ucDatabaseViewLayer databaseViewLayer = new ucDatabaseViewLayer();
-
-        /// <summary>
-        /// Слой отображения исходных данных.
-        /// </summary>
-        ucSourceDataViewer sourceDataViewLayer = new ucSourceDataViewer();
-
-        /// <summary>
-        /// Слой отображения сгенерированных документов.
-        /// </summary>
-        ucDocumentViewer documentViewLayer = new ucDocumentViewer();
-
-        /// <summary>
-        /// Слой отображения структуры папок на Яндекс диске
-        /// </summary>
-        ucStructureViewer structureViewer = new ucStructureViewer();
-
-        /// <summary>
-        /// Слой отображения контрактов и списков контрактов
-        /// </summary>
-        ucContractView contractsView = new ucContractView();
-
-        /// <summary>
-        /// Слой отображения данных SQLite
-        /// </summary>
-        ucSQLiteViewer sqliteView = new ucSQLiteViewer();
-
-        /// <summary>
-        /// Конструктор формы.
-        /// </summary>
-        public MainForm()
-        {
-            int Count = 0;
-
-            // Инициализция элементов управления формы.
-            InitializeComponent();
-
-            ApplicationSettings.TS = this.tsIsChanges;
-
-            // Подключение элемента управления меню к кнопке приложения.
-            RC.ApplicationButtonDropDownControl = backMenu;
-
-            //sqliteView = new ucSQLiteViewer(tsIsChanges);
-
-            // Добавляем слой отображения БД на форму.
-            this.PC.Controls.Add(databaseViewLayer);
-            // Добавляем слой отображения исходных данных на форму.
-            this.PC.Controls.Add(sourceDataViewLayer);
-            // Добавляем слой отображения документов на форму.
-            this.PC.Controls.Add(documentViewLayer);
-            // Добавляем слой отображения структуры папок на Яндекс диске.
-            this.PC.Controls.Add(structureViewer);
-            // Добавляем слой отображения конрактов.
-            this.PC.Controls.Add(contractsView);
-            // Добавляем слой отображения данных SQLite.
-            this.PC.Controls.Add(sqliteView);
-
-            this.Shown += (s, e) =>
-            {
-
-
-
-                GlobalDatabaseManager.Init();
-                TelegramBotManager.Init();
-
-                CoreGlobalCommandManager.StartCommand(DatabaseCommandType.DatabaseWasInitializated);
-
-                CoreGlobalCommandManager.CommandInitialized += (s, e) =>
-                {
-                    if(e.Command is YandexDiskManagerCommandType.DatabaseUploaded)
-                    {
-                        YandexDiskManager.GetFolderStructure("/25-10-2023/Database");
-                        //MessageBox.Show("База данных успешно загружена на сервер!");
-                    }
-
-                    if(e.Command is EnumLanguageType.Russian || e.Command is EnumLanguageType.English)
-                    {
-                        RelanguageUI();
-                    }
-
-                };
-
-                CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
-                {
-
-                    if(e.Command is YandexDiskManagerCommandType.FolderStructureWasReaded)
-                    {
-                        List<ITreeListItem> structure = e.Data;
-
-                        var files = structure.Where(t => t is HostFileItem).ToList();
-
-                        HostFileItem dbXml = (HostFileItem)files.Where(t => t.Name == "db.xml").FirstOrDefault();
-                        if(dbXml != null)
-                        {
-                            string md5 = FileManager.GetMd5(clientFile);
-
-                            if(md5 == dbXml.Md5)
-                            {
-                                //MessageBox.Show("Ура, файл загружен успешно!");
-                            }
-                            else
-                            {
-                                //MessageBox.Show("Упс, похоже файл недогрузился! Повтори попытку!");
-                            }
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Увы, файл не был загружен!");
-                        }
-                    }
-                };
-
-                //bAuthorizationFormShow.PerformClick();
-            };
-
-            this.FormClosing += (s, e) =>
-            {
-                DialogResult dr = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы уверены, что хотите выйти из программы?"));
-
-                if(dr != DialogResult.OK)
-                {
-                    e.Cancel = true;
-                }
-            };
-
-            btnShowSplashScreen.ItemClick += (s, e) =>
-            {
-                Task.Run(() =>
-                {
-                    SplashScreenManager.ShowForm(this, typeof(ProgressForm), true, true, true, true);
-                    System.Threading.Thread.Sleep(5000);
-                    SplashScreenManager.CloseForm();
-                });
-            };
-
-            btnGenerateDocuments.ItemClick += (s, e) =>
-            {
-                Task.Run(() =>
-                {
-                    SplashScreenManager.ShowForm(this, typeof(ProgressForm), true, true, true, true);
-                    DocumentGenerationManager.GenerateDocuments();
-                    SplashScreenManager.CloseForm();
-                });
-
-
-            };
-
-
-        }
-
-        private void RelanguageUI()
-        {
-            bCreateTable.SetResourceString();
-            bAddRecord.SetResourceString();
-            bCreateDatabase.SetResourceString();
-            bDeleteRecord.SetResourceString();
-            bIvanOkMessage.SetResourceString();
-            bIvanQuestion.SetResourceString();
-            bMapping.SetResourceString();
-            bSaveDatabaseInYandexDisk.SetResourceString();
-            bShowDatabase.SetResourceString();
-            bShowMessage.SetResourceString();
-            bShowYesNoDialog.SetResourceString();
-            bSync.SetResourceString();
-            btnGenerateDocuments.SetResourceString();
-            bVasiliyOkMessage.SetResourceString();
-            btnShowSplashScreen.SetResourceString();
-            btnOpenFileDialog.SetResourceString();
-            bClearClients.SetResourceString();
-            bCreateFolderOnYandexDisk.SetResourceString();
-            tsIsChanges.SetResourceString();
-            this.SetResourceString();
-            pageContracts.SetResourceString();
-            pageDatabase.SetResourceString();
-            pageDocuments.SetResourceString();
-            pageSourceData.SetResourceString();
-            pageSQLite.SetResourceString();
-            pageYandexDisk.SetResourceString();
-            groupContractActions.SetResourceString();
-            groupDatabase.SetResourceString();
-            groupDocumentHandles.SetResourceString();
-            groupFromExcelFile.SetResourceString();
-            groupSQLite.SetResourceString();
-            groupYandex.SetResourceString();
-        }
-
-
-        /// <summary>
-        /// Обработчик события переключения вкладок.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RC_SelectedPageChanged(object sender, System.EventArgs e)
-        {
-            if(RC.SelectedPage.Name == nameof(this.pageDocuments))
-            {
-                documentViewLayer.BringToFront();
-            }
-
-            if(RC.SelectedPage.Name == nameof(this.pageDatabase))
-            {
-                databaseViewLayer.BringToFront();
-            }
-
-            if(RC.SelectedPage.Name == nameof(this.pageSourceData))
-            {
-                sourceDataViewLayer.BringToFront();
-            }
-
-            if(RC.SelectedPage.Name == nameof(this.pageYandexDisk))
-            {
-                structureViewer.BringToFront();
-            }
-
-            if(RC.SelectedPage.Name == nameof(this.pageContracts))
-            {
-                contractsView.BringToFront();
-            }
-
-            if(RC.SelectedPage.Name == nameof(this.pageSQLite))
-            {
-                sqliteView.BringToFront();
-            }
-        }
-
-        private void btnOpenFileDialog_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            DialogResult dr = openFileDialog.ShowDialog();
-        }
-
-        private void bShowYesNoDialog_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы довольны своей зарплатой?"));
-
-            if(result == DialogResult.OK)
-            {
-                this.Text = "OK";
-            }
-            else
-            {
-                this.Text = "CANCEL";
-            }
-        }
-
-        private void bVasyaQuestion_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы хотите попасть в IT?"));
-
-            if(result == DialogResult.OK)
-            {
-                this.Text = "Чууувааак";
-            }
-            else
-            {
-                this.Text = "Врешь...";
-            }
-
-        }
-
-        private void bIvanQuestion_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Хочешь здоровья?"));
-
-            if(result == DialogResult.OK)
-            {
-                this.Text = "Закаляйся!";
-            }
-            else
-            {
-                this.Text = "Твой выбор(";
-            }
-        }
-
-        private void bShowMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Ты знаешь, а твоя лицензия закончилась, ещё вчера. Будь добр, оплати подписку и живи спокойно дальше!!!"));
-        }
-
-        private void bVasiliyOkMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Уважаемый, помни, что каждое нажатие клавишы ОК приводит тебя к тому, что ты станешь подкаблучником и будешь со всем соглашаться. Понял?"));
-        }
-
-        private void bIvanOkMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Необходимо хотя раз в день делать зарядку, полезно для кровообращения "));
-        }
-
-        private void bCreateFolderOnYandexDisk_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            bool result = YandexDiskManager.CreateFolder("/25-10-2023/", $"{DateTime.Now.ToString("dd.MM.yyyy, HH_mm_ss_fff")}", "Евгений");
-
-        }
-
-        private void bAuthorizationFormShow_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CustomFlyoutDialog.ShowForm(this, null, new ucAuthorizationForm());
-        }
-
-        private void bSaveDatabaseInYandexDisk_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            var ourClients = GlobalDatabaseManager.clients;
-            ClassObject.Serialize(ourClients, clientFile);
-            YandexDiskManager.UploadFile("/25-10-2023/Database/db.xml", clientFile);
-        }
-
-        private void bClearClients_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CoreGlobalCommandManager.StartCommand(DatabaseCommandType.ClearClients);
-        }
-
-        private void bCreateDatabase_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            SqliteManager.CreateDatabaseLocal("Database.db");
-        }
-
-        private void bCreateTable_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            SqliteManager.CreateTableInDatabase(tableName);
-        }
-
-        private void bAddRecord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            string columnNames = "Name, Age, IsSelected";
-            if(tsIsChanges.Checked == false)
-            {
-
-                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Tom', 22, true");
-                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Alice', 32, true");
-                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Bryan', 34, false");
-                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Oliver', 19, true");
-                SqliteManager.AddRecordToTable(tableName, columnNames, $"'Dag', 55, true");
-            }
-            else
-            {
-                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Tom', 22, true");
-                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Alice', 32, true");
-                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Bryan', 34, false");
-                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Oliver', 19, true");
-                SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Dag', 55, true");
-            }
-
-        }
-
-        private void bShowDatabase_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            var data = SqliteManager.GetRecords(tableName);
-
-            CoreGlobalCommandManager.StartReceiveDataCommand(SQLiteCommandType.LoadDataComplete, data);
-        }
-
-        private void bDeleteRecord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CoreGlobalCommandManager.StartCommand(SQLiteCommandType.DeleteRecordPlease);
-            bShowDatabase.PerformClick();
-        }
-
-        private void bSync_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            SqliteManager.Synchronize();
-        }
-
-        private void bMapping_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            var data = SqliteManager.MapData(tableName);
-            CoreGlobalCommandManager.StartReceiveDataCommand(SQLiteCommandType.LoadDataComplete, data);
-
-            //List<ToyClass> list = new List<ToyClass>();
-
-            ////////////ToyClass car1 = new CarClass() { Name = "Masha" };
-
-            ////////////Product sh1 = new Shkaf();
-            ////////////Product sh2 = new Shkaf();
-            ////////////Product sh3 = new Shkaf();
-
-            ////////////Product dr1 = new Door();
-            ////////////Product dr2 = new Door();
-            ////////////Product dr3 = new Door();
-
-            ////////////car1.Sold(new List<Product> { sh1, dr1, sh2, dr2, dr3, sh3 });
-
-            //CarClass car1 = new CarClass() { Engine = "V6", Id="564" };
-            //CarClass car2 = new CarClass(car1) { Engine = "V8" };
-
-            //lis.Add(doll1);
-            //list.Add(car1);
-
-            //doll1.Plakat();
-            ////car1.Ehat();
-        }
-
-        private void bEngLang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            ApplicationSettings.CurrentLanguage = EnumLanguageType.English;
-            //CoreGlobalCommandManager.StartCommand(EnumLanguageType.English);
-        }
-
-        private void bRusLang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            ApplicationSettings.CurrentLanguage = EnumLanguageType.Russian;
-            //CoreGlobalCommandManager.StartCommand(EnumLanguageType.Russian);
-        }
-
-        private void bDocumentType1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            ////DocumentType1 documentType1 = new DocumentType1() { Name = "Meridian", Description = "Пуско-наладочные работы" };
-            //DocumentType1 documentType1 = new DocumentType1() { Name = "Роботех", Description = "Починить робота" };
-
-            //documentType1.GenerateDocument();
-
-            // Ivan
-            IvanTemplateResume itr = new IvanTemplateResume()
-            {
-                Name = "Иван",
-                Profession = "Грузчик",
-                Objective = "Шланги",
-                Skills = "Копать и не копать",
-                Jobtitle = "Старший Грузчик",
-                Company = "Промет",
-                StartDate = "2019",
-                Description_experience = "Бери больше, кидай дальше",
-                Y_E = "2005-2008",
-                INS = "Пермский радиотехнический",
-                T_S = "10 из 10"
-
-
-
-
-            };
-            itr.GenerateDocument();
-
-
-        }
-
-        private void bDocumentType2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            //DocumentType2 documentType2 = new DocumentType2() {Name = "Горец", Company = "Роботех", Address = "ул. Шоссе Космнавтов 395, лит. Е", City = "Пермь",
-            //RecepientName = "Дункин Маклауд", Title = "Проект СВЕЗАААААА!!!"};
-
-            //documentType2.GenerateDocument();
-
-            // VasiliyVa
-
-            VasiliyResumeType vrt = new VasiliyResumeType()
-            {
-                name = "Васиилий",
-                surname = "Шкурихин",
-                address = "Пермь",
-                phone = "89222415995",
-                mail = "ru",
-                about = "Начинающий C# разработчик",
-                startDate = "2009",
-                jobTitle = "Начальник бюро сборки и испытаний перспективной авиации",
-                company = "АО «Пермский завод Машиностроитель»",
-                describe = "хватит с меня",
-                year = "2003",
-                school = "СОШ",
-                totalScore = "4,5",
-                hobby = "программирование, квадроциклы, снегоходы"
-
-            };
-
-            vrt.GenerateDocument();
-
-        }
-
-        private void bDocumentType3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            //DocumentType3 documentType3 = new DocumentType3()
-            //{
-            //    Name = "Дункан",
-            //    Surname = "Маклауд"
-            //};
-
-            //documentType3.GenerateDocument();
-        }
-
-        private void bClientEditor_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucClientEditor(new dbClient() { Count = 1234 }, 500, 1000));
-
-            if(result == DialogResult.OK)
-            {
-            }
-            else
-            {
-            }
-        }
-
-        private void bOpenExcelFile_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            JuniorExcelFileManager.OpenExcelFile();
-        }
-
-        private void bShowAsTreeList_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CoreGlobalCommandManager.StartCommand(SourceDataCommandType.ShowAsTreeList);
-        }
-
-        private void bShowAsExcelView_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CoreGlobalCommandManager.StartCommand(SourceDataCommandType.ShowAsExcelView);
-        }
-
-        private void bShowProducts_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            //// Middle
-            //ProductHeader ph = new ProductHeader();
-            //MiddleExcelUniversalFileManager.OpenExcelFile(ph);
-
-            ////////// Senior
-            //////ProductHeader ph = new ProductHeader();
-            //////SeniorExcelUniversalFileManager<ProductItem, ProductHeader>.OpenExcelFile(ph);
-
-            EoFillItemHeader ph = new EoFillItemHeader();
-            SeniorExcelUniversalFileManager<EoFillItem, EoFillItemHeader>.OpenExcelFile(ph);
-        }
-
-        private void bShowClientSimplified_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            TableItem2Header ph = new TableItem2Header();
-            SeniorExcelUniversalFileManager<TableItem2, TableItem2Header>.OpenExcelFile(ph);
-        }
-
-        private void bShowEO_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            EOHeader ph = new EOHeader();
-            SeniorExcelUniversalFileManager<EOItem, EOHeader>.OpenExcelFile(ph);
-        }
-
-        private void bDocxWithImage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            ResumeItem ri = new ResumeItem()
-            {
-                Birthday = "06.04.1983",
-                FIO = "Пашин Евгений Юрьевич",
-                Post = "Старший разработчик",
-                Cost = "от 300 000 рублей",
-                Avatar = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Рабочий стол\Work\Images\IMG_20200224_162454.jpg"),
-                WorkPlaces = new List<WorkPlaceItem>()
-                {
-                    new WorkPlaceItem()
-                    {
-                        Duty = "Математическое моделирование процесса разрушения образцов",
-                        StartDate = "07.2005",
-                        EndDate = "09.2005",
-                        Postbefore = "Лаборант",
-                        Workplace = "Основание-2"
-                    },
-                    new WorkPlaceItem()
-                    {
-                        Duty = "Служу Отечеству",
-                        StartDate = "12.2005",
-                        EndDate = "12.2006",
-                        Postbefore = "Солдат",
-                        Workplace = "Армия"
-                    },
-                    new WorkPlaceItem()
-                    {
-                        Duty = "Конструирование, написание программ для станков, автоматизация технологических процессов",
-                        StartDate = "12.2006",
-                        EndDate = "03.2015",
-                        Postbefore = "Конструктор",
-                        Workplace = "Основание-2"
-                    },
-                    new WorkPlaceItem()
-                    {
-                        Duty = "Разработка приложений",
-                        StartDate = "02.2018",
-                        EndDate = "02.2022",
-                        Postbefore = "Программист 2 категории",
-                        Workplace = "Галургия"
-                    },
-                    new WorkPlaceItem()
-                    {
-                        Duty = "Разработка приложений",
-                        StartDate = "02.2022",
-                        EndDate = "06.2023",
-                        Postbefore = "Программист 2 категории",
-                        Workplace = "Роботех"
-                    },
-                    new WorkPlaceItem()
-                    {
-                        Duty = "Разработка технологичсеких проектов",
-                        StartDate = "06.2023",
-                        EndDate = "настоящее время",
-                        Postbefore = "Главный специалист",
-                        Workplace = "РН-БашНИПИНефть"
-                    },
-                }
-            };
-
-            ri.GenerateWithTables<ResumeItem, WorkPlaceItem>();
-
-
-            //ActItem ai = new ActItem()
-            //{
-            //    Birthday = "545645456",
-            //    Code = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Изображения\avalonia-logo-128.png"),
-            //    FIO = "sdasdsf",
-            //    Snils = "012345678901",
-            //    Addresses = new List<AddressItem>()
-            //    {
-            //        new AddressItem() { Apartment = "12", City = "Пермь", Count = "120", House = "44", Street = "Мира" },
-            //        new AddressItem() { Apartment = "22", City = "Пермь", Count = "240", House = "1", Street = "Стахановская" },
-            //        new AddressItem() { Apartment = "32", City = "Пермь", Count = "360", House = "7", Street = "Борчанинова" },
-            //        new AddressItem() { Apartment = "42", City = "Пермь", Count = "480", House = "12", Street = "Революции" },
-            //    }
-            //};
-
-            // ai.GenerateWithTables<ActItem, AddressItem>();
-
-        }
-
-        private void bZipFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            SplashScreenManager.ShowSkinSplashScreen("");
-            ZipManager.ZipFolder();
-            //ZipManager.ZipFiles();
-        }
-
-        private void bUnzipFile_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            Task.Run(() =>
-            {
-                SplashScreenManager.ShowFluentSplashScreen("");
-                ZipManager.UnzipFile();
-                SplashScreenManager.CloseForm();
-            });
-        }
-    }
-
-
-    public enum SourceDataCommandType
+	/// <summary>
+	/// Класс главной формы приложения.
+	/// </summary>
+	public partial class MainForm : DevExpress.XtraBars.Ribbon.RibbonForm
+	{
+		const string clientFile = "clients.xml";
+
+		const string tableName = "Persons";
+
+		/// <summary>
+		/// Элемент управления меню, по нажатию кнопк приложения.
+		/// </summary>
+		ucBackstageMenu backMenu = new ucBackstageMenu();
+
+		/// <summary>
+		/// Слой отображения базы данных.
+		/// </summary>
+		ucDatabaseViewLayer databaseViewLayer = new ucDatabaseViewLayer();
+
+		/// <summary>
+		/// Слой отображения исходных данных.
+		/// </summary>
+		ucSourceDataViewer sourceDataViewLayer = new ucSourceDataViewer();
+
+		/// <summary>
+		/// Слой отображения сгенерированных документов.
+		/// </summary>
+		ucDocumentViewer documentViewLayer = new ucDocumentViewer();
+
+		/// <summary>
+		/// Слой отображения структуры папок на Яндекс диске
+		/// </summary>
+		ucStructureViewer structureViewer = new ucStructureViewer();
+
+		/// <summary>
+		/// Слой отображения контрактов и списков контрактов
+		/// </summary>
+		ucContractView contractsView = new ucContractView();
+
+		/// <summary>
+		/// Слой отображения данных SQLite
+		/// </summary>
+		ucSQLiteViewer sqliteView = new ucSQLiteViewer();
+
+		/// <summary>
+		/// Конструктор формы.
+		/// </summary>
+		public MainForm()
+		{
+			int Count = 0;
+
+			// Инициализция элементов управления формы.
+			InitializeComponent();
+
+			ApplicationSettings.TS = this.tsIsChanges;
+
+			// Подключение элемента управления меню к кнопке приложения.
+			RC.ApplicationButtonDropDownControl = backMenu;
+
+			//sqliteView = new ucSQLiteViewer(tsIsChanges);
+
+			// Добавляем слой отображения БД на форму.
+			this.PC.Controls.Add(databaseViewLayer);
+			// Добавляем слой отображения исходных данных на форму.
+			this.PC.Controls.Add(sourceDataViewLayer);
+			// Добавляем слой отображения документов на форму.
+			this.PC.Controls.Add(documentViewLayer);
+			// Добавляем слой отображения структуры папок на Яндекс диске.
+			this.PC.Controls.Add(structureViewer);
+			// Добавляем слой отображения конрактов.
+			this.PC.Controls.Add(contractsView);
+			// Добавляем слой отображения данных SQLite.
+			this.PC.Controls.Add(sqliteView);
+
+			this.Shown += (s, e) =>
+			{
+
+
+
+				GlobalDatabaseManager.Init();
+				TelegramBotManager.Init();
+
+				CoreGlobalCommandManager.StartCommand(DatabaseCommandType.DatabaseWasInitializated);
+
+				CoreGlobalCommandManager.CommandInitialized += (s, e) =>
+				{
+					if (e.Command is YandexDiskManagerCommandType.DatabaseUploaded)
+					{
+						YandexDiskManager.GetFolderStructure("/25-10-2023/Database");
+						//MessageBox.Show("База данных успешно загружена на сервер!");
+					}
+
+					if (e.Command is EnumLanguageType.Russian || e.Command is EnumLanguageType.English)
+					{
+						RelanguageUI();
+					}
+
+				};
+
+				CoreGlobalCommandManager.CommandDataReceivingInitialized += (s, e) =>
+				{
+
+					if (e.Command is YandexDiskManagerCommandType.FolderStructureWasReaded)
+					{
+						List<ITreeListItem> structure = e.Data;
+
+						var files = structure.Where(t => t is HostFileItem).ToList();
+
+						HostFileItem dbXml = (HostFileItem)files.Where(t => t.Name == "db.xml").FirstOrDefault();
+						if (dbXml != null)
+						{
+							string md5 = FileManager.GetMd5(clientFile);
+
+							if (md5 == dbXml.Md5)
+							{
+								//MessageBox.Show("Ура, файл загружен успешно!");
+							}
+							else
+							{
+								//MessageBox.Show("Упс, похоже файл недогрузился! Повтори попытку!");
+							}
+						}
+						else
+						{
+							//MessageBox.Show("Увы, файл не был загружен!");
+						}
+					}
+				};
+
+				//bAuthorizationFormShow.PerformClick();
+			};
+
+			this.FormClosing += (s, e) =>
+			{
+				DialogResult dr = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы уверены, что хотите выйти из программы?"));
+
+				if (dr != DialogResult.OK)
+				{
+					e.Cancel = true;
+				}
+			};
+
+			btnShowSplashScreen.ItemClick += (s, e) =>
+			{
+				Task.Run(() =>
+				{
+					SplashScreenManager.ShowForm(this, typeof(ProgressForm), true, true, true, true);
+					System.Threading.Thread.Sleep(5000);
+					SplashScreenManager.CloseForm();
+				});
+			};
+
+			btnGenerateDocuments.ItemClick += (s, e) =>
+			{
+				Task.Run(() =>
+				{
+					SplashScreenManager.ShowForm(this, typeof(ProgressForm), true, true, true, true);
+					DocumentGenerationManager.GenerateDocuments();
+					SplashScreenManager.CloseForm();
+				});
+
+
+			};
+
+			btnSplashScreenShkus.ItemClick += (s, e) =>
+			{
+				SplashScreenManager.ShowForm(this, typeof(WaitForm2), true, true, true, true);
+
+				System.Threading.Thread.Sleep(5000);
+
+				SplashScreenManager.CloseForm();
+
+			};
+
+		}
+
+		private void RelanguageUI()
+		{
+			bCreateTable.SetResourceString();
+			bAddRecord.SetResourceString();
+			bCreateDatabase.SetResourceString();
+			bDeleteRecord.SetResourceString();
+			bIvanOkMessage.SetResourceString();
+			bIvanQuestion.SetResourceString();
+			bMapping.SetResourceString();
+			bSaveDatabaseInYandexDisk.SetResourceString();
+			bShowDatabase.SetResourceString();
+			bShowMessage.SetResourceString();
+			bShowYesNoDialog.SetResourceString();
+			bSync.SetResourceString();
+			btnGenerateDocuments.SetResourceString();
+			bVasiliyOkMessage.SetResourceString();
+			btnShowSplashScreen.SetResourceString();
+			btnOpenFileDialog.SetResourceString();
+			bClearClients.SetResourceString();
+			bCreateFolderOnYandexDisk.SetResourceString();
+			tsIsChanges.SetResourceString();
+			this.SetResourceString();
+			pageContracts.SetResourceString();
+			pageDatabase.SetResourceString();
+			pageDocuments.SetResourceString();
+			pageSourceData.SetResourceString();
+			pageSQLite.SetResourceString();
+			pageYandexDisk.SetResourceString();
+			groupContractActions.SetResourceString();
+			groupDatabase.SetResourceString();
+			groupDocumentHandles.SetResourceString();
+			groupFromExcelFile.SetResourceString();
+			groupSQLite.SetResourceString();
+			groupYandex.SetResourceString();
+		}
+
+
+		/// <summary>
+		/// Обработчик события переключения вкладок.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void RC_SelectedPageChanged(object sender, System.EventArgs e)
+		{
+			if (RC.SelectedPage.Name == nameof(this.pageDocuments))
+			{
+				documentViewLayer.BringToFront();
+			}
+
+			if (RC.SelectedPage.Name == nameof(this.pageDatabase))
+			{
+				databaseViewLayer.BringToFront();
+			}
+
+			if (RC.SelectedPage.Name == nameof(this.pageSourceData))
+			{
+				sourceDataViewLayer.BringToFront();
+			}
+
+			if (RC.SelectedPage.Name == nameof(this.pageYandexDisk))
+			{
+				structureViewer.BringToFront();
+			}
+
+			if (RC.SelectedPage.Name == nameof(this.pageContracts))
+			{
+				contractsView.BringToFront();
+			}
+
+			if (RC.SelectedPage.Name == nameof(this.pageSQLite))
+			{
+				sqliteView.BringToFront();
+			}
+		}
+
+		private void btnOpenFileDialog_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog();
+
+			DialogResult dr = openFileDialog.ShowDialog();
+		}
+
+		private void bShowYesNoDialog_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы довольны своей зарплатой?"));
+
+			if (result == DialogResult.OK)
+			{
+				this.Text = "OK";
+			}
+			else
+			{
+				this.Text = "CANCEL";
+			}
+		}
+
+		private void bVasyaQuestion_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Вы хотите попасть в IT?"));
+
+			if (result == DialogResult.OK)
+			{
+				this.Text = "Чууувааак";
+			}
+			else
+			{
+				this.Text = "Врешь...";
+			}
+
+		}
+
+		private void bIvanQuestion_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucYesNoDialog("Хочешь здоровья?"));
+
+			if (result == DialogResult.OK)
+			{
+				this.Text = "Закаляйся!";
+			}
+			else
+			{
+				this.Text = "Твой выбор(";
+			}
+		}
+
+		private void bShowMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Ты знаешь, а твоя лицензия закончилась, ещё вчера. Будь добр, оплати подписку и живи спокойно дальше!!!"));
+		}
+
+		private void bVasiliyOkMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Уважаемый, помни, что каждое нажатие клавишы ОК приводит тебя к тому, что ты станешь подкаблучником и будешь со всем соглашаться. Понял?"));
+		}
+
+		private void bIvanOkMessage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CustomFlyoutDialog.ShowForm(this, null, new ucOkDialog("Необходимо хотя раз в день делать зарядку, полезно для кровообращения "));
+		}
+
+		private void bCreateFolderOnYandexDisk_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			bool result = YandexDiskManager.CreateFolder("/25-10-2023/", $"{DateTime.Now.ToString("dd.MM.yyyy, HH_mm_ss_fff")}", "Евгений");
+
+		}
+
+		private void bAuthorizationFormShow_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CustomFlyoutDialog.ShowForm(this, null, new ucAuthorizationForm());
+		}
+
+		private void bSaveDatabaseInYandexDisk_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			var ourClients = GlobalDatabaseManager.clients;
+			ClassObject.Serialize(ourClients, clientFile);
+			YandexDiskManager.UploadFile("/25-10-2023/Database/db.xml", clientFile);
+		}
+
+		private void bClearClients_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CoreGlobalCommandManager.StartCommand(DatabaseCommandType.ClearClients);
+		}
+
+		private void bCreateDatabase_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			SqliteManager.CreateDatabaseLocal("Database.db");
+		}
+
+		private void bCreateTable_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			SqliteManager.CreateTableInDatabase(tableName);
+		}
+
+		private void bAddRecord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			string columnNames = "Name, Age, IsSelected";
+			if (tsIsChanges.Checked == false)
+			{
+
+				SqliteManager.AddRecordToTable(tableName, columnNames, $"'Tom', 22, true");
+				SqliteManager.AddRecordToTable(tableName, columnNames, $"'Alice', 32, true");
+				SqliteManager.AddRecordToTable(tableName, columnNames, $"'Bryan', 34, false");
+				SqliteManager.AddRecordToTable(tableName, columnNames, $"'Oliver', 19, true");
+				SqliteManager.AddRecordToTable(tableName, columnNames, $"'Dag', 55, true");
+			}
+			else
+			{
+				SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Tom', 22, true");
+				SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Alice', 32, true");
+				SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Bryan', 34, false");
+				SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Oliver', 19, true");
+				SqliteManager.SaveAddRecordChange(tableName, columnNames, $"'Dag', 55, true");
+			}
+
+		}
+
+		private void bShowDatabase_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			var data = SqliteManager.GetRecords(tableName);
+
+			CoreGlobalCommandManager.StartReceiveDataCommand(SQLiteCommandType.LoadDataComplete, data);
+		}
+
+		private void bDeleteRecord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CoreGlobalCommandManager.StartCommand(SQLiteCommandType.DeleteRecordPlease);
+			bShowDatabase.PerformClick();
+		}
+
+		private void bSync_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			SqliteManager.Synchronize();
+		}
+
+		private void bMapping_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			var data = SqliteManager.MapData(tableName);
+			CoreGlobalCommandManager.StartReceiveDataCommand(SQLiteCommandType.LoadDataComplete, data);
+
+			//List<ToyClass> list = new List<ToyClass>();
+
+			////////////ToyClass car1 = new CarClass() { Name = "Masha" };
+
+			////////////Product sh1 = new Shkaf();
+			////////////Product sh2 = new Shkaf();
+			////////////Product sh3 = new Shkaf();
+
+			////////////Product dr1 = new Door();
+			////////////Product dr2 = new Door();
+			////////////Product dr3 = new Door();
+
+			////////////car1.Sold(new List<Product> { sh1, dr1, sh2, dr2, dr3, sh3 });
+
+			//CarClass car1 = new CarClass() { Engine = "V6", Id="564" };
+			//CarClass car2 = new CarClass(car1) { Engine = "V8" };
+
+			//lis.Add(doll1);
+			//list.Add(car1);
+
+			//doll1.Plakat();
+			////car1.Ehat();
+		}
+
+		private void bEngLang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			ApplicationSettings.CurrentLanguage = EnumLanguageType.English;
+			//CoreGlobalCommandManager.StartCommand(EnumLanguageType.English);
+		}
+
+		private void bRusLang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			ApplicationSettings.CurrentLanguage = EnumLanguageType.Russian;
+			//CoreGlobalCommandManager.StartCommand(EnumLanguageType.Russian);
+		}
+
+		private void bDocumentType1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			////DocumentType1 documentType1 = new DocumentType1() { Name = "Meridian", Description = "Пуско-наладочные работы" };
+			//DocumentType1 documentType1 = new DocumentType1() { Name = "Роботех", Description = "Починить робота" };
+
+			//documentType1.GenerateDocument();
+
+			// Ivan
+			IvanTemplateResume itr = new IvanTemplateResume()
+			{
+				Name = "Иван",
+				Profession = "Грузчик",
+				Objective = "Шланги",
+				Skills = "Копать и не копать",
+				Jobtitle = "Старший Грузчик",
+				Company = "Промет",
+				StartDate = "2019",
+				Description_experience = "Бери больше, кидай дальше",
+				Y_E = "2005-2008",
+				INS = "Пермский радиотехнический",
+				T_S = "10 из 10"
+
+
+
+
+			};
+			itr.GenerateDocument();
+
+
+		}
+
+		private void bDocumentType2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			//DocumentType2 documentType2 = new DocumentType2() {Name = "Горец", Company = "Роботех", Address = "ул. Шоссе Космнавтов 395, лит. Е", City = "Пермь",
+			//RecepientName = "Дункин Маклауд", Title = "Проект СВЕЗАААААА!!!"};
+
+			//documentType2.GenerateDocument();
+
+			// VasiliyVa
+
+			VasiliyResumeType vrt = new VasiliyResumeType()
+			{
+				name = "Васиилий",
+				surname = "Шкурихин",
+				address = "Пермь",
+				phone = "89222415995",
+				mail = "ru",
+				about = "Начинающий C# разработчик",
+				startDate = "2009",
+				jobTitle = "Начальник бюро сборки и испытаний перспективной авиации",
+				company = "АО «Пермский завод Машиностроитель»",
+				describe = "хватит с меня",
+				year = "2003",
+				school = "СОШ",
+				totalScore = "4,5",
+				hobby = "программирование, квадроциклы, снегоходы"
+
+			};
+
+			vrt.GenerateDocument();
+
+		}
+
+		private void bDocumentType3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			//DocumentType3 documentType3 = new DocumentType3()
+			//{
+			//    Name = "Дункан",
+			//    Surname = "Маклауд"
+			//};
+
+			//documentType3.GenerateDocument();
+		}
+
+		private void bClientEditor_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			DialogResult result = CustomFlyoutDialog.ShowForm(this, null, new ucClientEditor(new dbClient() { Count = 1234 }, 500, 1000));
+
+			if (result == DialogResult.OK)
+			{
+			}
+			else
+			{
+			}
+		}
+
+		private void bOpenExcelFile_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			JuniorExcelFileManager.OpenExcelFile();
+		}
+
+		private void bShowAsTreeList_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CoreGlobalCommandManager.StartCommand(SourceDataCommandType.ShowAsTreeList);
+		}
+
+		private void bShowAsExcelView_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			CoreGlobalCommandManager.StartCommand(SourceDataCommandType.ShowAsExcelView);
+		}
+
+		private void bShowProducts_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			//// Middle
+			//ProductHeader ph = new ProductHeader();
+			//MiddleExcelUniversalFileManager.OpenExcelFile(ph);
+
+			////////// Senior
+			//////ProductHeader ph = new ProductHeader();
+			//////SeniorExcelUniversalFileManager<ProductItem, ProductHeader>.OpenExcelFile(ph);
+
+			EoFillItemHeader ph = new EoFillItemHeader();
+			SeniorExcelUniversalFileManager<EoFillItem, EoFillItemHeader>.OpenExcelFile(ph);
+		}
+
+		private void bShowClientSimplified_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			TableItem2Header ph = new TableItem2Header();
+			SeniorExcelUniversalFileManager<TableItem2, TableItem2Header>.OpenExcelFile(ph);
+		}
+
+		private void bShowEO_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			EOHeader ph = new EOHeader();
+			SeniorExcelUniversalFileManager<EOItem, EOHeader>.OpenExcelFile(ph);
+		}
+
+		private void bDocxWithImage_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			ResumeItem ri = new ResumeItem()
+			{
+				Birthday = "06.04.1983",
+				FIO = "Пашин Евгений Юрьевич",
+				Post = "Старший разработчик",
+				Cost = "от 300 000 рублей",
+				Avatar = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Рабочий стол\Work\Images\IMG_20200224_162454.jpg"),
+				WorkPlaces = new List<WorkPlaceItem>()
+				{
+					new WorkPlaceItem()
+					{
+						Duty = "Математическое моделирование процесса разрушения образцов",
+						StartDate = "07.2005",
+						EndDate = "09.2005",
+						Postbefore = "Лаборант",
+						Workplace = "Основание-2"
+					},
+					new WorkPlaceItem()
+					{
+						Duty = "Служу Отечеству",
+						StartDate = "12.2005",
+						EndDate = "12.2006",
+						Postbefore = "Солдат",
+						Workplace = "Армия"
+					},
+					new WorkPlaceItem()
+					{
+						Duty = "Конструирование, написание программ для станков, автоматизация технологических процессов",
+						StartDate = "12.2006",
+						EndDate = "03.2015",
+						Postbefore = "Конструктор",
+						Workplace = "Основание-2"
+					},
+					new WorkPlaceItem()
+					{
+						Duty = "Разработка приложений",
+						StartDate = "02.2018",
+						EndDate = "02.2022",
+						Postbefore = "Программист 2 категории",
+						Workplace = "Галургия"
+					},
+					new WorkPlaceItem()
+					{
+						Duty = "Разработка приложений",
+						StartDate = "02.2022",
+						EndDate = "06.2023",
+						Postbefore = "Программист 2 категории",
+						Workplace = "Роботех"
+					},
+					new WorkPlaceItem()
+					{
+						Duty = "Разработка технологичсеких проектов",
+						StartDate = "06.2023",
+						EndDate = "настоящее время",
+						Postbefore = "Главный специалист",
+						Workplace = "РН-БашНИПИНефть"
+					},
+				}
+			};
+
+			ri.GenerateWithTables<ResumeItem, WorkPlaceItem>();
+
+
+			//ActItem ai = new ActItem()
+			//{
+			//    Birthday = "545645456",
+			//    Code = new System.Drawing.Bitmap($@"D:\!!! Базовые элементы\Изображения\avalonia-logo-128.png"),
+			//    FIO = "sdasdsf",
+			//    Snils = "012345678901",
+			//    Addresses = new List<AddressItem>()
+			//    {
+			//        new AddressItem() { Apartment = "12", City = "Пермь", Count = "120", House = "44", Street = "Мира" },
+			//        new AddressItem() { Apartment = "22", City = "Пермь", Count = "240", House = "1", Street = "Стахановская" },
+			//        new AddressItem() { Apartment = "32", City = "Пермь", Count = "360", House = "7", Street = "Борчанинова" },
+			//        new AddressItem() { Apartment = "42", City = "Пермь", Count = "480", House = "12", Street = "Революции" },
+			//    }
+			//};
+
+			// ai.GenerateWithTables<ActItem, AddressItem>();
+
+		}
+
+		private void bZipFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			SplashScreenManager.ShowSkinSplashScreen("");
+			ZipManager.ZipFolder();
+			//ZipManager.ZipFiles();
+		}
+
+		private void bUnzipFile_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+		{
+			Task.Run(() =>
+			{
+				SplashScreenManager.ShowFluentSplashScreen("");
+				ZipManager.UnzipFile();
+				SplashScreenManager.CloseForm();
+			});
+		}
+		
+	}
+
+
+	public enum SourceDataCommandType
     {
         ShowAsTreeList,
         ShowAsExcelView,
